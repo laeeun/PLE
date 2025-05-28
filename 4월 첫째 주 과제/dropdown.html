@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dropdown</title>
+ 
+
+</head>
+
+<body>
+  
+<!-- 
+드롭다운 만드는 순서
+
+1. 메인 메뉴와 서브 메뉴 만들기
+2. 메인 메뉴에 렐러티브주기
+3. 서브 메뉴에 앱솔루트하고 위치조정
+4. 서브 메뉴 디스플레이 none처리하기
+5. 서브 메뉴를 포함하고 있는 메인 메뉴 리스트에 hover시 서브 메뉴 block되게 하기
+
+-->
+
+  <ul class="main_menu">
+    <li>1</li>
+    <li>2
+      <ul id="sub_menu">
+        <li>2-1</li>
+        <li>2-2</li>
+        <li>2-3</li>
+      </ul>
+    </li>
+    <li>3</li>
+    <li>4</li>
+  </ul>
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-decoration: none;
+      list-style: none;
+      color: inherit;
+    }
+
+    .main_menu {
+      display: flex;
+      margin:50px 50px;
+      text-align: center;
+    }
+
+    .main_menu>li {
+      border: 1px solid gray;
+      width: 50px;
+    }
+
+    .main_menu>li:nth-child(2) {
+      position: relative;
+    }
+
+    #sub_menu{
+      position: absolute;
+      top: 30px;
+      left: 0;
+      display: none;
+      text-align: center;
+      width: 100%;
+    }
+
+
+    .main_menu>li:nth-child(2):hover #sub_menu {
+      display: block;
+    }
+  </style>
+
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+
+/* 컨테이너 크기 조정 */
+.container {
+  width: 60%;
+  margin: 0 auto;
+}
+
+
+/* 헤더 상단부분 가로 정렬 및 크기 조정 */
+header {
+  padding: 12px 0;
+  display: flex;
+}
+
+/* 아이콘 이미지 크기조정 */
+header img {
+  width: 32px;
+}
+
+/* 헤더 각각 메뉴들 가로 정렬 */
+
+.h_nav {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.logo {
+  padding: 14px 0;
+  width: 10%;
+}
+
+.nav {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.n_left {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  margin-top: -6px;
+}
+
+.n_right {
+  display: flex;
+  font-weight: 400;
+}
+
+.log_menu {
+  display: flex;
+ align-items: center;
+}
+
+
+.n_right form {
+  display: flex;
+  align-items: center;
+}
+
+.n_right button {
+  display: flex;
+  align-items: center;
+}
+
+
+
+/* 상단 오른쪽 글꼴크기 및 두께 마진 조정 */
+.n_left a {
+  margin: 0 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.n_right form {
+  border: 1px solid rgba(187, 187, 187, 0.301);
+  width: 300px;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+
+.n_right form input[type=text] {
+  outline: none;
+  border: none;
+  font-size: 16px;
+}
+
+.n_right form input::placeholder{
+  color: rgba(151, 151, 151, 0.514);
+}
+
+.n_right form input[type=submit] {
+  display: none;
+}
+
+.n_right .searchbox{
+  margin: 0 10px;
+}
+
+.n_right .cart{
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.n_right .login a{
+  margin: 0 4px;
+  font-size: 13px;
+}
+
+.writing button{
+  border: none;
+  background-color:#0AA5FF;
+  color: white;
+  padding: 6px;
+  width: 90px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  text-align: center;
+}
+
+.writing span{
+  margin-right: 6px;
+}
+
+.writing .text_box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.log_menu .login span{
+  color: rgba(141, 141, 141, 0.397);
+  font-weight: 100;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    //    문제 1)
+    // 오늘은 입학식이야 학생들의 이름을 출석부에 저장해야해!
+    // 학생들 이름은 김철수, 박말자, 안영수, 홍길동 이야. 
+
+    // 이때 필요한 변수를 선언하고 초기화를 하자!
+    let studentBook = ["김철수", "박말자", "안영수", "홍길동"];
+
+    //    문제 2)
+    // 우리반에 전학생(이름: 나전학)이 와서 새로 출석부에 추가해야해
+    // 어떤 코드를 넣어야할까?
+
+    // let studentBook1 = studentBook.slice(4);
+    studentBook.push("나전학");
+
+    //    문제 3)
+    // 우리반에 이영지 학생이 있는지 물어보네 찾아보자
+    // 해당 학생이 있으면 출석부 몇번째 위치에 있는지 알려주고,
+    // 없으면 출석부에 없다고 알려주자
+
+    let findName = "이영지";
+    let index = studentBook.indexOf(findName);
+    if (index == -1) {
+      document.write("이영지 학생은 저희 반에 없습니다." + "<br>");
+    } else {
+      document.write(`해당 학생은 출석부 ${index}번째 있습니다. `);
+    }
+
+    //    문제 4)
+    // 우리반에 박말자가 다른데로 전학간대 출석부에서 지워야해
+    // 어떤 코드를 넣을까?
+
+    studentBook.splice(1,1);
+
+    //    문제 5)
+    // 이제 인원 변동은 없는 것 같아,
+    // 이름 순으로 정렬해보자.
+
+   studentBook.sort()
+
+
+   //    문제 6)
+   // 문제 3의 내용을 함수로 구현하기
+   // 입학 초기라 우리반에 누가 있는지 자주 물어 볼 것 같아
+   // 출석부와 학생 이름이 주어졌을 때 // 매개변수
+   // 이영지 학생을 찾았던 것처럼 해당 학생이 있으면 출석부 몇번째 위치에 있는지 알려주고,
+   // 반환하는 값은 해당 학생의 index 값이야
+
+   let find_Name = "";
+    let index2 = studentBook.indexOf(findName);
+    if (index == -1) {
+      document.write("해당 학생은 저희 반에 없습니다." + "<br>");
+    } else {
+      document.write(`해당 학생은 출석부 ${index}번째 있습니다. `);
+    }
+
+
+    document.write(studentBook);
+  </script>
+
+  
+</head>
+
+<body>
+
+</body>
+
+</html>

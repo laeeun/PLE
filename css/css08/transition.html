@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /*  아래와 같이 transition을 단축하여 기입가능  */
+    /*  transition : width 1s, background 1s;  */
+    .box{
+      width: 100px;
+      height: 100px;
+      background: red;
+      transition-property: width, background-color;
+      transition-timing-function: cubic-bezier(.22,.84,1,-0.04);
+      transition-duration:  1s, 5s;
+    }
+    .box:hover{
+      width: 300px;
+      background: blue;
+    }
+  </style>
+</head>
+<body>
+  <div class="box"></div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    let myCar = new Object();
+    myCar.type = "BMW";
+    myCar.color = "black";
+    myCar.speed = 100;
+    myCar.break = function() {
+      this.speed -= 10;
+      return this.speed;
+    };
+    myCar.accel = function() {
+      this.speed += 10;
+      return this.speed;
+    };
+
+    document.write(`myCar: ${myCar.type} <br> 색상: ${myCar.color} <br> 속력: ${myCar.accel()} <br>`);
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

@@ -1,0 +1,142 @@
+footer {
+  background-color: #F3F6FA;
+  margin-top: 40px;
+  padding-top: 60px;
+  padding-bottom: 20px;
+}
+
+/* 왜 안되는 지 몰라서 뤼튼 도움 받음 ... */
+
+/* .address,
+.link_list,
+.f_email {
+  flex: 1;
+  min-width: 200px;
+  margin: 0 15px;
+} */
+
+
+.address {
+  flex: 0 1 calc(33%);
+}
+
+.link_list {
+  flex: 0 1 calc(33%);
+}
+
+.f_email {
+  flex: 0 1 calc(33%);
+}
+
+
+.f_top {
+  padding-bottom: 30px;
+}
+
+.f_section {
+  display: flex;
+}
+
+.f_sns ul {
+  display: flex;
+}
+
+.listbox {
+  display: flex;
+}
+
+
+
+.link_list h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.link_list li {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.l_list1 {
+  margin-right: 50px;
+}
+
+
+
+.f_email .text_box h3 {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.f_email .text_box p {
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.f_email form input {
+  margin: 20px 0;
+  height: 45px;
+}
+
+.f_email form input[type="email"] {
+  padding: 0 20px;
+  border: #6F6F6F;
+  font-size: 16px;
+  outline: none;
+}
+
+
+
+.f_email form input[type="submit"] {
+  border: none;
+  background-color: #7FAD39;
+  color: white;
+  width: 100px;
+  margin-left: -10px;
+  font-size: 12px;
+}
+
+.f_sns ul li{
+  margin-right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border: #6F6F6F;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+.f_bottom {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(165, 165, 165, 0.158);
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.f_bottom .text_box {
+  color: #6F6F6F;
+  font-size: 14px;
+}
+
+.f_bottom .text_box a {
+  color: #007bff;
+}
+
+.address .img_box {
+  margin-bottom: 30px;
+}
+
+.address ul li {
+  margin: 10px 0;
+}

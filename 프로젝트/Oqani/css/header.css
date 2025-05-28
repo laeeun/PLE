@@ -1,0 +1,178 @@
+.container {
+  width: 60%;
+  margin: 0 auto;
+}
+
+/* 상단 헤더 */
+
+.h_top {
+  background-color: #F5F5F5;
+  padding: 12px 0;
+}
+
+
+#h_top {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 좌측 텍스트 영역 */
+
+.h_top_left {
+  font-size: 14px;
+}
+
+.h_top_left span.line {
+  margin: 0 10px;
+  color: #c4bebe;
+}
+
+/* 우측 아이콘, 드롭 다운영역 */
+
+.h_top_right {
+  display: flex;
+  font-size: 14px;
+}
+
+.h_top_right i {
+  margin: 0 10px;
+}
+
+.h_top_right img {
+  margin: 0 10px;
+  height: 14px;
+}
+
+.h_top_right span.line {
+  margin: 0 10px;
+  color: #c4bebe;
+}
+
+
+.h_top_right .e_dropdown {
+  display: none;
+}
+
+
+
+
+
+
+/* 헤더 하단 */
+
+
+.h_bottom {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* 로고 이미지 영역 */
+
+.h_bottom .imgbox {
+  width: 200px;
+  height: 80px;
+  margin-right: 80px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.h_bottom .imgbox img {
+  width: 60%;
+  display: flex;
+  justify-content: start;
+}
+
+/* 메인 네비게이션 메뉴 */
+
+.h_nav{
+  margin-right: 200px;
+}
+
+.h_nav ul li:first-child{
+  color: #7FAD39;
+}
+
+.h_nav ul li:hover{
+  color: #7FAD39;
+}
+
+.h_nav ul li a{
+  margin-right: 10px;
+}
+
+.h_bottom ul {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+}
+
+.h_bottom .h_nav ul li {
+  margin: 0 22px;
+}
+
+
+/* 아이콘 메뉴 */
+
+.icon_box ul li {
+  margin: 0 5px;
+}
+
+.icon_box {
+  position: relative;
+}
+
+.icon_box ul li .h1 {
+  background-color: #7FAD39;
+  color: white;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  padding: 2%;
+  font-size: 10px;
+  font-weight: bold;
+  position: absolute;
+  top: -10px;
+  right: 135px;
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon_box .heart,
+.icon_box .bag {
+  font-size: 18px;
+}
+
+.icon_box .i_dolor {
+  margin-left: 20px;
+  font-weight: 200;
+}
+
+.icon_box ul li .b3 {
+  background-color: #7FAD39;
+  color: white;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  padding: 2%;
+  font-size: 10px;
+  font-weight: bold;
+  position: absolute;
+  top: -10px;
+  right: 100px;
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.icon_box ul li a {
+  font-weight: 900;
+}

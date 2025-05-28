@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button onclick="myFunction()">Try it</button>
+  <button onclick="myStopFunction()">Stop</button>
+
+  <script>
+    let timer;
+    function myFunction(){
+      myVar = setTimeout(function(){alert("Hello");}, 3000);
+      // timer = setInterval(function(){alert("Hello");}, 3000);  //3초마다 무한반복
+    }
+    function myStopFunction() {
+      clearTimeout(timer);
+    }
+
+
+    // let logs = ["로그1", "로그2", "로그3", "로그4", "로그5"]
+    // for(let i = 0; i < logs.length; i++){
+    //   (function(index) {
+    //     setTimeout(
+    //       function(){
+    //         console.log(logs[index]);
+    //       }, index * 1000
+    //     )
+    //   })(i);
+    // }
+  </script>
+</body>
+</html>

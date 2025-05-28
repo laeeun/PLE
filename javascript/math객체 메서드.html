@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+
+    let arr = [3, 124, 32, -8, 99, -17];
+
+    let a = Math.round(4.7);
+    let b = Math.round(4.4);
+    let c = Math.pow(8, 2);
+    let d = Math.sqrt(65);
+    let e = Math.abs(-4.7);
+    let f = Math.ceil(4.7);
+    let g = Math.floor(4.7);
+    let h = Math.sin(90 * Math.PI / 180);
+    let i = Math.cos(0 * Math.PI / 180);
+    // let j = Math.max(3, 124, 32, -8, 99, -17); // 아래처럼 불러올 수 있다.
+    let j = Math.max(...arr);
+    let k = Math.min(3, 124, 32, -8, 99, -17);
+    let l = Math.random();
+
+
+
+    document.write("<b>Math.round(4.7) : </b>" + a + "<br>");
+    document.write("<b>Math.round(4.4) : </b>" + b + "<br>");
+    document.write("<b>Math.pow(8,2) : </b>" + c + "<br>");
+    document.write("<b>Math.sqrt(65) : </b>" + d + "<br>");
+    document.write("<b>Math.abs(-4.7) : </b>" + e + "<br>");
+    document.write("<b>Math.ceil(4.7) : </b>" + f + "<br>");
+    document.write("<b>Math.floor(4.7) : </b>" + g + "<br>");
+    document.write("<b>Math.sin(90 * Math.PI / 180) : </b>" + h + "<br>");
+    document.write("<b>Math.cos(0 * Math.PI / 180) : </b>" + i + "<br>");
+    document.write("<b>Math.max(3, 124, 32, -8, 99, -17) : </b>" + j + "<br>");
+    document.write("<b>Math.min(3, 124, 32, -8, 99, -17) : </b>" + k + "<br>");
+    document.write("<b> Math.random() : </b>" + l + "<br>");
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

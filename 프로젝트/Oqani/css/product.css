@@ -1,0 +1,121 @@
+.product input {
+  display: none;
+}
+
+
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product .tab h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
+}
+
+
+#tab_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#tab_button label {
+  margin: 40px 24px 40px 0;
+  padding-bottom: 4px;
+}
+
+
+
+.cards .card {
+  width: 25%;
+  margin: 20px;
+  flex: 0 1 calc(25% - 40px);
+}
+
+.cards {
+  display: flex;
+  align-items: center
+}
+
+.card .img_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card .img_box img {
+  width: 88%;
+}
+
+.card h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 20px 0;
+}
+
+.card h5 {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+.card .text_box {
+  text-align: center;
+}
+
+
+.tab .cards .card {
+  display: none;
+}
+
+
+#a:checked~.tab .card {
+  display: block;
+  transition: all 1s;
+}
+
+
+
+#b:checked~.tab .cards .oranges {
+  display: block;
+
+}
+
+#c:checked~.tab .cards .vegetable {
+  display: block;
+
+}
+
+#d:checked~.tab .cards .fresh {
+  display: block;
+}
+
+#e:checked~.tab .cards .fastfood {
+  display: block;
+}
+
+#a:checked~.tab #tab_button .a {
+  border-bottom: 2px solid #7FAD39;
+}
+
+#b:checked~.tab #tab_button .b {
+  border-bottom: 2px solid #7FAD39;
+}
+
+#c:checked~.tab #tab_button .c {
+  border-bottom: 2px solid #7FAD39;
+}
+
+
+#d:checked~.tab #tab_button .d {
+  border-bottom: 2px solid #7FAD39;
+}
+
+
+#e:checked~.tab #tab_button .e {
+  border-bottom: 2px solid #7FAD39;
+}

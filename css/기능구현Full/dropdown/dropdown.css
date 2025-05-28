@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  color: inherit;
+}
+
+.main_menu {
+  display: flex;
+}
+
+.main_menu>li {
+  margin-right: 10px;
+  height: 30px;
+  line-height: 30px;
+  background-color: yellow;
+}
+
+.main_menu>li:nth-child(2) {
+  position: relative;
+}
+
+.sub_menu {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  display: none;
+  background-color: blue;
+}
+
+.main_menu>li:nth-child(2):hover .sub_menu {
+  display: block;
+}

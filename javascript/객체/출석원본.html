@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+    문제1)
+    오늘은 입학식이야 학생들의 이름을 출석부에 저장해야해!
+    학생들 이름은 김철수, 박말자, 안영수, 홍길동 이야.
+    이때 필요한 변수를 선언하고 초기화를 하자!
+    */
+    
+    let studentBook = ["김철수", "박말자", "안영수", "홍길동"];
+
+    document.write("-------1번 문제-------<br>");
+    document.write("출석부 : " + studentBook.toString() + "<br><br>");    
+
+    /*
+    문제2)
+    "우리반에 전학생(이름: 나전학)이 와서 새로 출석부에 추가해야해
+    어떤 코드를 넣어야할까 ? "
+    */
+
+    studentBook.push("나전학");
+    
+    document.write("-------2번 문제-------<br>");
+    document.write("출석부 : " + studentBook.toString() + "<br><br>");    
+
+    /*
+    문제3)
+    우리반에 이영지 학생이 있는지 물어보네 찾아보자
+    해당 학생이 있으면 출석부 몇번째 위치에 있는지 알려주고,
+    없으면 출석부에 없다고 알려주자 "
+    */
+
+    document.write("-------3번 문제-------<br>");
+
+    let findName = "이영지";
+    let index = studentBook.indexOf(findName);
+    if (index != -1) {
+      document.write(`${findName} 학생은 출석부 ${index}번째 있습니다.<br><br>`);
+    } else {
+      document.write(`${findName} 학생은 출석부에 없습니다.<br><br>`);
+    }
+
+    /*
+    문제4)
+    우리반에 박말자가 다른데로 전학간대 
+    출석부에서 지워야해. 어떤 코드를 넣을까?    
+    */
+
+    document.write("-------4번 문제-------<br>");
+    let removeName = "박말자";
+    let index2 = studentBook.indexOf(removeName); // 삭제할 값의 인덱스를 찾기
+
+    if (index2 != -1) {
+      studentBook.splice(index2, 1); // 인덱스가 유효할 경우 해당 요소 삭제
+      document.write(`${removeName} 학생은 출석부에서 삭제했습니다.<br>`);
+    } else {
+      document.write(`${removeName} 학생은 출석부에 이미 없습니다.<br>`);
+    }
+    document.write("삭제 : " + studentBook.toString() + "<br><br>"); 
+
+    /*
+    문제5)
+    이제 인원 변동은 없는 것 같아, 이름 순으로 정렬해보자.
+    */
+
+    document.write("-------5번 문제-------<br>");
+    studentBook.sort();
+    document.write("정렬 : " + studentBook.toString() + "<br><br>"); 
+
+    /*
+    문제6)
+    입학 초기라 우리반에 누가 있는지 자주 물어볼거 같아
+    
+    출석부와 학생 이름이 주어졌을 때 //매개변수
+    해당 학생이 있으면 출석부 몇번째 위치에 있는지 알려주고,
+    없으면 출석부에 없다고 알려주는 명령문을 짜자
+    
+    반환하는 값은 해당 학생의 index값이야
+    */
+
+    document.write("-------6번 문제-------<br>");
+    function findStudent(arr, name) {
+      let index = arr.indexOf(name);
+
+      if (index != -1) {
+        document.write(`${name} 학생은 출석부 ${index}번째 있습니다.<br>`);
+      } else {
+        document.write(`${name} 학생은 출석부에 없습니다.<br>`);
+      }
+
+      return index;
+    }
+
+    let findName2 = "이영지";
+    findStudent(studentBook, findName2);
+
+    /*
+    문제7)
+    김철수의 성씨가 박씨였어.출석부를 수정해보자(앞에서 짠 학생 찾는 기능을 활용해보기)
+    */
+
+    document.write("<br>-------7번 문제-------<br>");
+    let findName3 = "김철수";
+    let findIndex = findStudent(studentBook, findName3);
+    
+    studentBook[findIndex] = "박철수";
+    document.write("수정 후 : " + studentBook.toString() + "<br><br>"); 
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+<head>
+    <!-- 외부 스타일 시트를 정의하는 위치가 중요 -->
+    <link type="text/css" rel="stylesheet" href="02_css_override.css">
+    <style>
+        p {
+            color: blue;
+        }
+
+        p {
+            color: yellow;
+        }
+
+        p {
+            color: red;
+        }
+
+        /* 중복이 되었을 경우 맨 마지막께 적용 된다 */
+        /* 중복시 적용 되었으면 하는 컬러가 있을경우 !important; 를 작성 웬만하면X */
+    </style>
+    <!-- 링크태그나 스타일태그는 헤드 안에 넣어주는게 안정적이다 -->
+</head>
+
+<body>
+    <p>CSS가 중복 정의된 경우 어떤 것이 적용될까?</p>
+</body>

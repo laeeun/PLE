@@ -1,0 +1,22 @@
+
+<!-- HTML 데이터 입력 방법_요소 선택 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    function inputFun(){
+      var x = document.querySelector("#input_id").value;
+      document.querySelector("#output_id").value=x;
+    }
+  </script>
+</head>
+<body>
+  <input type="text" id="input_id" size="10">
+  <input type="text" id="output_id" size="10">
+  <button onclick="inputFun()">클릭</button>
+</body>
+</html>

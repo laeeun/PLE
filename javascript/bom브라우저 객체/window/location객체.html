@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button onclick="newDoc()">assign</button>
+
+  <script>
+    document.write("Page location :" + location.href + "<br>");
+    document.write("Page hostname :" + location.hosname + "<br>");
+    document.write("Page path :" + location.pathname + "<br>");
+    document.write("Page protocol :" + location.protocol + "<br>");
+
+
+    // setTimeout(function(){location.href = "https://www.naver.com";}, 3000) //3초뒤에  하이퍼링크로 이동하겠다다
+    function newDoc() {
+      location.assign("https://www.naver.com");
+    }
+  </script>
+</body>
+</html>

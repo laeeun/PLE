@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+
+
+
+
+/* 탭 */
+
+#tab {
+  width: 60%;
+  margin: 30px auto;
+  border: 1px solid black;
+}
+
+#tab_button {
+  font-size: 0;
+  display: flex;
+  justify-content: center;
+}
+
+#tab_button label {
+  display: inline-block;
+  width: 12%;
+  font-size: 16px;
+  margin: 20px 0;
+  text-align: center;
+  padding: 10px 2px;
+}
+
+
+.tab .cards .card {
+  display: none;
+}
+
+#a:checked~.tab .card {
+  display: block;
+  transition: all 1s;
+}
+
+
+
+#b:checked~.tab .cards .burger {
+  display: block;
+
+}
+
+#c:checked~.tab .cards .pizza {
+  display: block;
+
+}
+
+#d:checked~.tab .cards .pasta {
+  display: block;
+}
+
+#e:checked~.tab .cards .fries {
+  display: block;
+}
+
+#a:checked~.tab #tab_button .a {
+  background-color: #222831;
+  padding: 10px 2px;
+  border-radius: 25px;
+  color: white;
+}
+
+#b:checked~.tab #tab_button .b {
+  background-color: #222831;
+  padding: 10px 2px;
+  border-radius: 25px;
+  color: white;
+}
+
+#c:checked~.tab #tab_button .c {
+  background-color: #222831;
+  padding: 10px 2px;
+  border-radius: 25px;
+  color: white;
+}
+
+
+#d:checked~.tab #tab_button .d {
+  background-color: #222831;
+  padding:10px 2px;
+  border-radius: 25px;
+  color: white;
+}
+
+
+#e:checked~.tab #tab_button .e {
+  background-color: #222831;
+  padding: 10px 2px;
+  border-radius: 25px;
+  color: white;
+}
+
+
+.tab>.text_box h1 {
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  font-size: 40px;
+}
+
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.card {
+  width: 32%;
+  margin: 10px 0;
+  border-radius: 20px;
+  background-color: #222831;
+}
+
+.card .imgbox {
+  width: 100%;
+  height: 215px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: #F1F2F3;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  border-bottom-left-radius: 30px;
+}
+
+.card .imgbox img {
+  width: 60%;
+}
+
+.card .text_box {
+  color: white;
+  padding-bottom: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+
+
+.card .text_box h1 {
+  margin: 12px 0;
+  font-size: 20px;
+}
+
+.card .text_box p {
+  margin: 12px 0;
+  font-size: 15px;
+}
+
+
+.card .imgbox img:hover {
+  transform: scale(1.2);
+  transition: all 1s;
+}
+
+
+.dolor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.dolor i {
+  background-color: #FFBE33;
+  border-radius: 50%;
+  padding: 10px;
+}

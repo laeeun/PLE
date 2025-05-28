@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>숫자 맞추기 게임</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-decoration: none;
+      list-style-type: none;
+    }
+
+    .container {
+      width: 40%;
+      margin: 50px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    input {
+      width: 50%;
+      height: 40px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      width: 50%;
+      height: 40px;
+    }
+
+    #message {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>숫자 맞추기 게임</h1>
+    <p>1부터 100 사이의 숫자 맞추기!</p>
+    <input type="number" id="guessInput" placeholder="숫자 입력">
+    <button id="guessButton">확인</button>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    /*
+    1. 프로그램은 랜덤한 값을 보유하고 있다.
+   프로그램이 시작할 때, 확인 버튼 누리기 전에, 랜덤한 값을 보유하고 있다.
+    2. 숫자를 1~100 입력한다.
+      0) 확인 버튼을 누를 때, 아래의 과정이 실행된다.
+      1) 1~100의 숫자가 아니면 1과 100사이의 숫자를 입력해달라고 문구가 뜬다.
+      2) 1~100 입력했는데 랜덤값보다 큰 경우
+        : 입력한값 x보다 낮은 숫자입니다. 다시 시도해보세요
+      3) 1~100 입력했는데 랜덤값보다 작은 경우
+        : 입력한값 x보다 높은 숫자입니다. 다시 시도해보세요
+      4) 입력한값이 랜덤값과 동일한 경우
+        : 정답입니다! n번만에 맞췄습니다.
+        : 랜덤한 값을 새로 가진다.
+    */
+    let randomNumber = Math.floor(Math.random() * 100) + 1; //1~100의 랜덤값
+    let try_count = 0;
+
+    // Step1. 이벤트를 할당할 요소 선택하기
+    let guessButton = document.querySelector('#guessButton');
+
+    let guessInput = document.querySelector('#guessInput');
+    let messageDiv = document.querySelector('#message');
+
+    // Step2. 이벤트 할당하기
+    guessButton.addEventListener('click', startGame);
+
+    function resetGame() {
+      randomNumber = Math.floor(Math.random() * 100) + 1;
+      try_count = 0;
+    }
+
+    function startGame() {
+      console.log(randomNumber);
+      console.log(guessInput.value); //사용자 입력한 값 > 콘솔 : 확인용
+      let userGuess = parseInt(guessInput.value); //내가 입력한 값을 정수형으로 바꾸어 변수에 담기
+      try_count++; //내가 시도한 횟수 카운트
+
+      if (isNaN(userGuess)) {
+        messageDiv.textContent = "숫자를 입력하세요!";
+      } else if (userGuess < 1 || userGuess > 100) {
+        messageDiv.textContent = "1과 100 사이의 숫자를 입력하세요!";
+      } else if (userGuess < randomNumber) {
+        messageDiv.textContent = `입력값 ${userGuess}보다 높은 숫자입니다. 다시 시도해보세요.`;
+      } else if (userGuess > randomNumber) {
+        messageDiv.textContent = `입력값 ${userGuess}보다 낮은 숫자입니다. 다시 시도해보세요.`;
+      } else {
+        messageDiv.textContent = `정답입니다! ${try_count}번 만에 맞추셨습니다.`;
+        resetGame();
+      }
+      guessInput.value = ''; // 입력 필드 초기화
+    }
+  </script>
+</body>
+
+</html>

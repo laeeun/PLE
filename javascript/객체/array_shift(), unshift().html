@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    let array1 = ["apple", "pear", "ogrange"];
+    document.write(array1.length + "," + array1 + "<br>");
+    
+    let loseArray = array1.shift(); //앞부분 1개 요소 사라짐
+    document.write(loseArray + "<br>"); //죄측 배출된 값 반환
+    document.write(array1.length + "," + array1 + "<br>");
+
+    let plusArray = array1.unshift("mango", "strawberry");
+    document.write(plusArray + "<br>");
+    document.write(array1.length + "," + array1 + "<br>");
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

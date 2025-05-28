@@ -1,0 +1,152 @@
+#search {
+  position: relative;
+  overflow: hidden;
+  width: 1920px;
+  height: 530px;
+}
+
+#search .img_box {
+  width: 100%;
+  height: 100%;
+}
+
+#search .img_box img {
+  width: 100%;
+
+}
+
+.s_left {
+  width: 50%;
+}
+
+.s_left .text_box {
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  transform: translate(0, 30px);
+}
+
+
+.s_left .text_box span {
+  font-size: 24px;
+  color: #ffb524;
+  margin-bottom: 16px;
+}
+
+
+.s_left .text_box h1 {
+  font-size: 64px;
+  color: #81c408;
+  margin-bottom: 48px;
+}
+
+.s_left input[type=text] {
+  width: 550px;
+  font-weight: 500;
+
+}
+
+.s_left input[type=submit] {
+  width: 146.48px;
+  transform: translateX(-150px);
+  background-color: #81c408;
+  color: white;
+  font-weight: 700;
+}
+
+.s_left input {
+  height: 60px;
+  padding: 16px 24px;
+  border-radius: 50rem;
+  border: 2px solid #ffb524;
+  font-size: 16px;
+}
+
+.s_left input:focus {
+  outline: 3px solid rgba(9, 175, 9, 0.2);
+}
+
+
+.s_left input[type=submit]:hover {
+  background-color: #ffb524;
+  outline: 3px solid rgba(9, 175, 9, 0.2);
+  transition: all 1s;
+}
+
+/* 슬라이더 */
+
+.s_right {
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  transform: translate(-5%, 10%);
+}
+
+
+.s_right .slidebox{
+  width: 512px;
+  height: 340px;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: #ffb524;
+}
+
+
+.s_right .slidebox .slides {
+  width: 100%;
+  font-size: 0;
+}
+
+
+.s_right .slide{
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  font-size: 16px;
+}
+
+
+.slidebox .slides .slide img {
+  width: 100%;
+  height: 100%;
+}
+
+.slide a {
+  font-size: 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffb624ab;
+  padding: 8px 24px;
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.slidebox i {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 32px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #82c408c0;
+  border: 2px solid white;
+  color: white;
+}
+
+.slidebox .left {
+  left: 10px;
+}
+
+.slidebox .right {
+  right: 10px;
+}

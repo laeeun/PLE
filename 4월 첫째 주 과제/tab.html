@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tab</title>
+</head>
+
+<body>
+
+  <!--
+
+  탭 만드는 순서
+
+  1. 카테고리별 radio버튼 만들기
+  2. 탭박스 만들기
+  3. 탭버튼 안에 radio 각각 연결되는 label만들기
+  4. 탭 라벨과 콘텐츠가 보여지는 상자 크기조정
+  5. 라벨 크기 지정
+  6. 특정 카테고리 radio 체크시 디스플레이 block하기
+  7. 콘텐츠 모두 없애기 디스플레이 none
+
+   -->
+
+  <input type="radio" name="tab_radio" id="a" checked>
+  <input type="radio" name="tab_radio" id="b">
+  <input type="radio" name="tab_radio" id="c">
+  <input type="radio" name="tab_radio" id="d">
+  <input type="radio" name="tab_radio" id="e">
+  <input type="radio" name="tab_radio" id="f">
+
+  <div id="tab_box">
+
+    <div id="tab_button">
+      <label for="a" class="a">1</label>
+      <label for="b" class="b">2</label>
+      <label for="c" class="c">3</label>
+      <label for="d" class="d">4</label>
+      <label for="e" class="e">all</label>
+      <label for="f" class="f">all delete</label>
+    </div>
+
+    <div id="tab_content">
+      <div class="all a">첫번째 상자</div>
+      <div class="all b">두번째 상자</div>
+      <div class="all c">세번째 상자</div>
+      <div class="all d">네번째 상자</div>
+    </div>
+  </div>
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    #tab_box {
+      width: 60%;
+      margin: 30px auto;
+      border: 1px solid black;
+    }
+
+    #tab_button {
+      font-size: 0px;
+      display: flex;
+    }
+
+    #tab_button label {
+      flex: 0 1 calc(17%);
+      display: inline-block;
+      font-size: 16px;
+      color: white;
+      background-color: rgb(142, 200, 255);
+      padding: 20px 0;
+      text-align: center;
+      border: 2px solid black;
+    }
+
+    #tab_content {
+      padding: 20px;
+      border: 2px solid black;
+    }
+
+    .all {
+      display: none;
+    }
+
+    #a:checked~#tab_box #tab_content .a {
+      display: block;
+    }
+
+    #b:checked~#tab_box #tab_content .b {
+      display: block;
+    }
+
+    #c:checked~#tab_box #tab_content .c {
+      display: block;
+    }
+
+    #d:checked~#tab_box #tab_content .d {
+      display: block;
+    }
+
+    #e:checked~#tab_box #tab_content .all {
+      display: block;
+    }
+
+    #f:checked~#tab_box #tab_content {
+      display: none;
+    }
+
+
+
+    #a:checked~#tab_box #tab_button .a {
+      background-color: pink;
+    }
+
+    #b:checked~#tab_box #tab_button .b {
+      background-color: pink;
+    }
+
+    #c:checked~#tab_box #tab_button .c {
+      background-color: pink;
+    }
+
+    #d:checked~#tab_box #tab_button .d {
+      background-color: pink;
+    }
+
+    #e:checked~#tab_box #tab_button .e {
+      background-color: pink;
+    }
+
+    #f:checked~#tab_box #tab_button .f {
+      background-color: pink;
+    }
+
+    #a,
+    #b,
+    #c,
+    #d
+    {
+    display: none;
+    }
+
+    input {
+      display: none;
+    }
+  </style>
+</body>
+
+</html>

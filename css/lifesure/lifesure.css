@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  color: inherit;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.h_top .container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.h_top{
+  background-color: #f2f5f9;
+}
+
+.h_top #address{
+  display: flex;
+  align-items: center;
+}
+
+.h_top #address a {
+  display: flex;
+  align-items: center;
+}
+
+.h_top #address a img{
+  width: 20px;
+  height: 20px;
+  margin: 0 10px;
+}
+
+.h_top #address .line1{
+  height: 30px;
+  margin: 0 10px;
+  border-left: solid 2px #015FC9;
+}
+
+.h_top .sns{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.h_top .sns img{
+  width: 20px;
+  height: 20px;
+  margin:  15px;
+}
+
+.h_top .container .sns .line2{
+  height: 30px;
+  border-left: solid 2px #015FC9;
+}
+
+#h_bottom .container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#h_bottom .container .logo > img{
+  width: 50px;
+  height:50px;
+  margin: 10px;
+}
+
+#h_bottom .container .logo{
+  display: flex;
+  align-items: center;
+}
+
+#h_bottom .container .menu{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 40px;
+  border-radius: 25px;
+}
+
+#h_bottom .container .menu ul{
+  display: flex;
+  align-items: center;
+}
+
+#h_bottom .container .menu{
+  background-color: #f2f5f9;
+  width: 60%;
+}
+
+#h_bottom .container .menu ul li{
+  margin: 10px;
+}
+
+#h_bottom .container .menu ul .home{
+  color: #015FC9;
+}
+
+#h_bottom .container .menu ul img{
+  width: 10px;
+  height: 10px;
+  margin: 0 10px;
+}
+
+#h_bottom .b_search{
+  display: flex;
+}
+
+#h_bottom .b_search img{
+  width: 30px;
+  height: 30px;
+  margin: 0 10px;
+}
+
+#h_bottom .b_search span{
+  background-color: #015FC9;
+  padding: 6px 18px;
+  border-radius: 25px;
+  color: white;
+}
+
+#h_bottom .tel{
+  display: flex;
+  align-items: center;
+}
+
+#h_bottom .tel .img_box{
+  width: 50px;
+  height: 50px;
+  background-color: #f2f5f9;
+  border-radius: 25px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#h_bottom .tel .img_box img{
+  width: 50%;
+  height: 50%;
+}
+
+#h_bottom .tel .call{
+  color: gray;
+}
+
+#h_bottom .tel span{
+  color: black;
+}

@@ -1,0 +1,95 @@
+
+.navigation{
+  border-top: 1px solid rgba(187, 187, 187, 0.342);
+  border-bottom:1px solid rgba(187, 187, 187, 0.342);
+}
+
+
+.n_category{
+  display: flex;
+  justify-content: space-between;
+}
+
+.navi{
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.keyword{
+  width: 20%;
+}
+
+.main_menu button{
+  position: relative;
+  border: none;
+  background-color:transparent;
+}
+
+.sub_menu{
+  position: absolute;
+  top: 16%;
+  right:24%;
+  background-color: white;
+  border: 1px solid rgba(161, 161, 161, 0.247);
+  box-shadow:5px 5px 5px rgba(153, 153, 153, 0.185);
+  border-radius: 6px;
+  width: 320px;
+  height: 200px;
+  padding: 20px;
+  z-index: 100;
+  font-weight: 700;
+  display: none;
+}
+
+.sub_menu li{
+  margin: 10px 0;
+}
+
+.slider_box{
+  margin: 10px 0;
+  display: flex;
+  justify-content: end;
+}
+
+.slider_box i{
+  margin-right: 24px;
+}
+
+.slider_box span{
+  margin-right: 10px;
+  color: #f66161;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* 슬라이드 */
+.slider_box {
+  height: 30px; /* 한 슬라이드 높이에 맞춤 */
+  /* overflow: hidden; */
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.5s ease;
+}
+
+.slide {
+  position: absolute;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  background: #f4f4f4;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.secret_box{
+  display: none;
+}

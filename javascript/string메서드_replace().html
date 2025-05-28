@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p>Replace "Java" is replaced by "javaScript."</p>
+  <button onclick="myFunction()">Try it</button>
+  <p id="demo01"></p>
+  <p id="demo02"></p>
+
+  <script>
+    function myFunction() {
+      let str = "this program is written by java. java is the best program.";
+      let txt = str.replace("java","javaScript");
+      document.querySelector("#demo01").innerHTML = txt;
+
+      let txt2 = str.replace(/java/g,"javaScript");
+      document.querySelector("#demo02").innerHTML = txt2;
+    }
+  </script>
+</body>
+</html>

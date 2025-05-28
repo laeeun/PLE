@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    // 1학년 1반 ~ 3학년 10반 출력
+    var output = ""; // 데이터 유형을 문자열 - 비워둠
+
+
+    // 학년 반복 - 1학년 ~ 3학년
+    for (var i = 1; i <= 3; i++) {
+      output += '<h3>=====' + i + '학년=====</h3>';
+
+
+      // 반을 반복 - 1반 ~ 10반
+      for (var j = 1; j <= 10; j++) {
+        output += '<p>' + i + '학년' + j + '반</p>';
+      }
+    }
+    document.write(output)
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

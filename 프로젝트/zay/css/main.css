@@ -1,0 +1,166 @@
+.slidebox {
+  background-color: #efefef;
+}
+
+
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner .img_box {
+  width: 35%;
+}
+
+.banner .img_box img {
+  width: 100%;
+}
+
+.banner .textbox {
+  width: 50%;
+}
+
+
+
+
+.banner h1 {
+  font-size: 50px;
+  font-weight: lighter;
+}
+
+.banner h3 {
+  font-size: 30px;
+  font-weight: lighter;
+  margin: 10px 0;
+}
+
+.banner p {
+  line-height: 25px;
+}
+
+.banner p a {
+  font-weight: bold;
+}
+
+
+/* 슬라이더 */
+
+.slidebox {
+  width: 100%;
+  font-size: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.slide {
+  width: 100%;
+  display: inline-block;
+  font-size: 16px;
+  transition: all 1s;
+}
+
+
+#n1:checked~.slides .slide {
+  transform: translateX(0%);
+}
+
+
+#n2:checked~.slides .slide {
+  transform: translateX(-100%);
+}
+
+#n3:checked~.slides .slide {
+  transform: translateX(-200%);
+}
+
+
+/* 라벨 */
+
+
+
+.slidebox .controlbox label {
+  position: absolute;
+  top: 50%;
+  border: none;
+  cursor: pointer;
+  transform: translate(0, -50%);
+  display: none;
+  z-index: 1;
+}
+
+.slidebox .controlbox label.left {
+  left: 20px;
+  font-size: 50px;
+  color: #67b17a;
+}
+
+.slidebox .controlbox label.right {
+  right: 20px;
+  font-size: 50px;
+  color: #67b17a;
+}
+
+
+
+.slidebox input[id="n1"]:checked~ .controlbox .b_icon1 label {
+  display: block;
+}
+
+.slidebox input[id="n2"]:checked~ .controlbox .b_icon2 label {
+  display: block;
+}
+
+.slidebox input[id="n3"]:checked~ .controlbox .b_icon3 label {
+  display: block;
+}
+
+
+
+
+input {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* 배너 하단 라디오 */
+
+.slidebox .p {
+  position: absolute;
+  bottom: 5%;
+  left: 45%;
+  transform: translateY(-50%);
+  font-size: 16px;
+
+  z-index: 100;
+}
+
+.p label {
+  background-color: #a4cdae;
+  width: 30px;
+  height: 3px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#n1:checked~.p label[for="n1"] {
+  background-color: #59ab6e;
+}
+
+#n2:checked~.p label[for="n2"] {
+  background-color: #59ab6e;
+}
+
+#n3:checked~.p label[for="n3"] {
+  background-color: #59ab6e;
+}

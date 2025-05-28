@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    let objectExam = {
+      //속성
+      name : "홍길동",
+      age : 23,
+
+      sayHello : function(blogName) {
+        alert(this.name + "의" + blogName);
+      }
+    };
+
+    objectExam.sayHello('정보 보기');
+    document.write("이름:" + objectExam.name + "" + "<br>");
+    document.write("나이:" + objectExam.age + "");
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

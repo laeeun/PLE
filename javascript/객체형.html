@@ -1,0 +1,52 @@
+<!-- 데이터에  따른 자료형_객체형 -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    //객체 변수 선언과 초기화 방법1
+    var myCar01 = { model: "BMW", color: "gray", speed: 150 };
+    document.write(myCar01.model + "<br>");
+    document.write(myCar01.color + "<br>");
+    document.write(myCar01.speed + "<br>");
+    document.write(typeof myCar01 + "<br>");
+
+
+    //객체 변수 선언과 초기화 방법2
+    var myCar02 = new Object();
+    myCar02['model'] = "benz";
+    myCar02['color'] = "blue";
+    myCar02['speed'] = 100;
+    document.write(myCar02.model + "<br>");
+    document.write(myCar02.color + "<br>");
+    document.write(myCar02.speed + "<br>");
+    document.write(typeof myCar02 + "<br>");
+
+
+    //객체 변수 선언과 초기화 방법3
+    class Car {
+      constructor(model, color, speed) {
+        this.model = model;
+        this.color = color;
+        this.speed = speed;
+      }
+    }
+
+    var myCar03 = new Car("benz", "red", 150);
+    document.write(myCar03.model + "<br>");
+    document.write(myCar03.color + "<br>");
+    document.write(myCar03.speed + "<br>");
+    document.write(typeof myCar03 + "<br>");
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

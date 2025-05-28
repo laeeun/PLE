@@ -1,0 +1,65 @@
+
+
+<!-- <script src="./loops.js"></script> -->
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내장함수</title>
+  <script>
+    //인코딩, 디코딩 함수
+    let encodeStr = '자바스크립트';
+    console.log(encodeURIComponent(encodeStr));
+
+    let decodeStr = encodeURIComponent(encodeStr);
+    console.log(encodeURIComponent(encodeStr));
+
+    //숫자, 유/무한 값 판별 함수
+    let num1 = '숫자';
+    if (!isNaN(num1)){
+      consolelog.log('숫자');
+    }else{
+      console.log('숫자 아님');
+    }
+
+    let num2 = 1 / 0;
+    if (isFinite(num2)){
+      console.log('유한값');
+    } else{
+      console.log('무한값');
+    }
+
+    //숫자, 문자 변환 함수
+    let num3 = '10';
+    console.log(Number(num3));
+
+    let num4 = '100px';
+    console.log(parseInt(num4));
+
+    let num5 = '33.3%';
+    console.log(parseFloat(num5));
+
+    let num6 = 10;
+    console.log(typeof num6);
+    console.log(typeof String(num6));
+
+    //자바스크립트 코드 변경 함수
+    let str1 = 'var num7 = 10';
+    let str2 = 'var num8 = 20';
+    eval(str1); //'문자가 아니라 코드다'라는걸 알림
+    eval(str2);
+    console.log(num7 + num8);
+
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

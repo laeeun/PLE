@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    let itemNames = ["사과", "바나나", "우유"];
+    let itemPrice = [1200, 800, 2500];
+    let itemQuantitles = [3, 5, 2];
+
+    let totalPrice = 0;
+    let deliVery = 5000;
+
+    // 장바구니 목록(itemNames) 출력하기
+
+    for (let i = 0; i < itemNames.length; i++) {
+      document.write(itemNames[i] + "<br>");
+    }
+
+    // 계산해야할 totalPrice 계산하기 : 각자의 가격 * 각자의 수량
+    for (let i = 0; i < itemPrice.length; i++) {
+      totalPrice += itemPrice[i] * itemQuantitles[i];
+    }
+    document.write(totalPrice + "<br>")
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

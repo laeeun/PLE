@@ -1,0 +1,307 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+  color: inherit;
+}
+
+.container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+header .shop i {
+  margin: 10px;
+}
+
+header nav > ul {
+  display: flex;
+}
+
+header nav > ul a {
+  display: inline-block;
+  padding: 10px 20px;
+}
+
+header nav > ul .pages {
+  position: relative;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+header nav>ul .pages i {
+  margin-left: 10px;
+}
+
+header nav > ul .submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 99;
+  background-color: white;
+  display: none;
+}
+
+header nav > ul .submenu.show {
+  display: block;
+}
+
+header .user i {
+  margin-left: 10px;
+}
+
+#main {
+  position: relative;
+  margin-bottom: 50px;
+}
+
+#main img {
+  width: 100%;
+}
+
+#main .slidebox {
+  position: absolute;
+  top:50%;
+  transform: translateY(-50%);
+  left: 15%;
+
+  overflow: hidden;
+}
+
+#main .slidebox .slides {
+  width: 300%;
+  display: flex;
+}
+
+#main .slidebox .slides .slide {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: all .5s;
+}
+
+#main .slidebox .slides .slide .imgbox {
+  width: 50%;
+  text-align: center;
+}
+
+#main .slidebox .slides .slide img {
+  width: 80%;
+}
+
+#main .slidebox .slides .slide .textbox {
+  width: 50%;
+  margin-left: 100px;
+}
+
+#main .slide .textbox h1 {
+  margin: 15px 0;
+  font-size: 40px;
+}
+
+#main .slide .textbox a {
+  display: inline-block;
+  padding: 12px 25px;
+  border: 1px solid black;
+}
+
+#main .btns  {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#main .btns button {
+  border: 1px solid black;
+  background-color: white;
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+#main .btns button.active{
+  background-color: orange;
+}
+
+#tab .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+#tab .header h2 {
+font-size: 40px;
+}
+
+#tab .header button {
+  border: none;
+  border-bottom: 1px solid black;
+  background-color: white;
+  padding: 8px 0;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+#tab .header button.active{
+  border-bottom: 1px solid orange;
+}
+
+#tab .header a {
+  display: inline-block;
+  padding: 12px 25px;
+  border: 1px solid black;
+}
+
+#tab .contents {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#tab .contents .all {
+  flex: 0 1 calc(25% - 30px);
+  margin: 15px;
+  display: none;
+}
+
+#tab .contents .all.active {
+  display: block;
+}
+
+#tab .contents .all .imgbox{
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#tab .contents .all img {
+  width: 100%;
+}
+
+#tab .contents .all h3,
+#tab .contents .all p {
+  margin: 5px 0;
+}
+
+#tab .contents .all button {
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+  padding: 10px;
+}
+
+#tab .contents .all button:first-child{
+  margin-right: 10px;
+}
+
+footer {
+  font-size: 13px;
+  border-top: 1px solid black;
+}
+
+.f_top{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  padding: 20px 0;
+  margin-bottom: 70px;  
+}
+
+.f_top > div {
+  flex : 0 1 calc(25% - 20px);
+  margin-right: 20px;
+}
+
+.f_top .info p {
+  margin: 20px 0;
+}
+
+.f_top .info .sns {
+  white-space: nowrap;
+  display: flex;
+}
+
+.f_top .info .sns li {
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid black;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.f_top .info .sns li a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+footer h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+footer .quick li a,
+footer .help li a {
+  padding: 4px 0;
+  display: inline-block;
+}
+
+footer .subs p {
+  margin: 15px 0;
+}
+
+footer .subs form {
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer .subs form input{
+  padding: 15px 0;
+  border: none;
+  outline: none;
+}
+
+footer .subs form button{
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: orange;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.f_bottom {
+  padding: 20px 0;
+  border-top: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+}

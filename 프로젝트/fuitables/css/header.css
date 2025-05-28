@@ -1,0 +1,155 @@
+.container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.h_top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: 1.5px;
+  padding: 16px;
+  background-color: #81C408 ;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 60px;
+  border-bottom-left-radius: 30px;
+}
+
+
+.h_top_left .address{
+  display: flex;
+  margin-left: 10px;
+}
+
+.h_top_left .address span{
+  color: white;
+  font-size: 12px;
+}
+
+.h_top_left i{
+  color: #ffc107;
+  font-size: 14px;
+}
+
+
+.h_top_left .address .add{
+  margin-right: 14px;
+}
+
+.h_top_right{
+  color: white;
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+
+.h_top_right a{
+  margin: 0 8px;
+}
+
+
+/* headerBottom */
+
+.h_bottom{
+  padding: 8px 0;
+
+}
+
+.h_bottom .logo{
+  width: 20%;
+  color: #81C408;
+  font-size: 40px;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.h_b{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.h_bottom_nav{
+  width: 68%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-left: -60px;
+}
+
+.h_bottom_nav .main_menu li{
+  margin: 20px;
+}
+
+.h_bottom_nav .main_menu li i{
+  margin: 0 6px;
+  font-size: 12px;
+}
+
+
+
+.h_bottom_nav .main_menu{
+  display: flex;
+}
+
+.h_bottom_nav .main_menu button{
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  color: rgba(0, 0, 0, .55) ;
+  cursor: pointer;
+}
+
+.h_bottom_nav .sub_menu{
+  display: none;
+}
+
+.h_bottom .user_icons{
+  width: 12%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.h_bottom .user_icons i{
+  color:#81C408 ;
+}
+
+.h_bottom .user_icons .glass{
+  border: 1px solid #ffb524;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.h_bottom .user_icons .bag{
+font-size: 36px;
+position: relative;
+}
+
+.h_bottom .user_icons span{
+  position: absolute;
+  top: 8.7%;
+  right: 17.6%;
+  background-color: #ffb524;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: #45595b;
+}
+
+.h_bottom .user_icons .user{
+  font-size: 36px;
+}

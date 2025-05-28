@@ -1,0 +1,84 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#slider .slidebox {
+  width: 100px;
+  height: 100px;
+  margin: 30px auto;
+  background-color: pink;
+  white-space: nowrap;
+  position: relative;
+}
+
+#slider .slidebox .slides {
+  font-size: 0;
+}
+
+#slider .slidebox .slides .slide {
+  font-size: 16px;
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  transition: all .5s;
+  border: 3px solid red;
+}
+
+
+/* 좌우로 넘기는 label에 대한 스타일 */
+
+#slider .controlbox label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: none;
+}
+
+#slider .controlbox .left{
+  left: 0px;
+}
+
+#slider .controlbox .right{
+  right: 0px;
+}
+
+
+
+/* 슬라이더 기능부 */
+
+#slider input[id="s01"]:checked ~ .slidebox .control01 label{
+  display: block;
+}
+
+#slider input[id="s02"]:checked ~ .slidebox .control02 label{
+  display: block;
+}
+
+#slider input[id="s03"]:checked ~ .slidebox .control03 label{
+  display: block;
+}
+
+
+
+
+#slider input[id="s01"]:checked ~ .slidebox .slides .slide {
+  transform: translateX(0%);
+}
+
+#slider input[id="s02"]:checked ~ .slidebox .slides .slide {
+  transform: translateX(-100%);
+}
+
+#slider input[id="s03"]:checked ~ .slidebox .slides .slide {
+  transform: translateX(-200%);
+}
+
+
+/* input 가리기 */
+
+#slider input[type="radio"]{
+  display: none;
+}

@@ -1,0 +1,76 @@
+
+.product{
+  background-color: #E9EEF5;
+ padding: 80px 0;
+}
+
+
+.product .text_box {
+  text-align: center;
+}
+
+.product .text_box h1 {
+  font-size: 48px;
+  font-weight: lighter;
+  margin-bottom: 10px;
+}
+
+.product .text_box p {
+  margin-bottom: 50px;
+  font-size: 18px;
+}
+
+/* product 카드 */
+
+.p_cards {
+  display: flex;
+  justify-content: space-between;
+}
+
+.p_card {
+  display: flex;
+  flex-direction: column;
+  width: 32%;
+  border: 1px #dee2e6 ;
+  background-color: white;
+}
+
+
+.p_card .img_box img{
+  width: 100%;
+}
+
+
+.review{
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 20px;
+  font-size: 22px;
+  color:#C0C2C5;
+}
+
+.p_card .text_box{
+  text-align:left;
+  padding-bottom: 50px;
+  margin: 0px 20px;
+}
+
+.p_card .text_box h3{
+  font-size: 30px;
+  font-weight: 100;
+  margin-bottom: 10px;
+}
+
+.p_card .text_box p{
+  font-size: 18px;
+  line-height: 35px;
+  font-weight: 100;
+  margin-bottom: 20px;
+}
+
+
+.text_box span{
+  border: none;
+  font-size: 18px;
+  color: #C0C2C5;
+}

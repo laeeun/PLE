@@ -1,0 +1,119 @@
+footer {
+  padding: 50px 0;
+  background-color: #212934;
+}
+
+
+.f_cards {
+  display: flex;
+  justify-content: space-between;
+}
+
+.zayshop {
+  display: flex;
+  flex-direction: column;
+  color: #cfd6e1;
+}
+
+.zayshop h1 {
+  color: #59ab6e;
+}
+
+.h1 {
+  border-bottom: 1px solid #cfd6e123;
+  padding-bottom: 10px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.zayshop span {
+  margin: 10px 0;
+}
+
+.products,
+.info,
+.f_sns {
+  color: #cfd6e1;
+  text-align: left;
+}
+
+li {
+  /* margin: 10px 0;
+  padding-top: 10px; */
+}
+
+
+.zayshop,
+.products,
+.info {
+  width: 32%;
+}
+
+.f_sns {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #cfd6e133;
+  margin-top: 10px;
+  font-size: 30px;
+  margin-right: 10px;
+}
+
+.f_sns ul {
+  display: flex;
+}
+
+.f_sns ul li {
+  margin:20px 10px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid #cfd6e133;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+li{
+  padding: 10px 0;
+}
+
+.f_mail input{
+  background-color: transparent;
+  border: 1px solid #cfd6e133;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+
+.f_botoom {
+color: #cfd6e1;
+
+}
+
+.f_text {
+  background-color: #1d242d;
+  padding: 25px 0;
+}
+
+.f_mail{
+  position: relative;
+}
+
+.f_mail input[type="submit"]{
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #59ab6e;
+}
+
+.f_mail input[type="email"]{
+  width: 250px;
+  text-align: start;
+}
+
+.f_mail input{
+  border-radius: 2px;
+  padding: 10px;
+}

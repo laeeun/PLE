@@ -1,0 +1,73 @@
+
+.categories{
+  padding: 80px 0;
+}
+
+/* 카테고리 텍스트 */
+
+.categories .text_box{
+  text-align: center;
+  align-items: center;
+}
+
+.categories .text_box h1{
+  margin-bottom: 10px;
+  font-size: 48px;
+  font-weight: lighter;
+  margin-bottom: 10px;
+}
+
+.categories .text_box p{
+  margin-bottom: 16px;
+  font-size: 18px;
+  margin-bottom: 50px;
+}
+
+
+/* 카테고리 카드 */
+
+.c_cards{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.c_card{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 30%;
+}
+
+.c_img_box{
+  width: 85%;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.c_img_box img{
+  width: 100%;
+  border-radius: 50%;
+  border: 1px #dee2e6;
+}
+
+
+.c_card h3{
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+.c_card a{
+  background-color: #59ab6e;
+  width: 25%;
+  height: 45px;
+  text-align:center;
+  color: white;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-size: 20px;
+  padding-top: 5px;
+  font-weight: 200;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    let str01 = "JavaScript objects are containers for name values, called properties and metfods.";
+    let position01 = str01.indexOf("containers", 15);
+    document.write("1.indexOf('containers',15):" + position01 + "<br>");
+    let position02 = str01.search("containers");
+    document.write("2.search('containers'): " + position02 + "<br>");
+
+    let result01 = str01.slice(7,13);
+    document.write("3.slice(7,13) :" + result01 + "<br>");
+    let result02 = str01.slice(-12,-6);
+    document.write("4.slice(-12,-6) :" + result02 + "<br>");
+    let result03 = str01.slice(7);
+    document.write("5.slice(7) :" + result03 + "<br>");
+    let result04 = str01.slice(-12);
+    document.write("6.slice(-12) :" + result04 + "<br>");
+    let result05 = str01.substring(7,13);
+    document.write("7.substring(7,13) :" + result05 + "<br>");
+    let result06 = str01.substring(7,6);
+    document.write("8.substring(7,6) :" + result04 + "<br>");
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

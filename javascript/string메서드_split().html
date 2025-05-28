@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p>A string can be converted to an array</p>
+  <button onclick="myFunction()">Try it</button>
+  <p id="demo01"></p>
+
+  <script>
+    function myFunction() {
+      let str = "javascript, c++, java, html6, python, jQuery";
+      let arr = str.split(",");
+      // document.querySelector("#demo01").innerHTML = arr[0];
+      let test = "";
+      for(let i of arr){
+        test += i + "<br>"
+      }
+      document.querySelector("#demo01").innerHTML = test;
+    }
+  </script>
+</body>
+</html>

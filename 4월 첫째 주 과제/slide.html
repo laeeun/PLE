@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>slide</title>
+</head>
+
+<body>
+
+  <!--
+
+  슬라이드 짜는 순서
+  
+  1. 콘텐츠 별로 라디오 버튼만들고 id부여하기
+  2. 보여질 화면 div만들기
+  3. 콘텐츠에 해당하는 라벨 만들기
+  4. 라벨 적용 되는지 체크하기
+  5. 라벨을 띄운후 원하는 위치로 이동
+  6. 라벨을 디스플레이 none하고 클릭되면 block되게 하기
+  7. 라디오가 체크되면 이동시킴
+  8. 라디오 디스플레이 none하기기
+
+   -->
+
+  <div id="slider">
+    <input type="radio" name="silde" id="s01" checked>
+    <input type="radio" name="silde" id="s02">
+    <input type="radio" name="silde" id="s03">
+    <div class="slidebox">
+      <div class="slides">
+        <div class="slide">1</div>
+        <div class="slide">2</div>
+        <div class="slide">3</div>
+      </div>
+      <div class="controlbox">
+        <div class="control01">
+          <label for="s03" class="left">왼쪽</label>
+          <label for="s02" class="right">오른쪽</label>
+        </div>
+        <div class="control02">
+          <label for="s01" class="left">왼쪽</label>
+          <label for="s03" class="right">오른쪽</label>
+        </div>
+        <div class="control03">
+          <label for="s02" class="left">왼쪽</label>
+          <label for="s01" class="right">오른쪽</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#slider .slidebox {
+  width: 150px;
+  height: 100px;
+  margin: 30px auto;
+  white-space: nowrap;
+  position: relative;
+}
+
+#slider .slidebox .slides {
+  font-size: 0;
+}
+
+
+#slider .slidebox .slides .slide {
+  font-size: 16px;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+  transition: all .5s;
+  border: 2px solid pink;
+}
+
+#slider .controlbox label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: none;
+  color: blueviolet;
+}
+
+#slider .controlbox .left{
+  left: 0px;
+}
+
+#slider .controlbox .right{
+  right: 0px;
+}
+
+#slider input[id="s01"]:checked ~ .slidebox .control01 label{
+  display: block;
+}
+
+#slider input[id="s02"]:checked ~ .slidebox .control02 label{
+  display: block;
+}
+
+#slider input[id="s03"]:checked ~ .slidebox .control03 label{
+  display: block;
+}
+
+
+
+
+#slider input[id="s01"]:checked ~ .slidebox .slides .slide {
+  transform: translateX(0%);
+}
+
+#slider input[id="s02"]:checked ~ .slidebox .slides .slide {
+  transform: translateX(-100%);
+}
+
+#slider input[id="s03"]:checked ~ .slidebox .slides .slide {
+  transform: translateX(-200%);
+}
+
+#slider input[type="radio"]{
+  display: none;
+}
+  </style>
+</body>
+
+</html>

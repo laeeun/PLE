@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    /*
+    1. 변수가 뭐가 필요할까?
+    -아빠나이, 엄마나이, 내나이
+
+    2.어떤 동작을 해야할까?
+    - (아빠나이 + 엄마나이 + 동생나이 + 내나이) / 4
+    */
+
+
+
+    var count = 0;
+    var father, mother, brother, me;
+
+    father = prompt("숫자를 입력하세요", "아버지의 나이를 입력하세요"); //("숫자를 입력하세요","아버지의 나이를 입력하세요")
+    count = count + 1; //count++;
+
+    mother = prompt("숫자를 입력하세요", "어머니의 나이를 입력하세요"); //("숫자를 입력하세요","어머니의 나이를 입력하세요")
+    count = count + 1; //count++;
+
+    brother = prompt("숫자를 입력하세요", "동생의 나이를 입력하세요");  //("숫자를 입력하세요","동생의 나이를 입력하세요")
+    count = count + 1; //count++;
+
+    me = prompt("숫자를 입력하세요", "나의 나이를 입력하세요"); //("숫자를 입력하세요","나의 나이를 입력하세요")
+    count = count + 1; //count++;
+
+    var ageFamily = Number(father) + Number(mother) + Number(brother) + Number(me); //prompt()이 입력한 값의 대이터타입은 문자없이
+    console.log(ageFamily); //개발자 도구 눌러서 console 탭에서 확인
+    console.log(typeof Number(father));
+    console.log(typeof Number(mother));
+    console.log(typeof Number(brother));
+    console.log(typeof Number(me));
+    document.write(parseInt(ageFamily / count)); // 가족 나이의 합 / 인원수 : 평균
+    document.write(`Number() : ${Number('30px')}`);
+    document.write(`parseInt() : ${parseInt('30px')}`);
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

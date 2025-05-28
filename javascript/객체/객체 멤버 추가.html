@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    function Car(model, speed, color) {
+      this.model = model;
+      this.speed = speed;
+      this.color = color;
+      this.break = function () {
+        this.speed -= 10;
+      };
+      this.accel = function () {
+        this.speed += 10;
+      };
+    }
+
+  //   class Car{
+  //   constructor(model, speed, color){
+    
+  //     this.break = function () {
+  //       this.speed -= 10;
+  //     };
+  //     this.accel = function () {
+  //       this.speed += 10;
+  //     };
+  //   }
+  // }
+
+
+    let myCar = new Car(`BMw 100 black`);
+    let yourCar = new Car(`Benz 150 gary`);
+    myCar.blackBox = true;
+    myCar.battery = 1200;
+    myCar.display = function () { alert(`myCar의 배터리양 : ${this.battery}`) };
+    myCar.display();
+    document.write(`내 차의 블랙박스 : ${myCar.blackBox} 배터리 : ${myCar.battery}`);
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

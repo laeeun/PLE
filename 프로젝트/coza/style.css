@@ -1,0 +1,476 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  color: inherit;
+}
+
+/* 사이트 최상단 */
+.h_top {
+  color: white;
+  background-color: black;
+  font-size: 12px;
+  font-family: "Poppins-Regular";
+  font-weight: 400;
+}
+
+.container {
+  width: 75%;
+  margin: 0 auto;
+}
+
+
+.h_top .container {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.h_top p {
+  color: #b2b2b2;
+}
+
+.h_top ul {
+  display: flex;
+  justify-content: right;
+}
+
+.h_top ul li {
+  color: #b2b2b2;
+  border-left: 0.5px solid #b2b2b2;
+
+}
+
+.h_top ul li:nth-child(4) {
+  border-right: 0.5px solid #b2b2b2;
+}
+
+.h_top a {
+  display: block;
+  padding: 10px;
+}
+
+.h_bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.left a {
+  padding-right: 30px;
+}
+
+
+.menu_home {
+  display: flex;
+  align-items: center;
+}
+
+.menu_home a {
+  display: inline-block;
+  padding: 12px;
+}
+
+.right a {
+  padding: 0 10px;
+}
+
+/* 사이트 메인 배너 */
+
+.main {
+  position: relative;
+  margin-bottom: 60px;
+}
+
+.main .left {
+  border: none;
+  position: absolute;
+  background-color: transparent;
+  top: 50%;
+  left: 20px;
+  transform: translate(0, -50%);
+  cursor: pointer;
+}
+
+.main .right {
+  border: none;
+  position: absolute;
+  background-color: transparent;
+  top: 50%;
+  right: 20px;
+  transform: translate(0, -50%);
+  cursor: pointer;
+}
+
+.main .text_box {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  left: 12.5%;
+}
+
+@keyframes test {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes test1 {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.main .text_box h3 {
+  animation: test1 3.5s;
+  transform-origin: 0 0;
+
+}
+
+.main .text_box h1 {
+  animation: test 3.5s;
+  transform-origin: 0 0;
+}
+
+.main h3 {
+  margin: 10px 0 0 20px;
+  padding: 10px;
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.main h1 {
+  margin: 5px 0 40px 20px;
+  font-size: 45px;
+}
+
+.main a {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background-color: #6666ff;
+  padding: 10px 20px;
+  margin: 30px 0 0 25px;
+  border-radius: 25px;
+}
+
+.main a:hover {
+  background-color: black;
+}
+
+
+/* 슬라이더 */
+
+.slidebox{
+  font-size: 0;
+   white-space: nowrap;
+   overflow: hidden;
+   position: relative;
+ }
+ 
+ .main{
+   width: 100%;
+   display: inline-block;
+   font-size: 16px;
+   position: relative;
+   transition: all 1s;
+ }
+ 
+ .main label{
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+ }
+ 
+ #c1:checked ~ .main{
+   transform: translateX(0%);
+ }
+ 
+ 
+ #c2:checked ~ .main{
+   transform: translateX(-100%);
+ }
+ 
+ #c3:checked ~ .main{
+   transform: translateX(-200%);
+ }
+ 
+ 
+ input{
+   display: none;
+ }
+
+
+/* 사이트 카테고리 */
+
+#category {
+  display: flex;
+  justify-content: space-between;
+}
+
+#category .card {
+  position: relative;
+}
+
+#category .card .filter_box {
+  width: 100%;
+  height: 100%;
+  background-color: #8591dec9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+#category .card .filter_box:hover {
+  opacity: 1;
+}
+
+#category .card .filter_box span {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+#category .card:hover {
+  color: white;
+}
+
+#category .card {
+  width: 32%;
+  border: solid 0.5px gainsboro;
+  position: relative;
+}
+
+#category .card img {
+  width: 100%;
+}
+
+#category .text_box {
+  position: absolute;
+  z-index: 1;
+  top: 30px;
+  left: 30px;
+}
+
+#category .text_box h3 {
+  font-weight: 100;
+}
+
+/* 사이트 탭 */
+
+#tab .t_menu {
+  display: flex;
+  justify-content: space-between;
+}
+
+#tab.container {
+  margin-top: 10px;
+}
+
+#tab>h1 {
+  padding-top: 30px;
+  padding-left: 0px;
+  padding-bottom: 10px;
+}
+
+#tab .t_btns button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+}
+
+#tab .t_btns {
+  display: flex;
+}
+
+#tab button {
+  margin: 30px auto;
+  display: block;
+  border: none;
+  font-size: 15px;
+  background-color: #e6e6e6;
+  padding: 10px 35px;
+  border-radius: 25px;
+}
+
+#tab button:nth-child(1) {
+  padding-left: 0;
+}
+
+#tab .t_btns button:hover {
+  text-decoration: underline;
+}
+
+#tab .search_btns button {
+  font-size: small;
+  background-color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin: ;
+  border: 1px solid #b2b2b2;
+  border-radius: 1px;
+  color: #666666;
+}
+
+#tab .search_btns .button1 {
+  margin-right: 10px;
+}
+
+#tab .search_btns {
+  display: flex;
+}
+
+#tab .search_btns button:hover {
+  background-color: #6666ff;
+}
+
+#tab .contents .card {
+  flex: 0 1 calc(25% - 20px);
+  margin: 10px;
+}
+
+.contents {
+  display: flex;
+  align-content: space-around;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  flex: ;
+}
+
+.contents {
+  border: none;
+}
+
+.contents .text_box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.contents .text_box {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #999999;
+}
+
+.contents .text_box span:hover {
+  color: #6666ff;
+}
+
+.card span {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.contents .card {
+  width: 23%;
+  margin: 10px;
+  position: relative;
+}
+
+.contents .card img {
+  width: 100%;
+}
+
+
+
+
+/* 사이트 끝 부분 */
+
+.f_text {
+  display: flex;
+  align-content: space-around;
+  justify-content: space-around;
+}
+
+footer {
+  background-color: #222222;
+  padding-top: 100px;
+  padding-bottom: 50px;
+}
+
+footer h3 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+footer p {
+  margin-bottom: 10px;
+}
+
+footer ul,
+p {
+  color: #666666;
+}
+
+
+.email {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-content: space-around;
+}
+
+
+form input[type="email"] {
+  background-color: transparent;
+  border-right: none;
+  border-bottom: 1px solid #666666;
+  padding: 10px 0;
+}
+
+form input[type="submit"] {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background-color: #6666ff;
+  padding: 10px 35px;
+  margin: 30px 0 0 0;
+  border-radius: 25px;
+}
+
+
+.f_bottom {
+  margin-top: 80px;
+  margin-bottom: 10px;
+}
+
+.f_bottom,
+p {
+  display: flex;
+  justify-content: center;
+}
+
+footer .sns a {
+  color: #666666;
+  margin: 10px;
+}
+
+footer p a {
+  color: #007bff;
+}

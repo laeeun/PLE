@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    let thisDay = new Date();
+    thisDay.setFullYear(2024, 8, 6);
+    document.write("setFullYear() :" + thisDay + "<br>");
+    thisDay.setDate(20);
+    document.write(`setDate() : ${thisDay} <br>`);
+    thisDay.setDate(thisDay.getDate() + 50);
+    document.write(`setDate() : ${thisDay} <br>`);
+    thisDay.setHours(15);
+    document.write(`setHours() : ${thisDay} <br>`);
+    thisDay.setMilliseconds(2345);
+    document.write(`setMilliseocnds() : ${thisDay} <br>`);
+    thisDay.setMinutes(34);
+    document.write(`setMinutes() : ${thisDay} <br>`);
+    thisDay.setMonth(7);
+    document.write(`setMonth() : ${thisDay} <br>`);
+    thisDay.setTime(840023400);
+    document.write(`setTime() : ${thisDay} <br>`);
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

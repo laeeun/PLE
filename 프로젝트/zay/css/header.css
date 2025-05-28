@@ -1,0 +1,106 @@
+.container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+#h_top {
+  background-color: #212934;
+}
+
+#h_top .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 헤더 상단 왼쪽 */
+
+.l_add {
+  display: flex;
+  align-items: center;
+  color: #cfd6e1;
+  font-size: 12px;
+}
+
+.l_add i {
+  margin: 0 10px;
+}
+
+.l_add img:nth-child(1) {
+  width: 20px;
+  height: 20px;
+  margin: 0 10px;
+}
+
+.l_add img:nth-last-child(2) {
+  width: 20px;
+  height: 20px;
+  margin: 0 s10px;
+}
+
+/* 헤더 상단 오른쪽 */
+
+.r_sns {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+  color: #cfd6e1;
+}
+
+.r_sns i {
+  width: 30px;
+  height: 30px;
+  margin: 5px 5px;
+}
+
+
+
+/* 헤더 하단 로고 */
+
+#h_botoom a img {
+  width: 80px;
+  height: 70px;
+  margin: 0 16px 8px 0;
+  padding: 5px 0;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.menu ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
+  cursor: pointer;
+}
+
+.menu ul:hover{
+  color: #67b17a;
+}
+
+.menu ul li {
+  font-weight: 200;
+  font-size: 20px;
+  padding: 8px;
+  justify-content: space-between;
+  margin: 0 50px;
+}
+
+.icon {
+  display: flex;
+  justify-content: flex-end;
+  font-weight:bold ;
+}
+
+.icon i {
+  margin: 0 10px;
+  width: 36px;
+  height: 36px;
+  padding: 10px;
+}

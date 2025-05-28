@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    var total = "";
+
+    // 단 2 ~ 9단까지
+    for (var i = 2; i <= 9; i++) {
+      total += '<h3>=====' + i + '단=====</h3>';
+
+      // 단에 곱해질 수 1 ~ 9
+      for (var j = 1; j <= 9; j++) {
+        //'단 + 단에 곱해질 수'를 곱하기 해서 결과 값까지 넣어줌
+        total += '<p>' + i + '*' + j + '=' + (i * j) + '</p>';
+      }
+    }
+    document.write(total);
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

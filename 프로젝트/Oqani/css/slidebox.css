@@ -1,0 +1,125 @@
+.slidebox {
+  margin-top: 60px;
+  overflow: hidden;
+  /* position: relative; */
+}
+
+.slidebox input {
+  display: none;
+}
+
+.slides {
+  display: flex;
+  justify-content: flex-start;
+  width: 125%;
+}
+
+
+.slide .img_box img {
+  width: 100%;
+  height: 270px;
+}
+
+
+
+
+.slider{
+  position: relative;
+  padding-bottom: 50px;
+}
+
+/* 고정라벨 슬라이드 */
+
+
+
+
+.slide {
+  flex: 0 1 calc(25% - 15px);
+  margin-right: 15px;
+  position: relative;
+  font-size: 16px;
+  transition: all 1s;
+}
+
+
+#f1:checked~.slides .slide {
+  transform: translateX(0%);
+}
+
+#f2:checked~.slides .slide {
+  transform: translateX(calc(-100% - 15px));
+}
+
+
+#f3:checked~.slides .slide {
+  transform: translateX(calc(-200% - 30px));
+}
+
+#f4:checked~.slides .slide {
+  transform: translateX(calc(-300% - 45px));
+}
+
+#f5:checked~.slides .slide {
+  transform: translateX(calc(-400% - 60px));
+}
+
+.controlbox label{
+  display: none;
+}
+
+.controlbox .left {
+  position: absolute;
+  left: 16%;
+  top: 50%;
+  font-size: 30px;
+  transform: translate(0, -50%);
+}
+
+.controlbox .right {
+  position: absolute;
+  right:16%;
+  top: 50%;
+  font-size: 30px;
+  transform: translate(0, -50%);
+}
+
+
+
+
+.slidebox input[id="f1"]:checked ~ .slides  .control01 label {
+  display: block;
+}
+
+.slidebox input[id="f2"]:checked ~ .slides  .control02 label{
+  display: block;
+}
+
+.slidebox input[id="f3"]:checked ~ .slides  .control03 label{
+  display: block;
+}
+
+.slidebox input[id="f4"]:checked ~ .slides  .control04 label{
+  display: block;
+}
+
+.slidebox input[id="f5"]:checked ~ .slides  .control05 label{
+  display: block;
+}
+
+
+.slide_label {
+  position: absolute;
+  bottom: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+.slide_label label{
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  background-color: aqua;
+}

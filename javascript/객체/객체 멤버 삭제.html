@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    function Car(model, speed, color) {
+      this.model = model;
+      this.speed = speed;
+      this.color = color;
+      this.break - function () {
+        this.speed -= 10;
+      };
+      this.accel = function () {
+        this.speed += 10;
+      };
+    }
+
+    let myCar = new Car(`BMW 100 black`);
+    delete myCar.color;
+    document.write(`내차의 색상 : ${myCar.color}`);
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

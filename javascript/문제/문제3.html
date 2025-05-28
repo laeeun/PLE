@@ -1,0 +1,39 @@
+<!--
+ 나는 500원의 돈이 있어서 300원짜리 두부 n개를 사려고한다. 
+ (두부 개수 n는 prompt()로 입력받을 것)
+ 내 수중의 돈이 구매하려는 값보다 많으면
+ "두부를 n개 샀고, 잔돈 얼마 남았다"라고 엄마한테 얘기하고
+ 내 수중의 돈이 구매하려는 값보다 적으면
+ "돈이 부족해서 두부를 못 샀다" 라고 엄마한테 얘기할거야
+ 이때 필요한 변수는 무엇일까?
+ (내 수중의돈,  두부의 원가, 두부 개수는 바뀔 수 있음)
+ 코드로 구현하기
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    var myMoney = 1500;
+    var tofuPrice = 300;
+    var money = myMoney - tofuPrice * tofuCount;
+    var tofuCount = Number(prompt("두부의 개수를 입력하세요"));
+
+    if (myMoney >= tofuPrice * tofuCount) {
+      document.write(`두부를 ${tofuCount}개를 샀고 잔돈이 ${myMoney - tofuPrice * tofuCount}원 남았다`);
+    } else {
+      document.write("내 수중의 돈이 부족해서 두부를 못 샀다");
+    }
+
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

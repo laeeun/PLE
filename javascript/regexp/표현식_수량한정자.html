@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let str01 = "ab";
+    let str02 = "abc";
+    let str03 = "abcccc";
+    let ptn01 = /abc+/ig;
+    let ptn02 = /abc*/ig;
+    let ptn03 = /abc?/ig;
+
+
+    // +
+    document.write("1.ab : "+str01.match(ptn01) + "<br>");
+    document.write("2.abc : "+str02.match(ptn01) + "<br>");
+    document.write("3.abccc : "+str03.match(ptn01) + "<br>");
+
+
+    // *
+    document.write("1.ab : "+str01.match(ptn02) + "<br>");
+    document.write("2.abc : "+str02.match(ptn02) + "<br>");
+    document.write("3.abccc : "+str03.match(ptn02) + "<br>");
+
+
+    // ?
+    document.write("1.ab : "+str01.match(ptn03) + "<br>");
+    document.write("2.abc : "+str02.match(ptn03) + "<br>");
+    document.write("3.abccc : "+str03.match(ptn03) + "<br>");
+
+
+
+  </script>
+</body>
+</html>

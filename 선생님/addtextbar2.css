@@ -1,0 +1,90 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    box-sizing:border-box;
+  }
+  /* 전체를 감싸는 상자 */
+  #wrapper {
+    width:50%; /*크기를 부모사이즈의 50%할당 */
+    margin:10% auto; /*부모사이즈 보다 작으므로 마진발생 상하 10%의 마진을 할당하고 좌우는 반띵 배치*/
+  }
+  /* 제목을 중앙에 배치 */
+  h1 {
+    text-align:center; 
+  }
+  form {
+    background-color:#007acc;    /*폼의 배경색을 파란색으로 만듬*/
+    padding:30px 40px;             /*폼의 자식요소의 배치를 위해서 패딩을 추가*/
+    color:white;                 /*텍스트의 색상을 흰색으로 지정*/
+    text-align:left;             /*자식요소를 왼쪽에 정렬시킴*/
+  }
+  input {
+    border:none;     /*인풋상자의 보더를 없앰*/
+    width:80%;       /*상자의 길이를 부모의 80%로 지정*/
+    padding:10px;    /*인풋에 입력되는 글자가 너무 붙는것을 방지하기위해 패딩추가*/
+    font-size:16px;  /*글자 크기를 지정*/
+  }
+  .addBtn {
+    padding:10px;            /*내부에 패딩을 통해서 요소를 배치*/
+    width:60px;              /*버튼의 크기를 지정*/
+    border:none;             /*테두리는 없음*/
+    background-color:#fff; /*배경색은 흰색*/
+    color:#555;            /*글자색은 회색*/
+    text-align:center;       /*텍스트 중앙정력*/
+    font-size:16px;          /*텍스트 크기*/
+    cursor:pointer;          /*마우스가 버튼위에 올라가면 마우스 커서 모양 변경*/
+    transition: all 1s;     /*호버시 변화되는 속도를 1초로 지정*/
+  }
+  .addBtn:hover{
+    background-color: yellow;
+  }
+  /*버튼을 클릭하면 추가되는 요소*/
+  li{
+    cursor:pointer;
+    position:relative;
+    padding:12px 8px 12px 40px;
+    background: #eee;
+    font-size:18px;
+    transition: 0.2s;
+  }
+  li:nth-child(odd) {
+    background-color:#f9f9f9;
+  }
+  li:hover {
+    background-color:#ddd;
+  }
+  .close {
+    position:absolute;
+    right:0;
+    top:0;
+    padding:12px 16px;
+    border:none;
+    background:rgba(255,255,255,0)
+  }
+  .close:hover {
+    background-color:#007acc;
+    color:white;
+  }
+
+  .dragging{
+    background-color: red;
+    opacity: 0.5;
+  }
+
+  /* .hovered{
+    background-color: yellow;
+  } */
+
+  #itemList{
+    width:100%; 
+    height: 300px;
+    border: 2px dashed red;
+  }
+
+  #finishList {
+    width:100%; 
+    height: 300px;
+    border: 2px dashed blue;
+  }
