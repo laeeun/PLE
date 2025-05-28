@@ -12,11 +12,15 @@
 		<p>비밀번호 : <input type="password" name="passwd" id="pw"></p>
 		<p><input type="button" value="전송" id="btn"></p>
 	</form>
-	
+
 	<script type="text/javascript">
 		let btn = document.querySelector("#btn")
-		btn.addEventListener("click", loginForm)
-		function 
+		btn.addEventListener("click", checkForm)
+		function checkForm(){
+			let id = document.querySelector("#id").value;
+			let pw = document.querySelector("#pw").value;
+			alert("아이디 :" + id +"\n"+"비밀번호 :"+ pw);
+		}
 	</script>
 </body>
 </html>
