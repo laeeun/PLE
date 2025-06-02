@@ -12,7 +12,7 @@
 	<%
 		String Shipping_cartId="";
 		String Shipping_name="";
-		String Shipping_ShippingDate="";
+		String Shipping_shippingDate="";
 		String Shipping_country="";
 		String Shipping_zipCode="";
 		String Shipping_addressName="";
@@ -26,8 +26,8 @@
 				if(n.equals("Shipping_cartId")){
 					Shipping_cartId=URLDecoder.decode((thisCookie.getValue()), "utf-8");
 				}
-				if(n.equals("Shipping_ShippingDate")){
-					Shipping_ShippingDate=URLDecoder.decode((thisCookie.getValue()), "utf-8");
+				if(n.equals("Shipping_shippingDate")){
+					Shipping_shippingDate=URLDecoder.decode((thisCookie.getValue()), "utf-8");
 				}
 			}
 		}
@@ -36,7 +36,7 @@
 	<div class="container py-4">
 		<%@ include file="menu.jsp" %>
 		
-		<div class="p-5 mb-4 bg-body-tertary eounded-3">
+		<div class="p-5 mb-4 bg-body-tertiary rounded-3">
 			<div class="container-fluid py-5">
 				<h1 class="display-5 fw-bold">주문완료</h1>
 				<p class="col-md-8 fs-4">Order Completed</p>
@@ -44,8 +44,8 @@
 		</div>
 		
 		<div class="row align-items-md-stretch">
-			<h2 class="arert alert-danger">주문해주셔서 감사합니다</h2>
-			<p>주문은<%out.println(Shipping_ShippingDate); %>에 배송될 예정입니다!</p>
+			<h2 class="alert alert-danger">주문해주셔서 감사합니다</h2>
+			<p>주문은 <%out.println(Shipping_shippingDate); %>에 배송될 예정입니다!</p>
 			<p>주문번호 :<% out.println(Shipping_cartId); %></p>
 		</div>
 		
