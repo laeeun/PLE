@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+	<security-role>
+		<role-name>role1</role-name>
+	</security-role>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>JSPBook</web-resource-name>
+			<url-pattern>/chapter10/security02.jsp</url-pattern>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<description></description>
+			<role-name>role1</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<login-config>
+	<auth-method>FORM</auth-method>
+	<form-login-config>
+		<form-login-page>/chapter10/login.jsp</form-login-page>
+		<form-error-page>/chapter10/login_fail.jsp</form-error-page>
+	</form-login-config>
+	</login-config>
+	
+	<filter>
+		<filter-name>Filter01</filter-name>
+		<filter-class>chapter12.AuthenFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Filter01</filter-name>
+		<url-pattern>/filter01</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>Filter02</filter-name>
+		<filter-class>chapter12.LogFileFilter</filter-class>
+		<init-param>
+			<param-name>filename</param-name>
+			<param-value>C:\\logs\\monitor.log</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>Filter02</filter-name>
+		<url-pattern>/filter02</url-pattern>
+	</filter-mapping>
+</web-app>
