@@ -4,13 +4,16 @@
 <%@ page import="dao.BookRepository" %>
 <%@ page import="com.oreilly.servlet.*" %>
 <%@ page import="com.oreilly.servlet.multipart.*" %>
+<%@ page import="java.sql.*" %>
+<%@ include file="dbconn.jsp" %>
 <% System.out.println("Step 1.processAddBook.jsp 입장");%>
 
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>도서 등록</title>
 </head>
 <body>
 	<%
@@ -72,26 +75,30 @@
 			System.out.println("price"+price);
 			System.out.println("stock"+stock);
 
+		PreparedStatement pstmt=null;
 		
-		BookRepository dao=BookRepository.getInstance();
+		String sql="insert into book values(?,?,?,?,?,?,?,?,?,?,?)";
 		
-		Book newBook= new Book();
-		newBook.setBookId(bookId);
-		newBook.setName(name);
-		newBook.setUnitPrice(price);
-		newBook.setAuthor(author);
-		newBook.setPublisher(publisher);
-		newBook.setReleaseDate(releaseDate);
-		newBook.setDescription(description);
-		newBook.setCategory(category);
-		newBook.setUnitsInStok(stock);
-		newBook.setCondition(condition);
-		newBook.setFilename(filename);
+		pstmt=conn.prepareStatement(sql);
+		pstmt.setString(1, bookId);
+		pstmt.setString(2, name);
+		pstmt.setInt(3, price);
+		pstmt.setString(4, author);
+		pstmt.setString(5, description);
+		pstmt.setString(6, publisher);
+		pstmt.setString(7, category);
+		pstmt.setLong(8, stock);
+		pstmt.setString(9, releaseDate);
+		pstmt.setString(10, condition);
+		pstmt.setString(11, fileName);
+		pstmt.executeUpdate();
 		
-		System.out.println(newBook);
-		
-		dao.addBook(newBook);
-		System.out.println("저장 완료");
+		if(pstmt != null){
+			pstmt.close();
+		}
+		if(conn != null){
+			conn.close();
+		}
 		
 		response.sendRedirect("books.jsp");
 		

@@ -9,7 +9,7 @@ public class Book {
 	private String description; //설명
 	private String publisher;   //출판사
 	private String category;   //분류
-	private long unitsInStok;   //재고개수
+	private long unitsInStock;   //재고개수
 	private String releaseDate;   //출판일(월/년)
 	private String condition;   //신제품 or 구제품 or 리퍼브 제품
 	private String filename;   //이미지 파일명
@@ -31,7 +31,7 @@ public class Book {
 	public String toString() {
 		return "Book [bookId=" + bookId + ", name=" + name + ", unitPrice=" + unitPrice + ", author=" + author
 				+ ", description=" + description + ", publisher=" + publisher + ", category=" + category
-				+ ", unitsInStok=" + unitsInStok + ", releaseDate=" + releaseDate + ", condition=" + condition + "]";
+				+ ", unitsInStok=" + unitsInStock + ", releaseDate=" + releaseDate + ", condition=" + condition + "]";
 	}
 	
 	public String getBookId() {
@@ -104,13 +104,13 @@ public class Book {
 	}
 
 
-	public long getUnitsInStok() {
-		return unitsInStok;
+	public long getUnitsInStock() {
+		return unitsInStock;
 	}
 
 
-	public void setUnitsInStok(long unitsInStok) {
-		this.unitsInStok = unitsInStok;
+	public void setUnitsInStock(long unitsInStok) {
+		this.unitsInStock = unitsInStok;
 	}
 
 

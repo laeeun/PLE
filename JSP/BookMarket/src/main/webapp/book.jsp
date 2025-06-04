@@ -49,7 +49,7 @@
 				<p><b>출판사</b> : <%=book.getPublisher() %></p>
 				<p><b>출판일</b> : <%=book.getReleaseDate() %></p>
 				<p><b>분류</b> : <%=book.getCategory()%></p>
-				<p><b>재고수</b> : <%=book.getUnitsInStok() %></p>
+				<p><b>재고수</b> : <%=book.getUnitsInStock() %></p>
 				<h4><%=book.getUnitPrice() %>원</h4>
 				<p>
 					<form name="addForm" action="./addCart.jsp?id=<%=book.getBookId() %>" method="post">
