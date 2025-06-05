@@ -1,0 +1,8 @@
+프로젝트를 공부하는 방법에 대한 설명
+
+1. Create라인부터 봅니다. <Nav>에 Create, Read, Update, Delete순으로 보시면됩니다.
+
+2. 모든 라인(CRUD)은 View -> Controller -> Repository -> Controller -> View로 순환합니다.
+
+3. Welcome.jsp를 시작으로 보시면됩니다.
+

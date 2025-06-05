@@ -22,7 +22,8 @@
 				<ul class="nav nav-pills">
 					<li class="nav-item"><a href="./books.jsp" class="nav-link">도서목록</a></li>
 					<li class="nav-item"><a href="./addBook.jsp" class="nav-link">도서등록</a></li>
-					<li class="nav-item"><a href="./editBook" class="nav-link">도서수정</a></li>
+					<li class="nav-item"><a href="./editBook.jsp?edit=update" class="nav-link">도서수정</a></li>
+					<li class="nav-item"><a href="./editBook.jsp?edit=delete" class="nav-link">도서삭제</a></li>
 				</ul>
 			</div>	
 		</div>

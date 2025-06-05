@@ -40,13 +40,13 @@
 				<h5><b><%=rs.getString("b_name") %></b></h5>
 				<p> <%=rs.getString("b_author") %></p>
 				<br><%=rs.getString("b_publisher") %> | <%=rs.getString("b_unitPrice") %>원
-				<p><%=rs.getString("b_descriotion") %>&hellip;</p>
+				<p><%=rs.getString("b_description") %>&hellip;</p>
 				<p><%=rs.getString("b_unitPrice") %>원</p>
 				<p> <a href="./book.jsp?id=<%=rs.getString("b_id") %>" class="btn btn-secondary" role="button">상세 정보 &raquo;</a></p>
 			</div>
 		</div>
-     </div>
-       	<%
+		<%
+      
         	}	
 	       	if(rs != null){
 	       		rs.close();
