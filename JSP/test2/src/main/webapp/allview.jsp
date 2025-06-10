@@ -10,6 +10,13 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<!-- 
+		기능: DB에 있는 데이터를 모두 조회해서 테이블 형식으로 출력
+
+		내용: <table>, while(rs.next()) 등의 반복문으로 출력
+
+		👉 분류: R (Read)
+	 -->
     <%@ include file="nav.jsp" %>
     
     <%

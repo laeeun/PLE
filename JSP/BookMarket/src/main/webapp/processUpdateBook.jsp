@@ -37,7 +37,7 @@
 		//String fname =(String) files.nextElement();
 		//String fileName = multi.getFilesystemName(fname);
 		
-		String fname = multi.getFilesystemName("BookIamge");
+		String fname = multi.getFilesystemName("bookIamge");
 		
 		int price;
 		
