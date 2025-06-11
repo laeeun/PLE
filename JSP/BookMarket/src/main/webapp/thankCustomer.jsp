@@ -10,24 +10,25 @@
 </head>
 <body>
 	<%
-		String Shipping_cartId="";
-		String Shipping_name="";
-		String Shipping_shippingDate="";
-		String Shipping_country="";
-		String Shipping_zipCode="";
-		String Shipping_addressName="";
+		String Shipping_cartId = "";
+		String Shipping_name = "";
+		String Shipping_shippingDate = "";
+		String Shipping_country = "";
+		String Shipping_zipCode = "";
+		String Shipping_addressName = "";
 		
-		Cookie[] cookies=request.getCookies();
+		Cookie[] cookies = request.getCookies();
 		
-		if(cookies != null){
-			for(int i =0; i < cookies.length; i++){
-				Cookie thisCookie=cookies[i];
-				String n =thisCookie.getName();
-				if(n.equals("Shipping_cartId")){
-					Shipping_cartId=URLDecoder.decode((thisCookie.getValue()), "utf-8");
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				Cookie thisCookie = cookies[i];
+				String n = thisCookie.getName();
+				
+				if (n.equals("Shipping_cartId")) {
+					Shipping_cartId = URLDecoder.decode(thisCookie.getValue(), "utf-8");
 				}
-				if(n.equals("Shipping_shippingDate")){
-					Shipping_shippingDate=URLDecoder.decode((thisCookie.getValue()), "utf-8");
+				if (n.equals("Shipping_shippingDate")) {
+					Shipping_shippingDate = URLDecoder.decode(thisCookie.getValue(), "utf-8");
 				}
 			}
 		}
@@ -45,43 +46,38 @@
 		
 		<div class="row align-items-md-stretch">
 			<h2 class="alert alert-danger">주문해주셔서 감사합니다</h2>
-			<p>주문은 <%out.println(Shipping_shippingDate); %>에 배송될 예정입니다!</p>
-			<p>주문번호 :<% out.println(Shipping_cartId); %></p>
+			<p>주문은 <%= Shipping_shippingDate %>에 배송될 예정입니다!</p>
+			<p>주문번호 : <%= Shipping_cartId %></p>
 		</div>
 		
 		<div class="container">
-			<p><a href="./books.jsp" class="btn btn-secondary"> &raquo; 도서 목록</a>
+			<p><a href="./books.jsp" class="btn btn-secondary"> &raquo; 도서 목록</a></p>
 		</div>
+		
 		<%@ include file="footer.jsp" %>
 	</div>
+
+	<%
+		// 세션 무효화 및 쿠키 삭제
+		session.invalidate();
+		
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				Cookie thisCookie = cookies[i];
+				String n = thisCookie.getName();
+				
+				if (n.equals("Shipping_cartId") ||
+					n.equals("Shipping_name") ||
+					n.equals("Shipping_shippingDate") ||
+					n.equals("Shipping_country") ||
+					n.equals("Shipping_zipCode") ||
+					n.equals("Shipping_addressName")) {
+						
+					thisCookie.setMaxAge(0); // 삭제
+					response.addCookie(thisCookie);
+				}
+			}
+		}
+	%>
 </body>
 </html>
-
-<%
-	session.invalidate();
-	
-	for(int i=0; i < cookies.length; i++){
-		Cookie thisCookie=cookies[i];
-		String n =thisCookie.getName();
-		if(n.equals("Shipping_cartId")){
-			thisCookie.setMaxAge(0);
-		}
-		if(n.equals("Shipping_name")){
-			thisCookie.setMaxAge(0);
-		}
-		if(n.equals("Shipping_ShippingDate")){
-			thisCookie.setMaxAge(0);
-		}
-		if(n.equals("Shipping_country")){
-			thisCookie.setMaxAge(0);
-		}
-		if(n.equals("Shipping_zipCode")){
-			thisCookie.setMaxAge(0);
-		}
-		if(n.equals("Shipping_addressName")){
-			thisCookie.setMaxAge(0);
-		}
-		
-		response.addCookie(thisCookie);
-	}
-%>
