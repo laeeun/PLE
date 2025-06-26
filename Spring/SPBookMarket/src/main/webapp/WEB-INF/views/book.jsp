@@ -2,10 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%System.out.println("👉 book 입짱~"); %>
 <!DOCTYPE html>
 <html>
 <head>
+<script src="${pageContext.request.contextPath}/resources/controllers.js"></script>
 <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet">
 <meta charset="UTF-8">
 <title>도서 상세 정보</title>
@@ -50,8 +52,14 @@
 				<p><b>재고수 : </b>${book.unitsInStock}</p>
 				<h4>${book.unitPrice}원</h4>
 				<br>
-				<p><a href="#" class="btn btn-primary">도서주문 &raquo;</a>
-				<a href="<c:url value="/books"/>" class="btn btn-secondary">도서목록 &raquo;</a>
+				<form:form name="addForm" method="put">
+					<%
+						System.out.println("book.jsp Form 태그 입장");
+					%>
+					<p><a href="javascript:addToCart('../cart/add/${book.bookId}')" class="btn btn-primary">도서주문 &raquo;</a>
+					<a href="<c:url value="/cart" />" class="btn btn-warning">장바구니 &raquo;</a>
+					<a href="<c:url value="/books"/>" class="btn btn-secondary">도서목록 &raquo;</a>
+				</form:form>
 			</div>
 		</div>
 		<hr>

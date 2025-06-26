@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+/* 전체 레이아웃용 컨테이너 */
+.container {
+    width: 80%;               /* 너비는 전체의 80% */
+    max-width: 1000px;        /* 최대 1000px로 제한 */
+    margin: 0 auto;           /* 중앙 정렬 */
+    padding: 5px 20px;       /* 안쪽 여백 */
+    background-color: #ffffff; /* 배경 흰색 */
+    /*box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/ /* 살짝 그림자 */
+    /*border-radius: 10px;*/      /* 모서리 둥글게 */
+}
+
