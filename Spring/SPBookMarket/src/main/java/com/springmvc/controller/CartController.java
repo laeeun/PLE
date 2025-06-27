@@ -1,3 +1,4 @@
+
 package com.springmvc.controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,8 +59,7 @@ public class CartController {
 	}
 	
 	@PutMapping("/remove/{bookId}")
-	@ResponseStatus(value=HttpStatus.NO_CONTENT)
-	public void removeCartByItem(@PathVariable String bookId, HttpServletRequest request) {
+	public String removeCartByItem(@PathVariable String bookId, HttpServletRequest request) {
 		System.out.println("remove mapping들어옴 !!!!!");
 		//장바구니 ID인 세션 ID 가져오기
 		String sessionId = request.getSession(true).getId();
@@ -80,6 +80,8 @@ public class CartController {
 		System.out.println("삭제한거 갱신하고 cart컨트롤러 다시왔다");
 		cartService.update(sessionId, cart); // 세션ID에 대한 장바구니 갱신하기
 		System.out.println("장바구니 갱신했다");
+		
+		return "redirect:/cart";
 	}
 	
 	@GetMapping
@@ -106,10 +108,11 @@ public class CartController {
 	}
 	
 	@DeleteMapping("/{cartId}")
-	@ResponseStatus(value=HttpStatus.NO_CONTENT)
-	public void deleteCartList(@PathVariable(value="cartId")String cartId) {
+	public String deleteCartList(@PathVariable(value="cartId")String cartId) {
 		System.out.println("delete mapping");
 		cartService.delete(cartId);
+		
+		return "redirect:/cart";
 	}
 	
 	

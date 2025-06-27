@@ -1,6 +1,9 @@
 package com.springmvc.domain;
 
-public class CartItem {
+import java.io.Serializable;
+
+public class CartItem implements Serializable{
+	private static final long seriaVersionUID = 3636831123198290235L;
 	private Book book;
 	private int quantity;
 	private int totalPrice;
@@ -57,7 +60,7 @@ public class CartItem {
 		if (this == obj) {
 			return true;
 		}
-		if (this == null) {
+		if (obj == null) {
 			return false;
 		}
 		if (getClass() != obj.getClass()) {

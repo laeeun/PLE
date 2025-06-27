@@ -8,8 +8,12 @@ import com.springmvc.domain.Book;
 
 public interface BookRepository {
 	List<Book> getAllBookList();
+	
 	List<Book> getBookListByCategory(String category);
+	
 	Set<Book> getBookListByFilter(Map<String, List<String>> filter);
-	Book getBookById(String bookid);
+	
+	Book getBookById(String bookId);
+	
 	void setNewBook(Book book);
 }

@@ -106,6 +106,9 @@ public class BookRepositoryImpl implements BookRepository {
 		return booksByCategory;
 	}
 	
+	
+
+	@Override
 	public Book getBookById(String bookId) {
 		logger.info("📥 [getBookById] 도서 ID: {}", bookId);
 		Book bookInfo = null;

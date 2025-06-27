@@ -1,10 +1,13 @@
 package com.springmvc.domain;
 
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Cart {
+public class Cart implements Serializable{
+	private static final long seriaVersionUID = 2155125089108199199L;
+	
 	
 	private String cartId; //사용자 세션 ID (장바구니 식별자)
 	private Map<String, CartItem> cartItems; // 장바구니에 담긴 도서 목록

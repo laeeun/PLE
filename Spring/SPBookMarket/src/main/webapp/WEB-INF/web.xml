@@ -1,6 +1,6 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  ㅁ
+
   <!-- Root Context (공유되는 객체의 저장소)를 설정하는 파일의 위치를 지정 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
