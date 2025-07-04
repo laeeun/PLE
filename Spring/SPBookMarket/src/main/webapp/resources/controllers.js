@@ -21,3 +21,9 @@ function clearCart(){
 	document.clearForm.submit();
 	alert("도서 전체 삭제 !");
 }
+
+
+function deleteConfirm(id){
+	if(confirm("삭제합니다!!") == true) location.href = "./delete?id=" + id;
+	else return;
+}

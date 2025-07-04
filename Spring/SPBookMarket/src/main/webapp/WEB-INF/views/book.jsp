@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%System.out.println("👉 book 입짱~"); %>
 <!DOCTYPE html>
 <html>
@@ -13,30 +14,16 @@
 <title>도서 상세 정보</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand navbar-dark bg-dark">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="<c:url value="/home"/>">Home</a>
-				<a class="navbar-brand" href="<c:url value="/books/all"/>">books</a>
-			</div>
-		</div>
-	</nav>
-	
-	<div class="jumbotron">
-		<div class="container">
-			<h1 class="display-3">도서 정보</h1>
-		</div>
-	</div>
 	
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4">
 				<c:choose>
 					<c:when test="${book.getBookImage() == null}">
-						<img src="<c:url value="/resources/images/${book.getBookId()}.png"/>" style="width:100%"/>
+						<img src="<c:url value="/resources/images/${book.fileName}"/>" style="width:100%"/>
 					</c:when>
 					<c:otherwise>
-						<img src="<c:url value="/resources/images/${book.getBookImage().getOriginalFilename()}"/>" style="width:100%"/>
+						<img src="<c:url value="/resources/images/${book.fileName}"/>" style="width:100%"/>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -59,13 +46,13 @@
 					<p><a href="javascript:addToCart('../cart/add/${book.bookId}')" class="btn btn-primary">도서주문 &raquo;</a>
 					<a href="<c:url value="/cart" />" class="btn btn-warning">장바구니 &raquo;</a>
 					<a href="<c:url value="/books"/>" class="btn btn-secondary">도서목록 &raquo;</a>
+					<sec:authorize access="isAuthenticated()">
+						<a href="<c:url value="/books/update?id=${book.bookId}"/>" class="btn btn-success" >수정 &raquo;</a>
+						<a href="<c:url value="javascript:deleteConfirm('${book.bookId}')"/>" class="btn btn-danger">삭제 &raquo;</a>
+					</sec:authorize>
 				</form:form>
 			</div>
 		</div>
-		<hr>
-		<footer class="container">
-			<p>&copy; WebMarket</p>
-		</footer>
 	</div>
 	
 </body>

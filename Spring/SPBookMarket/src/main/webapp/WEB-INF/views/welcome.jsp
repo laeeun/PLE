@@ -10,30 +10,11 @@
 <title>Home</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand navbar-dark bg-dark">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="<c:url value="/home"/>">Home</a>
-				<a class="navbar-brand" href="<c:url value="/books/all"/>">books</a>
-			</div>
-		</div>
-	</nav>
-	
-	<div class="jumbotron">
-		<div class="container">
-			<h1 class="display-3 text-center">${greeting}</h1>		
-		</div>
-	</div>
 	
 	<div class="container">
 		<div class="text-center">
 			<h3>${strapline}</h3>		
 		</div>
 	</div>
-	
-	<footer class="container">
-		<hr>
-		<p>&copy; WebMarket</p>
-	</footer>
 </body>
 </html>

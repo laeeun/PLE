@@ -11,20 +11,6 @@
 <title>Order</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand navbar-dark bg-dark">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="./home">Home</a>
-			</div>
-		</div>
-	</nav>
-	
-	<div class="jumbotron">
-		<div class="container">
-			<h1 class="display-3">주문 정보</h1>
-		</div>
-	</div>
-	
 	<div class="container">
 		<form:form modelAttribute="order.shipping" class="form-horizontal">
 	 		<div class="well col-md-9 col-md-offset-2" style="background:#fafafe; padding:20px">
@@ -85,7 +71,8 @@
 	 				</table>
 	 				<input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 	 				<button class="btn btn-default" name="_eventId_backToShippingInfo">이전</button>
-	 				<button class="btn btn-default" name="_eventId_candel">취소</button>
+	 				<button type="submit" class="btn btn-success" name="_eventId_orderConfirmed">주문완료</button>
+	 				<button class="btn btn-default" name="_eventId_cancel">취소</button>
 	 			</div>
 	 		</div>
 	 	</form:form>

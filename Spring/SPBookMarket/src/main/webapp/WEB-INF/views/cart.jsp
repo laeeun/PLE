@@ -11,26 +11,13 @@
 <script src="<c:url value="/resources/controllers.js"/>"></script>
 </head>
 <body>
-	<nav class="navbar navbar-expand navbar-dark bg-dark">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="../">Home</a>
-			</div>
-		</div>
-	</nav>
-	
-	<div class="jumbotron">
-		<div class="container">
-			<h1 class="display-3">장바구니</h1>
-		</div>
-	</div>
 	
 	<div class="container">
 		<div>
 		<form:form name="clearForm" method="delete">
 			<a href="javascript:clearCart()" class="btn btn-danger pull-left">삭제하기</a>
 		</form:form>
-			<a href="<c:url value="/order?cartid=${cartId}"/>" class="btn btn-success float-right">주문하기</a>
+			<a href="<c:url value="/order?cartId=${cartId}"/>" class="btn btn-success float-right">주문하기</a>
 		</div>
 		<div style="padding-top: 50px">
 			<table class="table table-hover">
@@ -62,10 +49,6 @@
 			</table>
 			<a href="<c:url value="/books"/>" class="btn btn-secondary">&raquo; 쇼핑 계속하기</a>
 		</div>
-		<hr>
-		<footer>
-			<p>&copy; BookMarket</p>
-		</footer>
 	</div>
 </body>
 </html>

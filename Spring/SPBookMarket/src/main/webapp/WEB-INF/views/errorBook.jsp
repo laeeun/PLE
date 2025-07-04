@@ -10,14 +10,6 @@
 <title>예외처리</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand navbar-dark bg-dark">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="<c:url value="/home"/>">Home</a>
-				<a class="navbar-brand" href="<c:url value="/books/all"/>">books</a>
-			</div>
-		</div>
-	</nav>
 	
 	<div class="jumbotron">
 		<div class="container">
