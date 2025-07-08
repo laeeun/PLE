@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Member {
     private String memberId;
     
-    private String userId;
+    private String userName;
     
     private String pw;
     
@@ -25,7 +25,8 @@ public class Member {
 
     private boolean isExpert = false; // 기본값: 일반 사용자
 
-    private LocalDateTime createdAt; // DB 자동 생성, 필요 시 조회용
+    private LocalDateTime createdAt; // DB 자동 생성, 필요 시 조회용 현재시간으로 초기화해서 바꾸기
+    
 
     
 
@@ -42,13 +43,13 @@ public class Member {
 
 
 	public String getUserId() {
-		return userId;
+		return userName;
 	}
 
 
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUserId(String userName) {
+		this.userName = userName;
 	}
 
 
@@ -155,7 +156,7 @@ public class Member {
 
 
 
-	public void setIsExpert(boolean isExpert) {
+	public void setExpert(boolean isExpert) {
 		this.isExpert = isExpert;
 	}
 
@@ -175,7 +176,7 @@ public class Member {
 
 	@Override
 	public String toString() {
-		return "Member [memberId=" + memberId + ", userId=" + userId + ", pw=" + pw + ", name=" + name + ", email="
+		return "Member [memberId=" + memberId + ", userId=" + userName + ", pw=" + pw + ", name=" + name + ", email="
 				+ email + ", phone=" + phone + ", addr=" + addr + ", isExpert=" + isExpert + ", createdAt=" + createdAt
 				+ "]";
 	}

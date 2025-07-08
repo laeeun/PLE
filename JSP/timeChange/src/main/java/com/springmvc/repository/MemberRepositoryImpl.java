@@ -39,34 +39,46 @@ public class MemberRepositoryImpl implements MemberRepository{
 	}
 
 	@Override
-	public Member findById(String id) {
+	public Member findById(String memberId) {
 		//ID로 특정 멤버 조회
 		String sql = "SELECT * FROM member WHERE username = ?";
-		Member member = template.queryForObject(sql, new Object[] {id}, new MemberRowMapper());
+		Member member = template.queryForObject(sql, new Object[] {memberId}, new MemberRowMapper());
 		 return member;
 	}
 
 	@Override
 	public List<Member> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		//전체 멤버 조회 
+		String sql = "SELECT * FROM member";
+		List<Member> members = template.query(sql, new MemberRowMapper());
+		return members;
 	}
 
 	@Override
 	public void update(Member member) {
-		// TODO Auto-generated method stub
+		//회원 정보 수정
+		String sql = "UPDATE member SET pw = ?, name = ?, email = ?, phone = ?, addr = ?, is_expert = ? WHERE memberId = ? ";
+		template.update(
+				
+		member.getPw(),
+		member.getName(),
+		member.getEmail(),
+		member.getPhone(),
+		member.getAddr(),
+		member.isExpert()
 		
+		);
 	}
 
 	@Override
-	public void delete(String id) {
-		// TODO Auto-generated method stub
-		
+	public void delete(String memberId) {
+		String sql = "DELETE FROM member WHERE memberId = ? ";
+		template.update(sql, memberId);
 	}
 
 	@Override
-	public Member login(String id, String password) {
-		// TODO Auto-generated method stub
+	public Member login(String memberId, String pw) {
+		String sql = "SELECT * FROM member";
 		return null;
 	}
 
@@ -88,11 +100,6 @@ public class MemberRepositoryImpl implements MemberRepository{
 		return null;
 	}
 
-	@Override
-	public List<Member> searchByKeyword(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String toString() {

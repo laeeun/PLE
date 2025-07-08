@@ -7,11 +7,8 @@ public class History {
     private Long historyId;         
     // 거래 내역 고유 ID (DB의 PK 역할로 사용)
 
-    private String memberId;        
-    // 거래를 한 회원의 ID (로그인한 사용자 입장에서 나 자신)
-
-    private String targetId;        
-    // 거래 상대방의 ID (상대 사용자)
+    private String targetName;        
+    // 거래 상대방의 닉네임 (상대 사용자)
 
     private String type;            
     // 거래 유형: "SEND" = 내가 시간을 보낸 경우, "RECEIVE" = 내가 시간을 받은 경우
@@ -35,20 +32,13 @@ public class History {
 		this.historyId = historyId;
 	}
 
-	public String getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
 
 	public String getTargetId() {
-		return targetId;
+		return targetName;
 	}
 
 	public void setTargetId(String targetId) {
-		this.targetId = targetId;
+		this.targetName = targetId;
 	}
 
 	public String getType() {
@@ -93,10 +83,9 @@ public class History {
 
 	@Override
 	public String toString() {
-		return "History [historyId=" + historyId + ", memberId=" + memberId + ", targetId=" + targetId + ", type="
-				+ type + ", durationTime=" + durationTime + ", balance=" + balance + ", createdAt=" + createdAt
-				+ ", memo=" + memo + "]";
+		return "History [historyId=" + historyId + ", targetName=" + targetName + ", type=" + type + ", durationTime="
+				+ durationTime + ", balance=" + balance + ", createdAt=" + createdAt + ", memo=" + memo + "]";
 	}
-    
+
     
 }

@@ -26,7 +26,6 @@ public class Book implements Serializable { // Book 객체는 직렬화 가능�
 	@Digits(integer=8, fraction=2, message="{Digits.NewBook.unitPrice}") // 정수 8자리 + 소수점 2자리까지
 	@NotNull(message="{NotNull.NewBook.unitPrice}") // null 허용 안함
 	private int unitPrice; // 도서 가격
-
 	private String author; // 저자 이름
 	private String description; // 책 설명
 	private String publisher; // 출판사 이름

@@ -1,21 +1,19 @@
 package com.springmvc.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.springmvc.domain.Member;
+
 
 @Controller
 public class SignUpController {
 	
-	public String signUp(@ModelAttribute Member member) {
-		// 1. 전화번호 세 개 조합
-		String fullPhone = member.getPhone1() + member.getPhone2() + member.getPhone3();
-		// 2. 전제 전화번호를 하나로 저장 
-		member.setPhone(fullPhone);
-		
-		System.out.println(member.getPhone());
-		
-		return "home";
-	}
+  @GetMapping("/signUp")
+  public String signUpForm(Model model){
+	  model.addAttribute("signUp", new Member()); // 이게 있어야 오류 안 남
+	  return "signUp"; // signUp.jsp
+	  //@애노테이션 써서 바로 해도된다.
+  }
 }
