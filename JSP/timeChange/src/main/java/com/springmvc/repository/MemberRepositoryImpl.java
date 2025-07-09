@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.springmvc.domain.Member;
 
+@Repository
 public class MemberRepositoryImpl implements MemberRepository{
 	
 	private JdbcTemplate template; // DB 작업을 쉽게 처리해주는 객체
@@ -23,10 +25,10 @@ public class MemberRepositoryImpl implements MemberRepository{
 
 	@Override
 	public void save(Member member) {
-		String sql = "INSERT INTO member(memberId, userId, pw, name, eamil, phone, addr, isExpert, createAt) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO member(member_id, username, pw, name, email, phone, addr, expert, created_at) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		template.update(sql,
-				member.getMemberId(),
-				member.getUserId(),
+				member.getMember_id(),
+				member.getUserName(),
 				member.getPw(),
 				member.getName(),
 				member.getEmail(),
@@ -39,11 +41,16 @@ public class MemberRepositoryImpl implements MemberRepository{
 	}
 
 	@Override
-	public Member findById(String memberId) {
+	public Member findById(String member_id) {
 		//ID로 특정 멤버 조회
-		String sql = "SELECT * FROM member WHERE username = ?";
-		Member member = template.queryForObject(sql, new Object[] {memberId}, new MemberRowMapper());
-		 return member;
+		String sql = "SELECT * FROM member WHERE member_id = ?";
+		List<Member> members = template.query(sql, new Object[] {member_id}, new MemberRowMapper());
+		
+		if (members.isEmpty()) {
+	        return null;  // 존재하지 않으면 null 반환
+	    }
+		
+		 return members.get(0);
 	}
 
 	@Override
@@ -57,42 +64,45 @@ public class MemberRepositoryImpl implements MemberRepository{
 	@Override
 	public void update(Member member) {
 		//회원 정보 수정
-		String sql = "UPDATE member SET pw = ?, name = ?, email = ?, phone = ?, addr = ?, is_expert = ? WHERE memberId = ? ";
+		String sql = "UPDATE member SET pw = ?, name = ?, email = ?, phone = ?, addr = ?, expert = ? WHERE member_id = ? ";
 		template.update(
-				
+		sql,
 		member.getPw(),
 		member.getName(),
 		member.getEmail(),
 		member.getPhone(),
 		member.getAddr(),
-		member.isExpert()
-		
+		member.isExpert(),
+		member.getMember_id()
 		);
 	}
 
 	@Override
-	public void delete(String memberId) {
-		String sql = "DELETE FROM member WHERE memberId = ? ";
-		template.update(sql, memberId);
+	public void delete(String member_id) {
+		//회원 삭제
+		String sql = "DELETE FROM member WHERE member_id = ? ";
+		template.update(sql, member_id);
 	}
 
 	@Override
-	public Member login(String memberId, String pw) {
-		String sql = "SELECT * FROM member";
-		return null;
+	public Member login(String memberId) {
+		//로그인 처리
+		String sql = "SELECT * FROM member WHERE member_id = ?";
+		List<Member> members =template.query(sql, new Object[] {memberId}, new MemberRowMapper());
+		
+		if(members.isEmpty()) {
+			return null;
+		}
+		return members.get(0);
 	}
 
 	@Override
 	public Member findByEmail(String email) {
-		// TODO Auto-generated method stub
+		//이메일로 회원 찾기
+		String sql = "SELECT * FROM member WHERE email = ?";
 		return null;
 	}
 
-	@Override
-	public String findId(String name, String phone) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<Member> findAdmins() {
@@ -105,7 +115,14 @@ public class MemberRepositoryImpl implements MemberRepository{
 	public String toString() {
 		return "MemberRepositoryImpl [template=" + template + ", memberList=" + memberList + "]";
 	}
-	
+
+	@Override
+	public Member findByUsername(String username) {
+		String sql = "SELECT * FROM member WHERE username = ?";
+        List<Member> members = template.query(sql, new Object[]{username}, new MemberRowMapper());
+        return members.isEmpty() ? null : members.get(0);
+	}
+
 	
 	
 	

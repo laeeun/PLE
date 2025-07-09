@@ -40,6 +40,60 @@
     </dependency>
     
     <dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-dbcp2</artifactId>
+	    <version>2.9.0</version>
+	</dependency>
+	
+	<!-- Spring Security 의존성 ( 비밀번호 암호화 + 인증/ 인가 ? 기능 포함)  -->
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-core</artifactId>
+	    <version>5.6.3</version>
+	</dependency>
+
+	
+	<!-- Spring Security 웹 보안 필터 (로그인/로그아웃, URL 접근제어 등 HTTP 관련 보안) -->
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-web</artifactId>
+	    <version>5.6.3</version>
+	</dependency>
+
+
+	<!-- Spring Security 설정 지원(java 기반 보안 설정 클래스에서 사용) -->
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-config</artifactId>
+	    <version>5.6.3</version>
+	</dependency>
+
+
+    
+    <!-- Spring Beans -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-beans</artifactId>
+	    <version>5.3.19</version>
+	</dependency>
+
+    
+    <!-- Spring JDBC -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-jdbc</artifactId>
+	    <version>${org.springframework-version}</version>
+	</dependency>
+
+	<!-- MySQL 드라이버 (MySQL 쓸 경우) -->
+	<dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>8.0.33</version>
+	</dependency>
+
+    
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
@@ -52,11 +106,6 @@
 	    <version>1.2</version>
 	</dependency>
 
-    <dependency>
-    	<groupId>com.springmvc</groupId>
-    	<artifactId>SPBookMarket</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
   </dependencies>
   <build>
   		<finalName>testSpring</finalName>

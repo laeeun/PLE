@@ -15,14 +15,17 @@ public interface MemberService {
     
     void update(Member member);                    // 회원 정보 수정
     
-    void delete(String memberId);                        // 회원 삭제
+    void delete(String member_id);                   // 회원 삭제
+    
+    boolean isDuplicateId(String member_id);
+    
+    boolean isDuplicateUsername(String username);
+
 
     // 확장 기능
-    Member login(String memberId, String password);      // 로그인 처리
+    Member login(String memberId);      			// 로그인 처리
     
     Member findByEmail(String email);              // 이메일로 회원 찾기
-    
-    String findId(String name, String phone);      // 이름 + 전화번호로 ID 찾기
     
     List<Member> findAdmins();                     // 관리자 목록
     

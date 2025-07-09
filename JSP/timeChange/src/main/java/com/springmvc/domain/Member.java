@@ -3,7 +3,12 @@ package com.springmvc.domain;
 import java.time.LocalDateTime;
 
 public class Member {
-    private String memberId;
+	
+	public Member() {
+	    this.createdAt = LocalDateTime.now(); // 현재 시간으로 초기화
+	}
+	
+    private String member_id;
     
     private String userName;
     
@@ -23,32 +28,32 @@ public class Member {
     
     private String addr;
 
-    private boolean isExpert = false; // 기본값: 일반 사용자
+    private boolean expert = false; // 기본값: 일반 사용자
 
     private LocalDateTime createdAt; // DB 자동 생성, 필요 시 조회용 현재시간으로 초기화해서 바꾸기
     
 
     
 
-	public String getMemberId() {
-		return memberId;
+	public String getMember_id() {
+		return member_id;
 	}
 
 
 
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
 
 
 
-	public String getUserId() {
+	public String getUserName() {
 		return userName;
 	}
 
 
 
-	public void setUserId(String userName) {
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
@@ -151,13 +156,13 @@ public class Member {
 
 
 	public boolean isExpert() {
-		return isExpert;
+		return expert;
 	}
 
 
 
 	public void setExpert(boolean isExpert) {
-		this.isExpert = isExpert;
+		this.expert = expert;
 	}
 
 
@@ -176,8 +181,8 @@ public class Member {
 
 	@Override
 	public String toString() {
-		return "Member [memberId=" + memberId + ", userId=" + userName + ", pw=" + pw + ", name=" + name + ", email="
-				+ email + ", phone=" + phone + ", addr=" + addr + ", isExpert=" + isExpert + ", createdAt=" + createdAt
+		return "Member [memberId=" + member_id + ", userId=" + userName + ", pw=" + pw + ", name=" + name + ", email="
+				+ email + ", phone=" + phone + ", addr=" + addr + ", isExpert=" + expert + ", createdAt=" + createdAt
 				+ "]";
 	}
 
