@@ -48,5 +48,12 @@ public class LoginController {
 	    session.setAttribute("loggedInUser", member);
 	    return "redirect:/";
 	}
-
+	
+	 // 로그아웃 처리
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // 모든 세션 속성 제거
+        return "home";
+    }
+    
 }

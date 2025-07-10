@@ -30,5 +30,9 @@ public interface MemberRepository {
     
     List<Member> findAdmins();                     // 관리자 목록
     
+    
+    Member findIdWithCreatedAt(String name, String phone);
+    
+    Member findByNameIdEmail(String name, String member_id, String email);
 	
 }

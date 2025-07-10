@@ -28,10 +28,11 @@ public class Member {
     
     private String addr;
 
-    private boolean expert = false; // 기본값: 일반 사용자
+    private boolean expert; // 기본값: 일반 사용자
 
-    private LocalDateTime createdAt; // DB 자동 생성, 필요 시 조회용 현재시간으로 초기화해서 바꾸기
-    
+    private LocalDateTime createdAt; // DB 자동 생성, 필요 시 조회용 현재시간으로 초기화해서 바꾸기    
+
+
 
     
 
@@ -162,7 +163,7 @@ public class Member {
 
 
 	public void setExpert(boolean isExpert) {
-		this.expert = expert;
+		this.expert = isExpert;
 	}
 
 

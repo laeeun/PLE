@@ -105,8 +105,8 @@
 <body>
 
 <div class="login-container">
+	
     <h2>어서오세요!</h2>
-
     <form action="${pageContext.request.contextPath}/login" method="post">
         <input type="text" name="member_id" placeholder="아이디" required />
         <input type="password" name="pw" placeholder="비밀번호" required />
@@ -123,8 +123,13 @@
     <div class="links">
         <a href="${pageContext.request.contextPath}/findId">아이디 찾기</a> |
         <a href="${pageContext.request.contextPath}/findPw">비밀번호 찾기</a> |
-        <a href="${pageContext.request.contextPath}/signUp">회원가입</a>
+        <a href="${pageContext.request.contextPath}/signUp">회원가입</a> |
+        <a href="${pageContext.request.contextPath}/">홈</a>
     </div>
+    
+    <div style="text-align: center; margin-top: 30px;">
+    	<jsp:include page="/WEB-INF/views/footer.jsp" />
+	</div>	   
 </div>
 
 </body>

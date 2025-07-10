@@ -20,6 +20,7 @@ public interface MemberService {
     boolean isDuplicateId(String member_id);
     
     boolean isDuplicateUsername(String username);
+    
 
 
     // 확장 기능
@@ -28,5 +29,14 @@ public interface MemberService {
     Member findByEmail(String email);              // 이메일로 회원 찾기
     
     List<Member> findAdmins();                     // 관리자 목록
+    
+    String findId(String name, String phone);      //아이디 찾기
+    
+    void updatePassword(String member_id, String encodedPw);
+    
+    Member findIdWithCreatedAt(String name, String phone);
+    
+    Member findByNameIdEmail(String name, String member_id, String email);
+
     
 }

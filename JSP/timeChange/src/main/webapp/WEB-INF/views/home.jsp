@@ -1,13 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>TimeFair - 홈</title>
-
+  
   <!-- 감성 폰트 Pretendard -->
   <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
-
+	
   <style>
     body {
       margin: 0;
@@ -79,7 +80,14 @@
   </style>
 </head>
 <body>
-
+<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm sticky-top">
+    <div class="container d-flex justify-content-around">
+        <a class="nav-link fw-bold text-dark" href="<c:url value='/' />">홈</a>
+        <a class="nav-link fw-bold text-dark" href="<c:url value='/talent' />">시간 거래소</a>
+        <a class="nav-link fw-bold text-dark" href="<c:url value='/expert' />">전문가</a>
+        <a class="nav-link fw-bold text-dark" href="<c:url value='/ranking' />">랭킹</a>
+ 	</div>
+ </nav>       		
   <!-- ⏰ 시계 이모티콘 포함 메인 타이틀 -->
   <h1>⏰ 우리의 시간을 교환해요!</h1>
 
@@ -93,11 +101,21 @@
 
   <!-- 로그인 이동 버튼 -->
   <div class="btn-wrap">
-    <form action="${pageContext.request.contextPath}/login" method="get">
-      <button class="btn-login">로그인하러 가기</button>
-    </form>
-  </div>
-
+	  <c:choose>
+	    <c:when test="${not empty sessionScope.loggedInUser}">
+	      <form action="${pageContext.request.contextPath}/talent" method="get">
+	        <button class="btn-login">시간 거래소로 이동</button>
+	      </form>
+	    </c:when>
+	    <c:otherwise>
+	      <form action="${pageContext.request.contextPath}/login" method="get">
+	        <button class="btn-login">로그인하러 가기</button>
+	      </form>
+	    </c:otherwise>
+	  </c:choose>
+	</div>
+	<hr>
+	<jsp:include page="/WEB-INF/views/footer.jsp" />
   <!-- 슬라이드 전환 스크립트 -->
   <script>
     const texts = document.querySelectorAll('#slide-text span');

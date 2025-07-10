@@ -15,6 +15,9 @@ public class MemberRepositoryImpl implements MemberRepository{
 	
 	private JdbcTemplate template; // DB 작업을 쉽게 처리해주는 객체
 	
+	@Autowired
+	private MemberRepository memberRepository;
+	
 	private List<Member> memberList = new ArrayList<Member>(); //member리스트 생성
 	
 	@Autowired //spring이 자동으로 JdbcTemplate 객체를 주입해줌
@@ -123,6 +126,19 @@ public class MemberRepositoryImpl implements MemberRepository{
         return members.isEmpty() ? null : members.get(0);
 	}
 
+	@Override
+	public Member findIdWithCreatedAt(String name, String phone) {
+		 return memberRepository.findIdWithCreatedAt(name, phone);
+	}
+
+	@Override
+	public Member findByNameIdEmail(String name, String member_id, String email) {
+		String sql = "SELECT * FROM member WHERE name = ? AND member_id = ? AND email = ?";
+		List<Member> members = template.query(sql, new MemberRowMapper(), name, member_id, email);
+        return members.isEmpty() ? null : members.get(0);
+	}
+
+	
 	
 	
 	

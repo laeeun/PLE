@@ -120,5 +120,41 @@ public class MemberServiceImpl implements MemberService{
 		  return memberRepository.findByUsername(username) != null;
 	}
 	
+	//아이디 찾기
+	@Override
+	public String findId(String name, String phone) {
+		  String sql = "SELECT member_id FROM member WHERE name = ? AND phone = ?";
+		    try {
+		        return template.queryForObject(sql, new Object[]{name, phone}, String.class);
+		    } catch (Exception e) {
+		        return null;
+		    }
+	}
+
+	@Override
+	public Member findIdWithCreatedAt(String name, String phone) {
+		 String sql = "SELECT * FROM member WHERE name = ? AND phone = ?";
+	     List<Member> members = template.query(sql, new MemberRowMapper(), name, phone);
+	     return members.isEmpty() ? null : members.get(0);
+	}
+
+
+	@Override
+	public Member findByNameIdEmail(String name, String member_id, String email) {
+		String sql = "SELECT * FROM member WHERE name = ? AND member_id = ? AND email = ?";
+		List<Member> members = template.query(sql, new MemberRowMapper(), name, member_id, email);
+		return members.isEmpty() ? null : members.get(0);
+	}
+
+	@Override
+	public void updatePassword(String member_id, String encodedPw) {
+		String sql = "UPDATE member SET pw = ? WHERE member_id = ?";
+		template.update(sql, encodedPw, member_id);
+		
+	}
+	
+	
+	
+	
 	
 }

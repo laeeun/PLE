@@ -168,13 +168,12 @@
             <form:input path="addr" placeholder="주소를 입력하세요." />
         </p>
 
-        <!-- ✅ 체크박스 정렬 완벽 보정 -->
-        <div class="checkbox-wrapper">
-            <form:checkbox path="expert" cssClass="checkbox-input" />
-            <label>전문가입니까?</label>
-        </div>
+		 <div class="checkbox-wrapper">
+		     <form:checkbox path="expert" cssClass="checkbox-input" />
+		     <label>전문가입니까?</label>
+		 </div>
+		 <button type="submit">회원가입</button>
 
-        <p><input type="submit" class="submit-btn" value="회원가입" /></p>
 
         <%
             System.out.println("회원가입 전송완료");

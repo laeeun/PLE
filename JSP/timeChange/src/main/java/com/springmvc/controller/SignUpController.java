@@ -16,6 +16,8 @@ import com.springmvc.service.MemberService;
 @Controller
 public class SignUpController {
 
+    private final ForgotController forgotController;
+
     private final HomeController homeController;
  
 	@Autowired	
@@ -24,8 +26,9 @@ public class SignUpController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-    SignUpController(HomeController homeController) {
+    SignUpController(HomeController homeController, ForgotController forgotController) {
         this.homeController = homeController;
+        this.forgotController = forgotController;
     }
 	
 	@GetMapping("/signUp")
@@ -71,6 +74,13 @@ public class SignUpController {
 	    return "redirect:/login";
 	  }
 	
-	
+	@PostMapping("/register")
+	public String register(@ModelAttribute Member member) {
+		
+		 System.out.println("전문가 인가 ? : " + member.isExpert());
+		 
+		 memberService.save(member);
+		 return "redirect:/login";
+	}
 
 }
