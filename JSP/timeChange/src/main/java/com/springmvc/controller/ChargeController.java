@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.springmvc.domain.Member;
+import com.springmvc.domain.MemberDTO;
 import com.springmvc.service.purchaseService;
 
 @Controller
@@ -36,7 +36,7 @@ public class ChargeController {
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes) {
         // 로그인 여부 확인
-        Member user = (Member) session.getAttribute("loggedInUser");
+        MemberDTO user = (MemberDTO) session.getAttribute("loggedInUser");
         if (user == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요합니다.");
             return "redirect:/login";

@@ -82,14 +82,27 @@
                 <c:forEach var="dto" items="${historyList}">
                     <div class="col-md-6 history-item">
                         <div class="card">
-                            <div class="history-title">${dto.type} 거래</div>
-                            <div class="history-info">카테고리: ${dto.category}</div>
-                            <div class="history-info">구매자: ${dto.buyer_id}</div>
-                            <div class="history-info">판매자: ${dto.seller_id}</div>
-                            <div class="history-info">거래 시간: ${dto.account}시간</div>
-                            <div class="history-info">변동 시간: ${dto.balance_change}시간</div>
-                            <div class="text-muted">거래 일시: ${dto.created_at}</div>
-                        </div>
+						    <div class="history-title">${dto.type} 거래</div>
+						    <div class="history-info">카테고리: ${dto.category}</div>
+						    <div class="history-info">구매자: ${dto.buyer_id}</div>
+						    <div class="history-info">판매자: ${dto.seller_id}</div>
+						    <div class="history-info">거래 시간: ${dto.account}시간</div>
+						    <div class="history-info">변동 시간: ${dto.balance_change}시간</div>
+						    <div class="text-muted">거래 일시: ${dto.created_at}</div>
+						
+						    <!-- 리뷰 버튼 -->
+						    <div class="mt-3">
+						        <c:choose>
+						            <c:when test="${dto.review_written}">
+						                <a href="${pageContext.request.contextPath}/mypage/review/view?id=${dto.review_id}" class="btn btn-outline-success btn-sm">✅ 리뷰 보기</a>
+						                <a href="${pageContext.request.contextPath}/mypage/review/form?id=${dto.review_id}" class="btn btn-outline-primary btn-sm">🛠 리뷰 수정</a>
+						            </c:when>
+						            <c:otherwise>
+						                <a href="${pageContext.request.contextPath}/mypage/review/form?talent_id=${dto.talent_id}&seller_id=${dto.seller_id}" class="btn btn-outline-warning btn-sm">✍ 리뷰 작성</a>
+						            </c:otherwise>
+						        </c:choose>
+						    </div>
+						</div>
                     </div>
                 </c:forEach>
             </c:when>

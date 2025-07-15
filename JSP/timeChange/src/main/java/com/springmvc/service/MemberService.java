@@ -1,23 +1,23 @@
 package com.springmvc.service;
 
 import java.util.List;
-import com.springmvc.domain.Member;
+import com.springmvc.domain.MemberDTO;
 
 public interface MemberService {
 
     // ✅ [기본 CRUD 기능] --------------------------------------
 
     // 회원 등록 (회원가입)
-    void save(Member member);
+    void save(MemberDTO member);
 
     // 회원 ID로 단일 회원 조회
-    Member findById(String memberId);
+    MemberDTO findById(String memberId);
 
     // 전체 회원 목록 조회
-    List<Member> findAll();
+    List<MemberDTO> findAll();
 
     // 회원 정보 수정
-    void update(Member member);
+    void update(MemberDTO member);
 
     // 회원 삭제 (회원 탈퇴 등)
     void delete(String member_id);
@@ -32,13 +32,10 @@ public interface MemberService {
     // ✅ [확장 기능 - 로그인/찾기/관리자 기능] ------------------
 
     // 로그인 처리 (member_id로 회원 조회 → 비밀번호는 Controller나 Security에서 비교)
-    Member login(String memberId);
-
-    // 이메일로 회원 정보 조회 (비밀번호 재설정 등에서 사용)
-    Member findByEmail(String email);
+    MemberDTO login(String memberId);
 
     // 관리자 계정 목록 조회 (is_admin 컬럼이 있는 경우 사용 예정)
-    List<Member> findAdmins();
+    List<MemberDTO> findAdmins();
 
     // 이름 + 전화번호로 아이디 찾기
     String findId(String name, String phone);
@@ -47,8 +44,8 @@ public interface MemberService {
     void updatePassword(String member_id, String encodedPw);
 
     // 이름 + 전화번호로 member_id와 created_at 함께 조회 (추후 DTO로 확장 가능)
-    Member findIdWithCreatedAt(String name, String phone);
+    MemberDTO findIdWithCreatedAt(String name, String phone);
 
     // 이름 + 아이디 + 이메일로 회원 조회 (비밀번호 찾기 단계에서 본인 인증)
-    Member findByNameIdEmail(String name, String member_id, String email);
+    MemberDTO findByNameIdEmail(String name, String member_id, String email);
 }

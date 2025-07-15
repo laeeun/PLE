@@ -6,13 +6,13 @@ import java.sql.Timestamp;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.springmvc.domain.Member;
+import com.springmvc.domain.MemberDTO;
 
-public class MemberRowMapper implements RowMapper<Member> {
+public class MemberRowMapper implements RowMapper<MemberDTO> {
 
     @Override
-    public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Member member = new Member();
+    public MemberDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+        MemberDTO member = new MemberDTO();
         member.setMember_id(rs.getString("member_id"));       // 회원 고유 ID
         member.setUserName(rs.getString("username"));         // 사용자 계정 ID
         member.setPw(rs.getString("pw"));                    // 비밀번호

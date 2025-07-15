@@ -2,11 +2,11 @@ package com.springmvc.repository;
 
 import java.util.List;
 
-import com.springmvc.domain.History;
+import com.springmvc.domain.HistoryDTO;
 
 public interface HistoryRepository {
 	
-	void save(History history);
+	void save(HistoryDTO history);
 	
-	List<History> findByMemberId(String member_id);
+	List<HistoryDTO> findByMemberId(String member_id);
 }

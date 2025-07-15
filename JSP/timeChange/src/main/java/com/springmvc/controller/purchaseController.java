@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.springmvc.domain.History;
-import com.springmvc.domain.Member;
+import com.springmvc.domain.HistoryDTO;
+import com.springmvc.domain.MemberDTO;
 import com.springmvc.domain.PurchaseRequestDTO;
 import com.springmvc.domain.TalentDTO;
 import com.springmvc.service.HistoryService;
@@ -63,7 +63,7 @@ public class purchaseController {
                                   HttpSession session,
                                   RedirectAttributes redirectAttributes) {
 
-        Member buyer = (Member) session.getAttribute("loggedInUser");
+        MemberDTO buyer = (MemberDTO) session.getAttribute("loggedInUser");
         dto.setBuyer_id(buyer.getMember_id());
         dto.setStatus("PENDING");
         dto.setRequested_at(LocalDateTime.now());
@@ -96,7 +96,7 @@ public class purchaseController {
      */
     @GetMapping("/received")
     public String viewReceivedRequests(HttpSession session, Model model) {
-        Member seller = (Member) session.getAttribute("loggedInUser");
+        MemberDTO seller = (MemberDTO) session.getAttribute("loggedInUser");
         List<PurchaseRequestDTO> receivedList = purchaseService.findBySeller(seller.getMember_id());
         model.addAttribute("receivedRequests", receivedList);
         return "purchaseReceivedList";
@@ -109,7 +109,7 @@ public class purchaseController {
      */
     @GetMapping("/sent")
     public String viewSentRequests(HttpSession session, Model model) {
-        Member buyer = (Member) session.getAttribute("loggedInUser");
+        MemberDTO buyer = (MemberDTO) session.getAttribute("loggedInUser");
         if (buyer == null) {
             model.addAttribute("errorMessage", "로그인 후 이용해 주세요.");
             return "redirect:/login";  // 또는 에러 페이지로 이동
@@ -141,7 +141,7 @@ public class purchaseController {
             int price = talent.getTimeSlot();
 
             // 3. 구매자 잔액 확인 (account 음수 방지 포함)
-            Member buyer = memberService.findById(buyerId);
+            MemberDTO buyer = memberService.findById(buyerId);
             if (buyer.getAccount() < price) {
                 redirectAttributes.addFlashAttribute("errorMessage", "구매자의 잔액이 부족합니다.");
                 return "redirect:/purchase/received";
@@ -155,7 +155,7 @@ public class purchaseController {
             purchaseService.updateStatus(requestId, "APPROVED");
             
             // ✅ 6. 히스토리 생성 및 저장 ------------------------
-            History history = new History();
+            HistoryDTO history = new HistoryDTO();
             history.setBuyer_id(buyerId);
             history.setSeller_id(sellerId);
             history.setTalent_id(talentId);

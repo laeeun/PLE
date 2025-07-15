@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import com.springmvc.domain.Member;
+import com.springmvc.domain.MemberDTO;
 import com.springmvc.repository.MemberRepository;
 import com.springmvc.repository.MemberRowMapper;
 
@@ -18,32 +18,32 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private JdbcTemplate template; // ❗ 현재 사용되지 않음 → 지워도 무방
 
-    private List<Member> memberList = new ArrayList<Member>(); // ❗ 사용되지 않음 → 지워도 됨
+    private List<MemberDTO> memberList = new ArrayList<MemberDTO>(); // ❗ 사용되지 않음 → 지워도 됨
 
     @Autowired
     private MemberRepository memberRepository; // ✅ DB와 연결된 DAO 계층 (Repository) 주입
 
     // ✅ 회원 등록 (가입)
     @Override
-    public void save(Member member) {
+    public void save(MemberDTO member) {
         memberRepository.save(member);
     }
 
     // ✅ member_id로 회원 1명 조회
     @Override
-    public Member findById(String member_id) {
+    public MemberDTO findById(String member_id) {
         return memberRepository.findById(member_id);
     }
 
     // ✅ 모든 회원 목록 조회
     @Override
-    public List<Member> findAll() {
+    public List<MemberDTO> findAll() {
         return memberRepository.findAll();
     }
 
     // ✅ 회원 정보 수정
     @Override
-    public void update(Member member) {
+    public void update(MemberDTO member) {
         memberRepository.update(member);
     }
 
@@ -55,21 +55,14 @@ public class MemberServiceImpl implements MemberService {
 
     // ✅ 로그인 처리: member_id로 회원 조회 후 비밀번호는 Security 또는 Controller에서 확인
     @Override
-    public Member login(String member_id) {
+    public MemberDTO login(String member_id) {
         return memberRepository.login(member_id);
     }
 
-    // ✅ 이메일로 회원 찾기 (비밀번호 찾기 단계 등에서 사용)
-    @Override
-    public Member findByEmail(String email) {
-        // ❗ 아직 미구현 상태 → 나중에 구현 필요
-        String sql = "SELECT * FROM member WHERE email = ?";
-        return null;
-    }
 
     // ✅ 관리자 계정 조회 (추후 is_admin 컬럼 사용시 구현 예정)
     @Override
-    public List<Member> findAdmins() {
+    public List<MemberDTO> findAdmins() {
         // ❗ 아직 미구현 상태
         return null;
     }
@@ -94,13 +87,13 @@ public class MemberServiceImpl implements MemberService {
 
     // ✅ 이름 + 전화번호로 member_id 및 created_at 같이 찾기 (아이디 찾기 확장)
     @Override
-    public Member findIdWithCreatedAt(String name, String phone) {
+    public MemberDTO findIdWithCreatedAt(String name, String phone) {
         return memberRepository.findIdWithCreatedAt(name, phone);
     }
 
     // ✅ 이름 + 아이디 + 이메일로 회원 찾기 (비밀번호 재설정용)
     @Override
-    public Member findByNameIdEmail(String name, String member_id, String email) {
+    public MemberDTO findByNameIdEmail(String name, String member_id, String email) {
         return memberRepository.findByNameIdEmail(name, member_id, email);
     }
 

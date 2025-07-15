@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.springmvc.domain.History;
+import com.springmvc.domain.HistoryDTO;
 
 @Repository
 public class HistoryRepositoryImpl implements HistoryRepository{
@@ -15,7 +15,7 @@ public class HistoryRepositoryImpl implements HistoryRepository{
     private JdbcTemplate template;
 
 	@Override
-	public void save(History history) {
+	public void save(HistoryDTO history) {
 		
        String sql = "INSERT INTO history (buyer_id, seller_id, talent_id, category, account, balance_change, type, created_at)" + 
     		   		"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
@@ -34,7 +34,7 @@ public class HistoryRepositoryImpl implements HistoryRepository{
 	}
 
 	@Override
-	public List<History> findByMemberId(String member_id) {
+	public List<HistoryDTO> findByMemberId(String member_id) {
 		String sql = "SELECT * FROM history WHERE buyer_id = ? OR seller_id = ? ORDER BY created_at DESC";
 		return template.query(sql, new Object[] {member_id, member_id}, new HistoryRowMapper());
 	}

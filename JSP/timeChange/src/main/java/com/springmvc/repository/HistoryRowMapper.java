@@ -1,16 +1,16 @@
 package com.springmvc.repository;
 
-import com.springmvc.domain.History;
+import com.springmvc.domain.HistoryDTO;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class HistoryRowMapper implements RowMapper<History> {
+public class HistoryRowMapper implements RowMapper<HistoryDTO> {
 
     @Override
-    public History mapRow(ResultSet rs, int rowNum) throws SQLException {
-        History history = new History();
+    public HistoryDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+        HistoryDTO history = new HistoryDTO();
         history.setHistory_id(rs.getLong("history_id"));
         history.setBuyer_id(rs.getString("buyer_id"));
         history.setSeller_id(rs.getString("seller_id"));

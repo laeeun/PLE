@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.springmvc.domain.Member;
+import com.springmvc.domain.MemberDTO;
 import com.springmvc.service.MemberService;
 
 @Controller
@@ -33,7 +33,7 @@ public class LoginController {
 	public String loginProcess(@RequestParam String member_id, @RequestParam String pw,
 	                           HttpSession session, Model model) {
 
-	    Member member = memberService.login(member_id);
+	    MemberDTO member = memberService.login(member_id);
 
 	    if (member == null) {
 	        model.addAttribute("error", "존재하지 않는 회원입니다.");

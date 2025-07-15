@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.springmvc.domain.PurchaseRequestDTO;
-import com.springmvc.domain.Member;
+import com.springmvc.domain.MemberDTO;
 
 @Repository
 public class purchaseRepositoryImpl implements purchaseRepository {

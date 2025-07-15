@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.springmvc.domain.Member;
+import com.springmvc.domain.MemberDTO;
 import com.springmvc.service.MemberService;
 
 
@@ -33,14 +33,14 @@ public class SignUpController {
 	
 	@GetMapping("/signUp")
     public String signUpForm(Model model){
-		model.addAttribute("signUp", new Member()); // 이게 있어야 오류 안 남
+		model.addAttribute("signUp", new MemberDTO()); // 이게 있어야 오류 안 남
 		System.out.println("회원가입 페이지로 이동");
 		return "signUp"; // signUp.jsp
 		//@애노테이션 써서 바로 해도된다.
 	}
 	  
 	@PostMapping("/signUp")
-	public String signUpSubmit(@ModelAttribute("signUp") Member member,
+	public String signUpSubmit(@ModelAttribute("signUp") MemberDTO member,
 	                           @RequestParam String phone1,
 	                           @RequestParam String phone2,
 	                           @RequestParam String phone3,
@@ -75,7 +75,7 @@ public class SignUpController {
 	  }
 	
 	@PostMapping("/register")
-	public String register(@ModelAttribute Member member) {
+	public String register(@ModelAttribute MemberDTO member) {
 		
 		 System.out.println("전문가 인가 ? : " + member.isExpert());
 		 
