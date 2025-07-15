@@ -1,136 +1,170 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>로그인</title>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet" />
+  <!-- ✅ Lucide 아이콘 사용 -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- ✅ 감성 폰트 Pretendard -->
-    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Pretendard', sans-serif;
-            background: linear-gradient(to right, #ffe6f0, #fff0f5); /* 연핑크 그라데이션 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            animation: fadeIn 2s ease-in;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', sans-serif;
+      height: 100vh;
+      background: linear-gradient(135deg, #a6c1ee, #fbc2eb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .login-container {
-            background: #fff;
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 320px;
-            animation: popUp 1s ease-in-out;
-        }
+    .login-box {
+      width: 360px;
+      padding: 40px 30px 30px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+      border: 2px solid rgba(211, 153, 255, 0.25);
+      outline: 2px solid rgba(211, 153, 255, 0.5);
+      outline-offset: -6px;
+      box-shadow:
+        0 0 20px rgba(211, 153, 255, 0.4),
+        0 0 60px rgba(211, 153, 255, 0.3),
+        0 0 100px rgba(211, 153, 255, 0.2);
+      text-align: center;
+      color: white;
+      position: relative;
+    }
 
-        .login-container h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #ff69b4;
-        }
+    .logo-circle {
+      width: 70px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 30px;
+      box-shadow: 0 0 20px rgba(211, 153, 255, 0.4);
+    }
 
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin-top: 12px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 15px;
-        }
+    .logo-circle i {
+      width: 36px;
+      height: 36px;
+      color: white;
+    }
 
-        .login-container button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            background: #ff99cc;
-            border: none;
-            color: white;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
 
-        .login-container button:hover {
-            background: #ff66b2;
-            transform: scale(1.05);
-        }
+    .input-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      backdrop-filter: blur(6px);
+    }
 
-        .links {
-            text-align: center;
-            margin-top: 20px;
-        }
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
 
-        .links a {
-            margin: 0 6px;
-            font-size: 0.9em;
-            color: #555;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #d399ff, #c084fc);
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow:
+        0 0 12px rgba(211, 153, 255, 0.6),
+        0 0 24px rgba(211, 153, 255, 0.4),
+        0 0 36px rgba(211, 153, 255, 0.2);
+    }
 
-        .links a:hover {
-            text-decoration: underline;
-            color: #ff69b4;
-        }
+    .login-btn:hover {
+      transform: scale(1.03);
+      box-shadow:
+        0 0 16px rgba(211, 153, 255, 0.6),
+        0 0 30px rgba(211, 153, 255, 0.4),
+        0 0 48px rgba(211, 153, 255, 0.3);
+    }
 
-        .error {
-            color: red;
-            text-align: center;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
+    .links {
+      margin-top: 30px;
+      font-size: 13px;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+    .links a {
+      margin: 0 6px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+    }
 
-        @keyframes popUp {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-    </style>
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: #ff8080;
+      font-size: 0.9em;
+      margin-top: 12px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="login-container">
-	
-    <h2>어서오세요!</h2>
+  <div class="login-box">
+    <div class="logo-circle">
+      <i data-lucide="user"></i>
+    </div>
+
     <form action="${pageContext.request.contextPath}/login" method="post">
+      <div class="input-group">
         <input type="text" name="member_id" placeholder="아이디" required />
+      </div>
+
+      <div class="input-group">
         <input type="password" name="pw" placeholder="비밀번호" required />
-        <button type="submit">로그인</button>
-        <%
-            System.out.println("로그인완료");
-        %>
+      </div>
+
+      <button type="submit" class="login-btn">LOGIN</button>
+
+      <c:if test="${not empty error}">
+        <div class="error">${error}</div>
+      </c:if>
     </form>
 
-    <c:if test="${not empty error}">
-        <div class="error">${error}</div>
-    </c:if>
-
     <div class="links">
-        <a href="${pageContext.request.contextPath}/findId">아이디 찾기</a> |
-        <a href="${pageContext.request.contextPath}/findPw">비밀번호 찾기</a> |
-        <a href="${pageContext.request.contextPath}/signUp">회원가입</a> |
-        <a href="${pageContext.request.contextPath}/">홈</a>
+      <a href="${pageContext.request.contextPath}/findId">아이디 찾기</a> |
+      <a href="${pageContext.request.contextPath}/findPw">비밀번호 찾기</a> |
+      <a href="${pageContext.request.contextPath}/signUp">회원가입</a> |
+      <a href="${pageContext.request.contextPath}/">홈</a>
     </div>
-    
-    <div style="text-align: center; margin-top: 30px;">
-    	<jsp:include page="/WEB-INF/views/footer.jsp" />
-	</div>	   
-</div>
+  </div>
+
+  <!-- ✅ Lucide 아이콘 실행 -->
+  <script>
+    lucide.createIcons();
+  </script>
 
 </body>
 </html>

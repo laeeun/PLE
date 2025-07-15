@@ -29,7 +29,9 @@ public class Member {
     private String addr;
 
     private boolean expert; // 기본값: 일반 사용자
-
+    
+    private int account = 0;
+    
     private LocalDateTime createdAt; // DB 자동 생성, 필요 시 조회용 현재시간으로 초기화해서 바꾸기    
 
 
@@ -40,7 +42,13 @@ public class Member {
 		return member_id;
 	}
 
-
+	public int getAccount() {
+		return account;
+	}
+	
+	public void setAccount(int account) {
+		this.account = account;
+	}
 
 	public void setMember_id(String member_id) {
 		this.member_id = member_id;
