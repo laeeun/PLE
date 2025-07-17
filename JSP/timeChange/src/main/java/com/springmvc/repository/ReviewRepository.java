@@ -7,6 +7,7 @@ import com.springmvc.domain.ReviewDTO;
 import com.springmvc.domain.ReviewDTO;
 
 public interface ReviewRepository {
+	
     void save(ReviewDTO review);
     void update(ReviewDTO review);
     void delete(Long id);

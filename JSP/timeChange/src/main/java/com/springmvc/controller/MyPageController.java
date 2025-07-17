@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springmvc.domain.HistoryDTO;
-import com.springmvc.domain.MemberDTO;
+import com.springmvc.domain.Member;
 import com.springmvc.service.HistoryService;
 import com.springmvc.service.MemberService;
 
@@ -24,7 +24,7 @@ import com.springmvc.service.MemberService;
 @RequestMapping("/mypage")
 public class MyPageController  {
 	@Autowired
-	MemberService memberService;
+	private MemberService memberService;
 	
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -34,13 +34,13 @@ public class MyPageController  {
 	
 	@GetMapping
     public String myPage(HttpSession session, Model model) {
-		MemberDTO sessionMember = (MemberDTO) session.getAttribute("loggedInUser");
+		Member sessionMember = (Member) session.getAttribute("loggedInUser");
         if (sessionMember == null) {
             return "redirect:/login";
         }
 
         String loginId = sessionMember.getMember_id();
-        MemberDTO member = memberService.findById(loginId);
+        Member member = memberService.findById(loginId);
         model.addAttribute("member", member);
         return "mypage";
     }
@@ -49,7 +49,7 @@ public class MyPageController  {
 	@GetMapping("/edit")
 	public String editForm(@RequestParam("id") String member_id, Model model) {
 		
-		MemberDTO member = memberService.findById(member_id);
+		Member member = memberService.findById(member_id);
 		
 		model.addAttribute(member);
 		
@@ -57,7 +57,7 @@ public class MyPageController  {
 	}
 	
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute MemberDTO member, RedirectAttributes redirectAttributes) {
+	public String edit(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
 	    
 	    // ✅ 회원 정보 업데이트 (비밀번호 제외)
 	    memberService.update(member);
@@ -65,12 +65,14 @@ public class MyPageController  {
 	    // ✅ 성공 메시지
 	    redirectAttributes.addFlashAttribute("success", "회원 정보가 수정되었습니다.");
 	    
+	    System.out.println("회원정보 업데이트 완료 !!");
+	    
 	    return "redirect:/mypage";
 	}
 	
 	@PostMapping("/delete")
 	public String delete(HttpSession session) {
-		MemberDTO loggedInUser = (MemberDTO) session.getAttribute("loggedInUser");
+		Member loggedInUser = (Member) session.getAttribute("loggedInUser");
 		String member_id = loggedInUser.getMember_id();
 		memberService.delete(member_id);
 		session.invalidate();
@@ -87,7 +89,7 @@ public class MyPageController  {
 	public String verifyPassword(@RequestParam("currentPw") String currentPw,
 								 HttpSession session, RedirectAttributes redirectAttributes) {
 		 System.out.println(">> 현재 비밀번호 입력됨: " + currentPw);
-		 MemberDTO loggedInUser = (MemberDTO) session.getAttribute("loggedInUser");
+		 Member loggedInUser = (Member) session.getAttribute("loggedInUser");
 		 
 		  if (loggedInUser == null) {
 	            return "redirect:/login";
@@ -115,7 +117,7 @@ public class MyPageController  {
 	                             HttpSession session,
 	                             RedirectAttributes redirectAttributes) {
 		
-	    MemberDTO loggedInUser = (MemberDTO) session.getAttribute("loggedInUser");
+	    Member loggedInUser = (Member) session.getAttribute("loggedInUser");
 
 	    if (loggedInUser == null) {
 	        return "redirect:/login";
@@ -136,7 +138,7 @@ public class MyPageController  {
 	@GetMapping("/history")
 	public String history(HttpSession session, Model model) {
 	    // 로그인한 사용자 꺼만 조회하려면 세션에서 ID 꺼내기
-	    MemberDTO loggedInUser = (MemberDTO) session.getAttribute("loggedInUser");
+	    Member loggedInUser = (Member) session.getAttribute("loggedInUser");
 	    if (loggedInUser == null) {
 	        return "redirect:/login";
 	    }

@@ -10,20 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.springmvc.domain.MemberDTO;
+import com.springmvc.domain.Member;
 import com.springmvc.service.MemberService;
 
 @Controller
 public class ForgotController {
-
-    private final HomeController homeController;
 	
 	@Autowired
-	MemberService memberService;
+	private MemberService memberService;
 
-    ForgotController(HomeController homeController) {
-        this.homeController = homeController;
-    }
 	
 	@GetMapping("/findId")
 	public String forgotIdForm() {
@@ -35,7 +30,7 @@ public class ForgotController {
 		System.out.println("아이디 찾기 들어옴");
 		String findId = memberService.findId(name, phone);
 		
-		MemberDTO member = memberService.findIdWithCreatedAt(name, phone);
+		Member member = memberService.findIdWithCreatedAt(name, phone);
 		
 		if(member != null) {
 			model.addAttribute("foundId", member.getMember_id());
@@ -56,12 +51,12 @@ public class ForgotController {
 
     // 비밀번호 찾기 처리 (사용자 확인)
     @PostMapping("/findPw")
-    public String forgitPw(@RequestParam String name,
+    public String forgotPw(@RequestParam String name,
                            @RequestParam String member_id,
                            @RequestParam String email,
                            Model model) {
 
-        MemberDTO member = memberService.findByNameIdEmail(name, member_id, email);
+        Member member = memberService.findByNameIdEmail(name, member_id, email);
 
         if (member == null) {
             model.addAttribute("error", "입력하신 정보와 일치하는 계정이 없습니다.");

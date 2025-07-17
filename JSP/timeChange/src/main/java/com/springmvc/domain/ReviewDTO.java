@@ -3,6 +3,7 @@ package com.springmvc.domain;
 import java.time.LocalDateTime;
 
 public class ReviewDTO{
+	
     private Long reviewId;          // 리뷰 고유 ID
     
     private String writerId;        // 리뷰 작성자 ID
@@ -16,6 +17,8 @@ public class ReviewDTO{
     private String comment;         // 리뷰 본문
     
     private LocalDateTime createdAt; // 작성 시간
+    
+    private Long historyId;
 
 	public Long getReviewId() {
 		return reviewId;
@@ -71,6 +74,16 @@ public class ReviewDTO{
 
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	
+	
+	public Long getHistoryId() {
+		return historyId;
+	}
+
+	public void setHistoryId(Long historyId) {
+		this.historyId = historyId;
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.springmvc.domain.MemberDTO;
+import com.springmvc.domain.Member;
 import com.springmvc.domain.TalentDTO;
 import com.springmvc.service.MemberService;
 import com.springmvc.service.TalentService;
@@ -37,10 +37,10 @@ public class ProfileController {
         System.out.println("요청된 memberId: " + memberId);
 
         // 로그인한 사용자 정보 가져오기
-        MemberDTO loginUser = (MemberDTO) session.getAttribute("loggedInUser");
+        Member loginUser = (Member) session.getAttribute("loggedInUser");
 
         // 요청한 프로필 대상 사용자 정보 조회
-        MemberDTO member = memberService.findById(memberId);
+        Member member = memberService.findById(memberId);
 
         // 해당 사용자가 등록한 재능 리스트 조회
         List<TalentDTO> talentlist = talentService.TalentByMemberId(memberId);

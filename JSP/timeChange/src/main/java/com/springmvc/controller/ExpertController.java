@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springmvc.domain.ExpertDTO;
-import com.springmvc.domain.MemberDTO;
+import com.springmvc.domain.Member;
 import com.springmvc.service.ExpertService;
 
 @Controller
@@ -63,7 +63,7 @@ public class ExpertController {
     // 등록 처리 (Create - Submit)
     @PostMapping("/add")
     public String submitAddExpert(@ModelAttribute("expert") ExpertDTO expert,HttpSession session) {
-    	 MemberDTO loggedInUser = (MemberDTO) session.getAttribute("loggedInUser");
+    	 Member loggedInUser = (Member) session.getAttribute("loggedInUser");
     	 expert.setExpert_id(loggedInUser.getMember_id()); // 정확한 필드명으로 수정 필요
     	 System.out.println(loggedInUser);
     	 expertService.create(expert);

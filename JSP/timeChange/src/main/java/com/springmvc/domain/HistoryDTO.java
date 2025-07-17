@@ -5,11 +5,7 @@ import java.time.LocalDateTime;
 
 public class HistoryDTO {
 	
-	public HistoryDTO() {
-		this.created_at = Timestamp.valueOf(LocalDateTime.now());  // 현재 시간으로 초기화
-	}
-	
-	
+
     private Long history_id;        // 기본키
 
     private String buyer_id;        // 구매자 ID
@@ -27,7 +23,9 @@ public class HistoryDTO {
     private boolean review_written;
     private Long review_id; // 이미 작성한 리뷰 ID, 있으면 버튼에서 사용
 
-    
+	public HistoryDTO() {
+		this.created_at = Timestamp.valueOf(LocalDateTime.now());  // 현재 시간으로 초기화
+	}
     
 	public Long getHistory_id() {
 		return history_id;

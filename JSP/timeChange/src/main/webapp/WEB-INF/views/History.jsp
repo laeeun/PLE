@@ -91,17 +91,27 @@
 						    <div class="text-muted">거래 일시: ${dto.created_at}</div>
 						
 						    <!-- 리뷰 버튼 -->
-						    <div class="mt-3">
-						        <c:choose>
-						            <c:when test="${dto.review_written}">
-						                <a href="${pageContext.request.contextPath}/mypage/review/view?id=${dto.review_id}" class="btn btn-outline-success btn-sm">✅ 리뷰 보기</a>
-						                <a href="${pageContext.request.contextPath}/mypage/review/form?id=${dto.review_id}" class="btn btn-outline-primary btn-sm">🛠 리뷰 수정</a>
-						            </c:when>
-						            <c:otherwise>
-						                <a href="${pageContext.request.contextPath}/mypage/review/form?talent_id=${dto.talent_id}&seller_id=${dto.seller_id}" class="btn btn-outline-warning btn-sm">✍ 리뷰 작성</a>
-						            </c:otherwise>
-						        </c:choose>
-						    </div>
+							<div class="mt-3">
+							    <c:choose>
+							        <!-- 이미 리뷰를 쓴 거래라면 ▶ “리뷰 보기”만 노출 -->
+							        <c:when test="${dto.review_written}">
+							            <a href="${pageContext.request.contextPath}/review/view?id=${dto.review_id}"
+							               class="btn btn-outline-success btn-sm">
+							               ✅ 리뷰 보기
+							            </a>
+							        </c:when>
+							
+							        <!-- 리뷰가 없는 거래라면 ▶ history_id 있을 때만 “리뷰 작성” 노출 -->
+							        <c:otherwise>
+							            <c:if test="${not empty dto.history_id}">
+							                <a href="${pageContext.request.contextPath}/review/form?historyId=${dto.history_id}"
+							                   class="btn btn-outline-warning btn-sm">
+							                   ✍ 리뷰 작성
+							                </a>
+							            </c:if>
+							        </c:otherwise>
+							    </c:choose>
+							</div>
 						</div>
                     </div>
                 </c:forEach>

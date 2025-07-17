@@ -2,11 +2,9 @@ package com.springmvc.domain;
 
 import java.time.LocalDateTime;
 
-public class MemberDTO {
+public class Member {
 	
-	public MemberDTO() {
-	    this.createdAt = LocalDateTime.now(); // 현재 시간으로 초기화
-	}
+
 	
     private String member_id;
     
@@ -35,11 +33,17 @@ public class MemberDTO {
     private LocalDateTime createdAt; // DB 자동 생성, 필요 시 조회용 현재시간으로 초기화해서 바꾸기    
 
 
-
+	public Member() {
+	    this.createdAt = LocalDateTime.now(); // 현재 시간으로 초기화
+	}
     
 
 	public String getMember_id() {
 		return member_id;
+	}
+	
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
 
 	public int getAccount() {
@@ -50,16 +54,10 @@ public class MemberDTO {
 		this.account = account;
 	}
 
-	public void setMember_id(String member_id) {
-		this.member_id = member_id;
-	}
-
-
 
 	public String getUserName() {
 		return userName;
 	}
-
 
 
 	public void setUserName(String userName) {

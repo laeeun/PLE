@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springmvc.domain.HistoryDTO;
-import com.springmvc.domain.MemberDTO;
+import com.springmvc.domain.Member;
 import com.springmvc.domain.PurchaseRequestDTO;
 import com.springmvc.domain.TalentDTO;
 import com.springmvc.service.HistoryService;
@@ -63,7 +63,7 @@ public class purchaseController {
                                   HttpSession session,
                                   RedirectAttributes redirectAttributes) {
 
-        MemberDTO buyer = (MemberDTO) session.getAttribute("loggedInUser");
+        Member buyer = (Member) session.getAttribute("loggedInUser");
         dto.setBuyer_id(buyer.getMember_id());
         dto.setStatus("PENDING");
         dto.setRequested_at(LocalDateTime.now());
@@ -96,7 +96,7 @@ public class purchaseController {
      */
     @GetMapping("/received")
     public String viewReceivedRequests(HttpSession session, Model model) {
-        MemberDTO seller = (MemberDTO) session.getAttribute("loggedInUser");
+        Member seller = (Member) session.getAttribute("loggedInUser");
         List<PurchaseRequestDTO> receivedList = purchaseService.findBySeller(seller.getMember_id());
         model.addAttribute("receivedRequests", receivedList);
         return "purchaseReceivedList";
@@ -109,7 +109,7 @@ public class purchaseController {
      */
     @GetMapping("/sent")
     public String viewSentRequests(HttpSession session, Model model) {
-        MemberDTO buyer = (MemberDTO) session.getAttribute("loggedInUser");
+        Member buyer = (Member) session.getAttribute("loggedInUser");
         if (buyer == null) {
             model.addAttribute("errorMessage", "로그인 후 이용해 주세요.");
             return "redirect:/login";  // 또는 에러 페이지로 이동
@@ -141,7 +141,7 @@ public class purchaseController {
             int price = talent.getTimeSlot();
 
             // 3. 구매자 잔액 확인 (account 음수 방지 포함)
-            MemberDTO buyer = memberService.findById(buyerId);
+            Member buyer = memberService.findById(buyerId);
             if (buyer.getAccount() < price) {
                 redirectAttributes.addFlashAttribute("errorMessage", "구매자의 잔액이 부족합니다.");
                 return "redirect:/purchase/received";

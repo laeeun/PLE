@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.springmvc.domain.MemberDTO;
+import com.springmvc.domain.Member;
 import com.springmvc.domain.TalentDTO;
 import com.springmvc.service.TalentService;
 
@@ -121,7 +121,7 @@ public class TalentController {
     // 재능 등록 처리
     @PostMapping("/addtalent")
     public String submitTalentForm(@ModelAttribute("newTalent") TalentDTO dto, HttpSession session) {
-    	MemberDTO loginUser = (MemberDTO) session.getAttribute("loggedInUser");
+    	Member loginUser = (Member) session.getAttribute("loggedInUser");
         dto.setMember_id(loginUser.getMember_id());
         dto.setCreated_at(LocalDateTime.now());
         talentService.formatTimeSlot(dto);
