@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import com.springmvc.domain.HistoryDTO;
 import com.springmvc.domain.Member;
 import com.springmvc.service.HistoryService;
 import com.springmvc.service.MemberService;
+import com.springmvc.service.ReviewService;
 
 @Controller
 @RequestMapping("/mypage")
@@ -31,6 +33,9 @@ public class MyPageController  {
     
     @Autowired
     private HistoryService historyService;
+    
+    @Autowired
+    private ReviewService reviewService;
 	
 	@GetMapping
     public String myPage(HttpSession session, Model model) {
@@ -137,7 +142,6 @@ public class MyPageController  {
 	
 	@GetMapping("/history")
 	public String history(HttpSession session, Model model) {
-	    // 로그인한 사용자 꺼만 조회하려면 세션에서 ID 꺼내기
 	    Member loggedInUser = (Member) session.getAttribute("loggedInUser");
 	    if (loggedInUser == null) {
 	        return "redirect:/login";
@@ -145,12 +149,30 @@ public class MyPageController  {
 
 	    String member_id = loggedInUser.getMember_id();
 
-	    // 구매자 or 판매자인 히스토리 다 불러오기
 	    List<HistoryDTO> historyList = historyService.findByMemberId(member_id);
-	    model.addAttribute("historyList", historyList); // 👉 JSP로 전달
 
-	    return "History"; // 📄 /WEB-INF/views/History.jsp 로 이동
+	    for (HistoryDTO dto : historyList) {
+	        if (dto.getBuyer_id().equals(member_id)) {
+	            try {
+	                Long reviewId = reviewService.findIdByBuyerAndTalent(member_id, dto.getTalent_id());
+	                dto.setReview_written(true);
+	                dto.setReview_id(reviewId);
+	            } catch (EmptyResultDataAccessException e) {
+	                dto.setReview_written(false);
+	                dto.setReview_id(null);
+	            }
+	        } else {
+	            dto.setReview_written(true);
+	        }
+	    }
+
+	    // JSP로 전달
+	    model.addAttribute("historyList", historyList);
+	    model.addAttribute("loggedInUser", loggedInUser);
+
+	    return "History"; // 📄 /WEB-INF/views/History.jsp
 	}
+
 
 	
 }

@@ -18,6 +18,7 @@ public class ReviewRowMapper implements RowMapper<ReviewDTO> {
     	review.setRating(rs.getInt("rating"));
     	review.setComment(rs.getString("comment"));
     	review.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+    	review.setHistoryId(rs.getLong("history_id"));
         return review;
     }
 }

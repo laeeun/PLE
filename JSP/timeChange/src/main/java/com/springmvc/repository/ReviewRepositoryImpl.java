@@ -1,9 +1,12 @@
 package com.springmvc.repository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.springmvc.domain.HistoryDTO;
 import com.springmvc.domain.ReviewDTO;
 
 @Repository  // Spring이 이 클래스를 DAO(데이터베이스 처리 클래스)로 인식하게 함
@@ -18,12 +21,15 @@ public class ReviewRepositoryImpl implements ReviewRepository {
      */
     @Override
     public void save(ReviewDTO review) {
-        String sql = "INSERT INTO review (writer_id, target_id, talent_id, rating, comment) VALUES (?, ?, ?, ?, ?)";
-        template.update(sql, 
-            review.getWriterId(), 
-            review.getTargetId(), 
+        String sql = "INSERT INTO review (history_id, writer_id, target_id, " +
+                     "talent_id, rating, comment) VALUES (?, ?, ?, ?, ?, ?)";
+
+        template.update(sql,
+            review.getHistoryId(),   
+            review.getWriterId(),    
+            review.getTargetId(),   
             review.getTalentId(),
-            review.getRating(), 
+            review.getRating(),
             review.getComment());
     }
 
@@ -79,5 +85,23 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     public Long findIdByBuyerAndTalent(String buyerId, Long talentId) {
         String sql = "SELECT review_id FROM review WHERE writer_id = ? AND talent_id = ? LIMIT 1";
         return template.queryForObject(sql, Long.class, buyerId, talentId);
-    }  
+    }
+
+	@Override
+	public HistoryDTO findHistoryId(Long history_id) {
+		String sql = "SELECT * FROM history WHERE hostory_id = ?";
+		return template.queryForObject(sql, new HistoryRowMapper(), history_id);
+	}
+
+	@Override
+	public List<ReviewDTO> findByWriterId(String writerId) {
+	    String sql = "SELECT * FROM review WHERE writer_id = ?";
+	    return template.query(sql, new ReviewRowMapper(), writerId);
+	}
+ 
+	
+	
+    
+	
+    
 }

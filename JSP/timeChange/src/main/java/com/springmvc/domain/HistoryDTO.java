@@ -20,11 +20,12 @@ public class HistoryDTO {
     private String type;            // PURCHASE, TRANSFER 등
     private Timestamp created_at;   // 거래 일시
     
-    private boolean review_written;
+    private Boolean review_written;
     private Long review_id; // 이미 작성한 리뷰 ID, 있으면 버튼에서 사용
 
 	public HistoryDTO() {
 		this.created_at = Timestamp.valueOf(LocalDateTime.now());  // 현재 시간으로 초기화
+		this.review_written = false;
 	}
     
 	public Long getHistory_id() {
@@ -99,11 +100,11 @@ public class HistoryDTO {
 		this.created_at = created_at;
 	}
 
-	public boolean isReview_written() {
+	public Boolean getReview_written() {
 		return review_written;
 	}
 
-	public void setReview_written(boolean review_written) {
+	public void setReview_written(Boolean review_written) {
 		this.review_written = review_written;
 	}
 

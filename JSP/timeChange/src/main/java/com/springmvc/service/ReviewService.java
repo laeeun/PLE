@@ -1,5 +1,8 @@
 package com.springmvc.service;
 
+import java.util.List;
+
+import com.springmvc.domain.HistoryDTO;
 import com.springmvc.domain.ReviewDTO;
 
 public interface ReviewService{
@@ -9,4 +12,6 @@ public interface ReviewService{
     ReviewDTO findById(Long id);
     boolean existsByBuyerAndTalent(String buyerId, Long talentId);
     Long findIdByBuyerAndTalent(String buyerId, Long talentId);
+    HistoryDTO findHistoryId(Long History_id);
+    List<ReviewDTO> findByWriterId(String writerId);
 }

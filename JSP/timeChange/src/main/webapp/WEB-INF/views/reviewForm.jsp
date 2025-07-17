@@ -134,13 +134,14 @@
 </head>
 <body>
 
-
 <div class="review-card">
     <h2>리뷰 작성하기</h2>
 
     <form action="<c:url value='/review/submit' />" method="post">
         
         <input type="hidden" name="historyId" value="${historyId}">
+        <input type="hidden" name="sellerId" value="${sellerId}">
+		<input type="hidden" name="talentId" value="${talentId}">
 
         <label class="form-label">평점</label>
         <div class="star-rating">
@@ -160,5 +161,6 @@
 
     </form>
 </div>
+
 </body>
 </html>

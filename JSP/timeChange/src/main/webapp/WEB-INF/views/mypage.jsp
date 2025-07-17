@@ -140,6 +140,7 @@
 			    <a href="<c:url value='/purchase/received' />" class="custom-btn btn-outline">받은 구매 요청</a>
 			    <a href="<c:url value='/mypage/history' />" class="custom-btn btn-outline">거래 내역</a>
 			    <a href="<c:url value='/purchase/sent' />" class="custom-btn btn-outline">내 구매 신청</a>
+			    <a href="<c:url value='/review/myreviews' />" class="custom-btn btn-outline">내 리뷰 목록</a>
             </div>
         </div>
     </div>
