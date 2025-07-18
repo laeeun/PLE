@@ -2,6 +2,7 @@ package com.springmvc.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,18 +63,28 @@ public class MyPageController  {
 	}
 	
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
-	    
-	    // ✅ 회원 정보 업데이트 (비밀번호 제외)
+	public String edit(@ModelAttribute Member member, 
+	                   HttpServletRequest request,
+	                   RedirectAttributes redirectAttributes) {
+
+	    // ✅ 이메일 조합을 먼저!
+	    String emailId = request.getParameter("emailId");
+	    String emailDomain = request.getParameter("emailDomain");
+	    if (emailId != null && emailDomain != null) {
+	        member.setEmail(emailId + "@" + emailDomain);
+	    }
+
+	    // ✅ 회원 정보 업데이트
 	    memberService.update(member);
 
 	    // ✅ 성공 메시지
 	    redirectAttributes.addFlashAttribute("success", "회원 정보가 수정되었습니다.");
-	    
+
 	    System.out.println("회원정보 업데이트 완료 !!");
-	    
-	    return "redirect:/mypage";
+
+	    return "successSignUp";
 	}
+
 	
 	@PostMapping("/delete")
 	public String delete(HttpSession session) {

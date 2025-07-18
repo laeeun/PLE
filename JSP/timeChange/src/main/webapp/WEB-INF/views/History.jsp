@@ -87,7 +87,8 @@
 								            <a href="<c:url value='/review/form' />?historyId=${dto.history_id}
 								                &buyerId=${dto.buyer_id}
 								                &sellerId=${dto.seller_id}
-								                &talentId=${dto.talent_id}"
+								                &talentId=${dto.talent_id}
+								                &category=${dto.category}"
 								               class="btn btn-outline-warning btn-sm">✍ 리뷰 작성
 								            </a>
 								        </c:if>

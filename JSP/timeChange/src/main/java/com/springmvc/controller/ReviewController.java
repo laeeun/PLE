@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,7 +68,7 @@ public class ReviewController {
 
 	    
 	    ra.addAttribute("id", dto.getReviewId());
-	    return "review"; 
+		return "redirect:/review/myreviews";
 	}
 	
 	@GetMapping("/view")
@@ -91,6 +92,25 @@ public class ReviewController {
 	    model.addAttribute("reviews", myReviews);
 
 	    return "reviewList"; // 📄 보여줄 JSP 뷰 파일
+	}
+	
+	@GetMapping("/update")
+	public String reviewUpdate(@RequestParam Long id, Model model) {
+		ReviewDTO review = reviewService.findById(id);
+		model.addAttribute("review", review);
+		return "reviewUpdate";
+	}
+	
+	@PostMapping("/update")
+	public String reviewUpdate(@ModelAttribute ReviewDTO review) {
+		reviewService.update(review);
+		return "redirect:/review/myreviews";
+	}
+	
+	@PostMapping("/delete")
+	public String reivewDelete(@RequestParam Long id, HttpSession session) {
+		reviewService.delete(id);
+		return "redirect:/review/myreviews";
 	}
 
 }

@@ -1,6 +1,11 @@
 package com.springmvc.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Member {
 	
@@ -14,7 +19,12 @@ public class Member {
     
     private String name;
     
-    private String email;
+ 
+    private String emailId;      
+    private String emailDomain; 
+
+    
+    private String email;    
     
     private String phone;
     
@@ -24,6 +34,11 @@ public class Member {
     
     private String phone3;
     
+    @DateTimeFormat(pattern = "yyyy-MM-dd") // 폼 요청일 경우
+    private LocalDate birthDate;
+    
+    private String gender;        // 성별 ("M", "F")
+    
     private String addr;
 
     private boolean expert; // 기본값: 일반 사용자
@@ -31,6 +46,12 @@ public class Member {
     private int account = 0;
     
     private LocalDateTime createdAt; // DB 자동 생성, 필요 시 조회용 현재시간으로 초기화해서 바꾸기    
+    
+    private boolean emailVerified = false;
+    private String emailToken;
+    private LocalDateTime tokenCreatedAt;
+
+    
 
 
 	public Member() {
@@ -38,21 +59,20 @@ public class Member {
 	}
     
 
+	
+
 	public String getMember_id() {
 		return member_id;
 	}
-	
+
+
+
+
 	public void setMember_id(String member_id) {
 		this.member_id = member_id;
 	}
 
-	public int getAccount() {
-		return account;
-	}
-	
-	public void setAccount(int account) {
-		this.account = account;
-	}
+
 
 
 	public String getUserName() {
@@ -60,9 +80,12 @@ public class Member {
 	}
 
 
+
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
 
 
 
@@ -72,9 +95,11 @@ public class Member {
 
 
 
+
 	public void setPw(String pw) {
 		this.pw = pw;
 	}
+
 
 
 
@@ -84,9 +109,39 @@ public class Member {
 
 
 
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
+
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+
+
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+
+
+
+	public String getEmailDomain() {
+		return emailDomain;
+	}
+
+
+
+
+	public void setEmailDomain(String emailDomain) {
+		this.emailDomain = emailDomain;
+	}
+
 
 
 
@@ -96,9 +151,11 @@ public class Member {
 
 
 
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 
 
 
@@ -108,9 +165,11 @@ public class Member {
 
 
 
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 
 
 
@@ -120,9 +179,11 @@ public class Member {
 
 
 
+
 	public void setPhone1(String phone1) {
 		this.phone1 = phone1;
 	}
+
 
 
 
@@ -132,9 +193,11 @@ public class Member {
 
 
 
+
 	public void setPhone2(String phone2) {
 		this.phone2 = phone2;
 	}
+
 
 
 
@@ -144,9 +207,39 @@ public class Member {
 
 
 
+
 	public void setPhone3(String phone3) {
 		this.phone3 = phone3;
 	}
+
+
+
+
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+
+
+
+
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+
+
+
+
+	public String getGender() {
+		return gender;
+	}
+
+
+
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 
 
 
@@ -156,9 +249,11 @@ public class Member {
 
 
 
+
 	public void setAddr(String addr) {
 		this.addr = addr;
 	}
+
 
 
 
@@ -168,9 +263,25 @@ public class Member {
 
 
 
-	public void setExpert(boolean isExpert) {
-		this.expert = isExpert;
+
+	public void setExpert(boolean expert) {
+		this.expert = expert;
 	}
+
+
+
+
+	public int getAccount() {
+		return account;
+	}
+
+
+
+
+	public void setAccount(int account) {
+		this.account = account;
+	}
+
 
 
 
@@ -180,8 +291,33 @@ public class Member {
 
 
 
+
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public boolean isEmailVerified() {
+	    return emailVerified;
+	}
+
+	public void setEmailVerified(boolean emailVerified) {
+	    this.emailVerified = emailVerified;
+	}
+
+	public String getEmailToken() {
+	    return emailToken;
+	}
+
+	public void setEmailToken(String emailToken) {
+	    this.emailToken = emailToken;
+	}
+
+	public LocalDateTime getTokenCreatedAt() {
+	    return tokenCreatedAt;
+	}
+
+	public void setTokenCreatedAt(LocalDateTime tokenCreatedAt) {
+	    this.tokenCreatedAt = tokenCreatedAt;
 	}
 
 

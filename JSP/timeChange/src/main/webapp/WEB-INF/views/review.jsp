@@ -58,7 +58,7 @@
     <!-- ✅ 네비게이션 바 인클루드 -->
     <jsp:include page="/WEB-INF/views/nav.jsp" />
 
-    <!-- 💜 리뷰 상세 내용 -->
+     <!-- 💜 리뷰 상세 내용 -->
     <div class="review-detail">
         <h2>리뷰 상세 보기</h2>
         <div class="field">
@@ -82,6 +82,18 @@
         <div class="field">
             <span class="label">리뷰 내용:</span>
             <p>${review.comment}</p>
+        </div>
+
+        <!-- ✏ 수정 및 삭제 버튼 -->
+        <div class="text-center mt-4">
+            <a href="${pageContext.request.contextPath}/review/update?id=${review.reviewId}" 
+               class="btn btn-outline-primary me-2">✏ 리뷰 수정</a>
+
+            <form action="${pageContext.request.contextPath}/review/delete" method="post" style="display:inline;">
+                <input type="hidden" name="id" value="${review.reviewId}">
+                <button type="submit" class="btn btn-outline-danger" 
+                        onclick="return confirm('정말 삭제하시겠습니까?')">❌ 리뷰 삭제</button>
+            </form>
         </div>
     </div>
 

@@ -25,6 +25,8 @@ public interface MemberRepository {
 
     // username으로 회원 조회 (중복 체크 or 로그인용)
     Member findByUsername(String username);
+    
+    
 
 
     // ✅ [확장 기능] -----------------------------
@@ -46,4 +48,12 @@ public interface MemberRepository {
 
     // 이름 + 아이디 + 이메일로 회원 정보 조회 (비밀번호 재설정 시 본인 인증용)
     Member findByNameIdEmail(String name, String member_id, String email);
+    
+    // 이메일 인증 토큰으로 회원 조회
+    Member findByEmailToken(String token);
+    
+    // 이메일 인증 완료 처리 (email_verified = true 로 변경)
+    void verifyEmail(String member_id);
+
+
 }

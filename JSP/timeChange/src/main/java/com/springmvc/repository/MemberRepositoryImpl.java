@@ -1,7 +1,6 @@
 package com.springmvc.repository;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     // ✅ 회원 저장
     @Override
     public void save(Member member) {
-        String sql = "INSERT INTO member(member_id, username, pw, name, email, phone, addr, expert, created_at, account) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO member(member_id, username, pw, name, email, phone, birthDate, gender, addr, expert, created_at, account) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         template.update(sql,
             member.getMember_id(),
             member.getUserName(),
@@ -33,6 +32,8 @@ public class MemberRepositoryImpl implements MemberRepository {
             member.getName(),
             member.getEmail(),
             member.getPhone(),
+            member.getBirthDate(),
+            member.getGender(),
             member.getAddr(),
             member.isExpert(),
             Timestamp.valueOf(member.getCreatedAt()),
@@ -59,11 +60,13 @@ public class MemberRepositoryImpl implements MemberRepository {
     // ✅ 회원 정보 수정
     @Override
     public void update(Member member) {
-        String sql = "UPDATE member SET name = ?, email = ?, phone = ?, addr = ?, expert = ? WHERE member_id = ?";
+    	String sql = "UPDATE member SET name = ?, email = ?, phone = ?, birthDate = ?, gender = ?, addr = ?, expert = ? WHERE member_id = ?";
         template.update(sql,
             member.getName(),
             member.getEmail(),
             member.getPhone(),
+            member.getBirthDate(),
+            member.getGender(),
             member.getAddr(),
             member.isExpert(),
             member.getMember_id()
@@ -144,4 +147,25 @@ public class MemberRepositoryImpl implements MemberRepository {
     public String toString() {
         return "MemberRepositoryImpl [template=" + template + ", memberList=" +  "]";
     }
+
+	@Override
+	public Member findByEmailToken(String token) {
+		String sql = "SELECT * FROM member WHERE email_token = ?";
+		
+		try {
+			return template.queryForObject(sql, new MemberRowMapper());
+		}catch(EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public void verifyEmail(String member_id) {
+		String sql = "UPDATE member SET email_verified = true WHERE member_id = ?";
+		template.update(sql, member_id);
+		
+	}
+    
+    
+    
 }

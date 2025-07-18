@@ -1,185 +1,245 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
-    
-    <script>
-        // 에러 메시지가 있으면 alert 띄우기
-        window.onload = function() {
-            var errorMsg = '${error}';
-            if (errorMsg) {
-                alert(errorMsg);
-            }
-        };
-    </script>
-
-    <!-- ✅ 감성 폰트 Pretendard -->
     <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
-
+    <link href="<c:url value='/resources/css/bootstrap.min.css' />" rel="stylesheet">
+    <!-- flatpickr CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	
+	    
     <style>
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Pretendard', sans-serif;
-            background: linear-gradient(to right, #ffe6f0, #fff0f5);
+            background: linear-gradient(-45deg, #fce7f3, #f3e8ff, #e0e7ff, #fbcfe8);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            animation: fadeIn 2s ease-in;
+            padding: 40px;
         }
 
-        .signup-container {
-            background: white;
-            padding: 40px 50px;
-            border-radius: 25px;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .signup-box {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            width: 450px;
-            animation: popUp 1s ease;
+            padding: 40px 35px;
         }
 
-        .signup-container h1 {
+        .signup-box h2 {
             text-align: center;
             margin-bottom: 30px;
-            color: #ff69b4;
+            color: #7e22ce;
+            font-weight: bold;
         }
 
-        p {
-            margin-bottom: 15px;
-            font-size: 15px;
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 6px;
+            display: block;
         }
 
         input, select {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        select {
-            width: auto;
-        }
-
-        .phone-inputs {
-            display: flex;
-            gap: 8px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background-color: #ff99cc;
-            border: none;
             padding: 12px;
-            color: white;
-            font-size: 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            background-color: #ff66b2;
-            transform: scale(1.05);
-        }
-
-        /* ✅ 체크박스 정렬 보정 */
-        .checkbox-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 15px 0 25px 0;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(6px);
             font-size: 14px;
+            color: #4c1d95;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        .checkbox-input {
-            width: 16px;
-            height: 16px;
+        .btn-purple {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #a855f7, #ec4899);
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 12px;
+            box-shadow: 0 0 14px rgba(168, 85, 247, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .btn-purple:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(168, 85, 247, 0.5);
         }
 
-        @keyframes popUp {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        .btn-purple::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,0));
+            transform: skewX(-20deg);
+            animation: shine 2.5s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -75%; }
+            100% { left: 125%; }
+        }
+
+        .row-flex {
+            display: flex;
+            gap: 10px;
         }
     </style>
 </head>
 <body>
-
-<%
-    System.out.println("회원가입 page 도착!!");
-%>
-
-<div class="signup-container">
-    <h1>회원가입</h1>
-
+<div class="signup-box">
+    <h2>회원가입</h2>
     <form:form modelAttribute="signUp" action="${pageContext.request.contextPath}/signUp" method="post">
 
-        <p>ID  
-            <form:input path="member_id" placeholder="아이디를 입력하세요." required="true" />
-        </p>
+        <div class="form-group">
+            <label for="member_id">아이디</label>
+            <form:input path="member_id" class="form-control" placeholder="아이디 입력"/>
+        </div>
+        
+        <div class="form-group">
+            <label for="name">닉네임</label>
+            <form:input path="userName" class="form-control" placeholder="이름"/>
+        </div>
 
-        <p>PW  
-            <form:password path="pw" placeholder="비밀번호를 입력하세요." required="true" />
-        </p>
+        <div class="form-group">
+            <label for="pw">비밀번호</label>
+            <form:password path="pw" class="form-control" placeholder="비밀번호"/>
+        </div>
 
-        <p>PW 확인  
-            <form:password path="" name="pwConfirm" placeholder="비밀번호 확인" required="true" />
-        </p>
+        <div class="form-group">
+            <label for="pwConfirm">비밀번호 확인</label>
+            <input type="password" name="pwConfirm" class="form-control" placeholder="비밀번호 확인" />
+        </div>
 
-        <p>닉네임  
-            <form:input path="userName" placeholder="유저명을 입력하세요." required="true" />
-        </p>
+        <div class="form-group">
+            <label for="name">이름</label>
+            <form:input path="name" class="form-control" placeholder="이름"/>
+        </div>
 
-        <p>이름  
-            <form:input path="name" placeholder="이름을 입력하세요." required="true" />
-        </p>
+        <div class="form-group">
+		    <label for="birthDate">생년월일</label>
+		    <form:input path="birthDate" id="birthDate" class="form-control" readonly="true" />
+		</div>
 
-        <p>이메일  
-            <form:input path="email" type="email" placeholder="이메일을 입력하세요." required="true" />
-        </p>
+        <div class="form-group">
+            <label for="gender">성별</label>
+            <form:select path="gender" class="form-control">
+                <form:option value="">선택</form:option>
+                <form:option value="M">남성</form:option>
+                <form:option value="F">여성</form:option>
+            </form:select>
+        </div>
 
-        <p>전화번호</p>
-        <div class="phone-inputs">
-            <select name="phone1" required>
-                <option value="">선택</option>
-                <option value="010">010</option>
-                <option value="011">011</option>
-                <option value="016">016</option>
-                <option value="017">017</option>
-                <option value="018">018</option>
-                <option value="019">019</option>
-            </select>
-            <input type="text" name="phone2" pattern="\d{3,4}" maxlength="4" placeholder="1234" required />
-            <input type="text" name="phone3" pattern="\d{4}" maxlength="4" placeholder="5678" required />
-        </div><br/>
+        <div class="form-group">
+		    <label>전화번호</label>
+		    <div class="row-flex" style="display: flex; gap: 8px;">
+		        <!-- 앞자리: 선택 -->
+		        <select name="phone1" class="form-control" style="flex: 1;" required>
+		            <option value="">선택</option>
+		            <option value="010">010</option>
+		            <option value="011">011</option>
+		            <option value="016">016</option>
+		            <option value="017">017</option>
+		            <option value="018">018</option>
+		            <option value="019">019</option>
+		        </select>
+		
+		        <!-- 중간번호: 직접입력 -->
+		        <input type="text" name="phone2" placeholder="1234"
+		               pattern="\d{3,4}" minlength="3" maxlength="4"
+		               class="form-control" style="flex: 1;" required />
+		
+		        <!-- 뒷번호: 직접입력 -->
+		        <input type="text" name="phone3" placeholder="5678"
+		               pattern="\d{4}" minlength="4" maxlength="4"
+		               class="form-control" style="flex: 1;" required />
+		    </div>
+		</div>
 
-        <p>주소  
-            <form:input path="addr" placeholder="주소를 입력하세요." />
-        </p>
+        <div class="form-group">
+            <label>주소</label>
+            <div class="row-flex">
+                <form:input path="addr" id="addr" readonly="true" placeholder="주소를 검색하세요" style="flex:1" />
+                <button type="button" class="btn-purple" onclick="execDaumPostcode()" style="flex: 0.6">주소 검색</button>
+            </div>
+        </div>
 
-		 <div class="checkbox-wrapper">
-		     <form:checkbox path="expert" cssClass="checkbox-input" />
-		     <label>전문가입니까?</label>
-		 </div>
-		 <button type="submit">회원가입</button>
+        <!-- ✅ 이메일 -->
+		<p>이메일</p>
+		<div style="display: flex; align-items: center; gap: 8px;">
+		    <!-- 아이디 부분 -->
+		    <form:input path="emailId" placeholder="아이디 입력" cssStyle="flex: 1;" required="true" />
+		
+		    <!-- @ 기호 고정 표시 -->
+		    <span>@</span>
+		
+		    <!-- 도메인 선택 -->
+		    <form:select path="emailDomain" cssStyle="flex: 1;" required="true">
+		        <form:option value="">선택</form:option>
+		        <form:option value="naver.com">naver.com</form:option>
+		        <form:option value="gmail.com">gmail.com</form:option>
+		        <form:option value="daum.net">daum.net</form:option>
+		        <form:option value="hanmail.net">hanmail.net</form:option>
+		        <form:option value="nate.com">nate.com</form:option>
+		    </form:select>
+		</div>
 
 
-        <%
-            System.out.println("회원가입 전송완료");
-        %>
+        <button type="submit" class="btn-purple">가입하기</button>
     </form:form>
 </div>
+
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.getElementById("addr").value = data.address;
+            }
+        }).open();
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    flatpickr("#birthDate", {
+        locale: "ko",
+        dateFormat: "Y-m-d",
+        maxDate: "today",
+        altInput: true,
+        altFormat: "Y년 m월 d일"
+    });
+});
+</script>
 
 </body>
 </html>

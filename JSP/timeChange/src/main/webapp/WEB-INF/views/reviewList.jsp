@@ -97,6 +97,11 @@
             </div>
         </c:forEach>
     </div>
+    
+    <c:if test="${empty reviews}">
+   	 <p class="text-muted text-center">작성한 리뷰가 아직 없습니다.</p>
+	</c:if>
+    
 
 <jsp:include page="/WEB-INF/views/footer.jsp" />
 </body>

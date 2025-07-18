@@ -3,6 +3,7 @@ package com.springmvc.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,11 @@ public class LoginController {
 	    if (!passwordEncoder.matches(pw, member.getPw())) {
 	        model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
 	        return "login";
+	    }
+	    
+	    if (!member.isEmailVerified()) {
+	        model.addAttribute("error", "이메일 인증이 필요합니다.");
+	        return "emailNotVerified";
 	    }
 
 	    session.setAttribute("loggedInUser", member);
