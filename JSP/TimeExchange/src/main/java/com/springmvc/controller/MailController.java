@@ -25,6 +25,10 @@ public class MailController {
     // ✅ 이메일 인증 다시 보내기 (재인증 요청용)
     @PostMapping("/resend")
     public String resendVerificationEmail(@RequestParam("member_id") String memberId, Model model) {
+    	
+    	System.out.println("입력받은 member_id = " + memberId);
+    	System.out.println("찾은 회원 정보 = " + memberId);
+
         Member member = memberService.findById(memberId);
 
         if (member == null) {

@@ -8,6 +8,7 @@ public class ReviewReactionDTO {
     private String memberId;
     private String reactionType; // "LIKE" or "DISLIKE"
     private LocalDateTime createdAt;
+    
 	public Long getId() {
 		return id;
 	}

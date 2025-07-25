@@ -13,11 +13,14 @@ public class TodoRowMapper implements RowMapper<TodoDTO> {
     public TodoDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
         TodoDTO dto = new TodoDTO();
         dto.setTodoId(rs.getLong("todo_id"));
-        dto.setMemberId(rs.getString("member_id"));
+        dto.setTradeId(rs.getObject("trade_id") != null ? rs.getLong("trade_id") : null);
+        dto.setWriterId(rs.getString("writer_id"));
+        dto.setReceiverId(rs.getString("receiver_id"));
         dto.setTitle(rs.getString("title"));
         dto.setContent(rs.getString("content"));
         dto.setPriority(rs.getInt("priority"));
         dto.setCompleted(rs.getBoolean("completed"));
+        dto.setPersonal(rs.getBoolean("is_personal"));
         dto.setCreated_at(rs.getTimestamp("created_at").toLocalDateTime());
         dto.setUpdated_at(rs.getTimestamp("updated_at").toLocalDateTime());
         return dto;

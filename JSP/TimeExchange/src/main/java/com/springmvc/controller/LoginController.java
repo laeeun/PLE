@@ -95,6 +95,7 @@ public class LoginController {
         // ❌ 이메일 인증 미완료
         if (!member.isEmailVerified()) {
             model.addAttribute("error", "이메일 인증이 필요합니다.");
+            model.addAttribute("member", member);
             return "emailNotVerified";
         }
 

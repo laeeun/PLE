@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -163,8 +163,47 @@
 			    <a href="<c:url value='/mypage/history' />" class="custom-btn btn-outline">거래 내역</a>
 			    <a href="<c:url value='/purchase/sent' />" class="custom-btn btn-outline">내 구매 신청</a>
 			    <a href="<c:url value='/review/myreviews' />" class="custom-btn btn-outline">내 리뷰 목록</a>
+			    <a href="<c:url value='/chat/list' />" class="custom-btn btn-outline">💬 채팅함</a>
             </div>
         </div>
+        <c:if test="${not empty expertProfile}">
+	    <div class="card mt-4">
+	        <div class="card-header" style="background: linear-gradient(to right, #9333ea, #8b5cf6);">
+	            <h4>📄 등록한 전문가 정보</h4>
+	        </div>
+	        <div class="card-body">
+	            <p><strong>경력:</strong> ${expertProfile.career}</p>
+	            <p><strong>대학교:</strong> ${expertProfile.university}</p>
+	            <p><strong>자격증 및 기타:</strong> ${expertProfile.certification}</p>
+	            <p><strong>소개글:</strong><br/>
+				    <c:out value="${fn:replace(expertProfile.introduction, '&#10;', '<br/>')}" escapeXml="false" />
+				</p>
+	            
+	
+	            <c:if test="${not empty expertProfile.fileNames}">
+	                <p><strong>첨부파일:</strong></p>
+	                <ul>
+	                    <c:forEach var="file" items="${expertProfile.fileNames}">
+	                        <li>
+	                            <a href="${pageContext.request.contextPath}/upload/expert/${file}" target="_blank">${file}</a>
+	                        </li>
+	                    </c:forEach>
+	                </ul>
+	            </c:if>
+	
+	            <div class="btn-group-wrap">
+	                <a href="<c:url value='/mypage/expert/edit' />" class="custom-btn btn-edit">정보 수정</a>
+	
+	                <form action="<c:url value='/mypage/expert/delete'/>" method="post"
+	                      onsubmit="return confirm('정말 전문가 정보를 삭제하시겠습니까?')"
+	                      style="display:inline;">
+	                    <input type="hidden" name="id" value="${expertProfile.id}" />
+	                    <button type="submit" class="custom-btn btn-delete">삭제</button>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</c:if>
     </div>
 </div>
 

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -73,10 +75,31 @@
             <!-- ⭐ 리뷰 정보 추가 -->
             <hr>
             <p><strong>⭐ 리뷰 개수:</strong> ${reviewCount}개</p>
-            <p><strong>⭐ 평균 평점:</strong> 
-               <fmt:formatNumber value="${averageRating}" pattern="#.0" />점
-            </p>
-            <a href="<c:url value='/review/list?talentId=${talent.talent_id}' />"
+            <p>
+             <strong>⭐ 평균 평점:</strong>
+             <span>
+                 <c:set var="intPart" value="${fn:substringBefore(averageRating, '.')}" />
+                 <c:set var="floatPart" value="${fn:substringAfter(averageRating, '.')}" />
+         
+                 <!-- 정수 부분: 꽉 찬 별 출력 -->
+                 <c:forEach var="i" begin="1" end="${intPart}">
+                     ⭐
+                 </c:forEach>
+         
+                 <!-- 소수점이 5 이상이면 반 별 하나 추가 -->
+                 <c:if test="${floatPart >= 5}">
+                     🌗
+                 </c:if>
+         
+                 <!-- 빈 별 채우기 -->
+                 <c:forEach var="j" begin="1" end="${5 - intPart - (floatPart >= 5 ? 1 : 0)}">
+                     ☆
+                 </c:forEach>
+             </span>
+         
+             (<fmt:formatNumber value="${averageRating}" pattern="#.0" />점)
+         </p>
+            <a href="<c:url value='/review/myreviews'/>?id=${dto.review_id}' />"
                class="btn btn-outline-secondary mt-2">📝 리뷰 전체 보기</a>
         </div>
 
@@ -108,7 +131,19 @@
                        class="btn btn-danger"
                        onclick="return confirm('정말 삭제하시겠습니까?')">🗑️ 삭제</a>
                 </c:if>
-
+				<c:if test="${sessionScope.loggedInUser != null && sessionScope.loggedInUser.member_id != talent.member_id}">
+				    <button class="btn btn-danger" 
+				            onclick="openReportPopup('talent', '${talent.talent_id}', '${talent.member_id}')">
+				        🚨 신고하기
+				    </button>
+				</c:if>
+				
+				<!-- 테스트용 버튼 -->
+				<button class="btn btn-danger" 
+			            onclick="openReportPopup('talent', '${talent.talent_id}', '${talent.member_id}')">
+			        🚨 신고하기
+			    </button>
+				
                 <c:if test="${sessionScope.loggedInUser != null && sessionScope.loggedInUser.member_id != talent.member_id}">
                     <a href="<c:url value='/purchase?id=${talent.talent_id}' />" class="btn btn-primary">💰 구매하기</a>
                 </c:if>
@@ -141,15 +176,144 @@
 
 <!-- 💻 JS 스크립트 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-// 댓글 처리
-// ... 생략 (기존 코드 그대로 유지)
 
-// 찜 버튼 처리
+<script>
+
+function openReportPopup(targetType, targetRefId, targetId) {
+	const reportPopupBaseUrl = "<c:url value='/report/popup' />";	
+    const url = reportPopupBaseUrl + "?target_id=" + targetId + "&target_type=" + targetType + "&target_ref_id=" + targetRefId;
+    window.open(url, "신고하기", "width=500,height=400,scrollbars=yes");
+}
+
+
+$(document).ready(function () {
+    const talentId = ${talent.talent_id};
+    const rawUserId = "${sessionScope.loggedInUser != null ? sessionScope.loggedInUser.member_id : ''}";
+	
+    const commentListUrl = "<c:url value='/comment/list' />";
+    const addCommentUrl = "<c:url value='/comment/add' />";
+    const deleteCommentUrl = "<c:url value='/comment/delete' />";
+    const updateCommentUrl = "<c:url value='/comment/update' />";
+	
+    
+    
+    
+    
+    function loadComments() {
+        $.ajax({
+            url: commentListUrl,
+            method: "GET",
+            data: { talentId: talentId },
+            success: function (data) {
+            	console.log(data)
+                const commentList = $("#commentList");
+                commentList.empty();
+                if (data.length === 0) {
+                    commentList.append("<p class='text-muted'>아직 댓글이 없습니다.</p>");
+                    return;
+                }
+                data.forEach(function (comment) {
+                    console.log("commentId:", comment.commentId);  // 잘 찍힘
+                    const arr = comment.createdAt;
+                    const dateStr = new Date(arr[0], arr[1] - 1, arr[2], arr[3], arr[4], arr[5]).toLocaleString('ko-KR');
+                    console.log("username:", comment.username);
+                    console.log("content:", comment.content);
+                    console.log("createdAt:", comment.createdAt);	
+                    let html = `
+                        <div class="comment-item" data-id="\${comment.commentId}">
+                            <strong>\${comment.username}</strong>
+                            <small class="text-muted">\${dateStr}</small>
+                            <p class="comment-content">\${comment.content}</p>
+                    `;
+
+                    if (comment.writerId === rawUserId) {
+                        html += `
+                            <button class="btn btn-sm btn-outline-secondary edit-btn">수정</button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn">삭제</button>
+                        `;
+                    }
+
+                    html += "</div>";
+
+                    console.log("🧪 HTML:", html);
+                    $("#commentList").append(html);
+                });
+            }
+        });
+    }
+
+    loadComments();
+
+    $("#addCommentBtn").click(function () {
+        const content = $("#commentInput").val().trim();
+        if (!content) return alert("댓글을 입력하세요.");
+        $.ajax({
+            url: addCommentUrl,
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                talentId: talentId,
+                writerId: rawUserId,
+                content: content
+            }),
+            success: function (data) {
+                if (data.status === "success") {
+                    $("#commentInput").val("");
+                    loadComments();
+                } else {
+                    alert(data.message);
+                }
+            }
+        });
+    });
+
+    $("#commentList").on("click", ".delete-btn", function () {
+        const commentId = $(this).closest("div[data-id]").data("id");
+        if (confirm("댓글을 삭제하시겠습니까?")) {
+            $.ajax({
+                url: deleteCommentUrl,
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ commentId: commentId }),
+                success: function (data) {
+                    if (data.status === "success") {
+                        loadComments();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+    });
+	
+    $("#commentList").on("click", ".edit-btn", function () {
+        const parent = $(this).closest("div[data-id]");
+        const commentId = parent.data("id");
+        const oldContent = parent.find(".comment-content").text();
+        const newContent = prompt("댓글을 수정하세요:", oldContent);
+        if (newContent !== null && newContent.trim() !== "" && newContent !== oldContent) {
+            $.ajax({
+                url: updateCommentUrl,
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ commentId: commentId, content: newContent }),
+                success: function (data) {
+                    if (data.status === "success") {
+                        loadComments();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+    });
+});
+
 const toggleFavoriteUrl = "<c:url value='/favorite/toggle' />";
 const userId = "${sessionScope.loggedInUser != null ? sessionScope.loggedInUser.member_id : ''}";
 const talentId = "${talent.talent_id != null ? talent.talent_id : ''}";
 $("#favoriteBtn").click(function () {
+	console.log("이벤트리스너진입, talentId:", talentId);
     $.ajax({
         url: toggleFavoriteUrl,
         type: "POST",
@@ -175,6 +339,8 @@ $("#favoriteBtn").click(function () {
         }
     });
 });
+
+
 </script>
 </body>
 </html>

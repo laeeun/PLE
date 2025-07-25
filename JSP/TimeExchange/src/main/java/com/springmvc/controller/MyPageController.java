@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.springmvc.domain.HistoryDTO;
 import com.springmvc.domain.Member;
 import com.springmvc.domain.PasswordHistoryDTO;
+import com.springmvc.service.ExpertProfileService;
 import com.springmvc.service.HistoryService;
 import com.springmvc.service.MemberService;
 import com.springmvc.service.PasswordHistoryService;
@@ -43,18 +43,26 @@ public class MyPageController  {
     
     @Autowired
     private PasswordHistoryService passwordHistoryService;
+    
+    @Autowired
+    private ExpertProfileService expertProfileService;
 	
 	@GetMapping
     public String myPage(HttpSession session, Model model) {
 		Member sessionMember = (Member) session.getAttribute("loggedInUser");
-        if (sessionMember == null) {
-            return "redirect:/login";
-        }
+	    if (sessionMember == null) {
+	        return "redirect:/login";
+	    }
 
-        String loginId = sessionMember.getMember_id();
-        Member member = memberService.findById(loginId);
-        model.addAttribute("member", member);
-        return "mypage";
+	    String loginId = sessionMember.getMember_id();
+	    Member member = memberService.findById(loginId);
+	    model.addAttribute("member", member);
+
+	    // ✅ 전문가 프로필 추가
+	    expertProfileService.findByMemberId(loginId)
+	        .ifPresent(profile -> model.addAttribute("expertProfile", profile));
+
+	    return "mypage";
     }
 	
 	
@@ -91,35 +99,42 @@ public class MyPageController  {
 
 	
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute Member member, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	   public String edit(@ModelAttribute Member member, HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	      Member login = (Member) session.getAttribute("loggedInUser");
+	          if (login == null) {
+	              return "redirect:/login"; // 로그인 안 된 경우
+	             }
+	       // 이메일 조합
+	       String emailId = request.getParameter("emailId");
+	       String emailDomain = request.getParameter("emailDomain");
+	       if (emailId != null && emailDomain != null) {
+	           member.setEmail(emailId + "@" + emailDomain);
+	           member.setEmailId(emailId);
+	           member.setEmailDomain(emailDomain);
+	       }
+	       
+	       // 전화번호 조합
+	       String phone1 = request.getParameter("phone1");
+	       String phone2 = request.getParameter("phone2");
+	       String phone3 = request.getParameter("phone3");
+	       if (phone1 != null && phone2 != null && phone3 != null) {
+	           member.setPhone1(phone1);
+	           member.setPhone2(phone2);
+	           member.setPhone3(phone3);
+	           member.setPhone(phone1 + "-" + phone2 + "-" + phone3); // 필요시
+	       }
+	       member.setEmailVerified(login.isEmailVerified());
+	       member.setRole(login.getRole());
+	       member.setAccount(login.getAccount());
+	       member.setCreatedAt(login.getCreatedAt());
+	       member.setProfileImage(login.getProfileImage());
+	       // 회원 정보 업데이트 처리
+	       memberService.update(member);
+	       session.setAttribute("loggedInUser", member);
+	       redirectAttributes.addFlashAttribute("success", "회원 정보가 수정되었습니다.");
 
-	    // 이메일 조합
-	    String emailId = request.getParameter("emailId");
-	    String emailDomain = request.getParameter("emailDomain");
-	    if (emailId != null && emailDomain != null) {
-	        member.setEmail(emailId + "@" + emailDomain);
-	        member.setEmailId(emailId);
-	        member.setEmailDomain(emailDomain);
-	    }
-
-	    // 전화번호 조합
-	    String phone1 = request.getParameter("phone1");
-	    String phone2 = request.getParameter("phone2");
-	    String phone3 = request.getParameter("phone3");
-	    if (phone1 != null && phone2 != null && phone3 != null) {
-	        member.setPhone1(phone1);
-	        member.setPhone2(phone2);
-	        member.setPhone3(phone3);
-	        member.setPhone(phone1 + "-" + phone2 + "-" + phone3); // 필요시
-	    }
-
-	    // 회원 정보 업데이트 처리
-	    memberService.update(member);
-
-	    redirectAttributes.addFlashAttribute("success", "회원 정보가 수정되었습니다.");
-
-	    return "redirect:/mypage";
-	}
+	       return "redirect:/mypage";
+	   }
 
 
 	

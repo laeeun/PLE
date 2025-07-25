@@ -73,7 +73,7 @@
 <body>
 
 <div class="result-box">
-    <h2>📨 인증 결과</h2>
+    <h2>📨 인증 결과</h2>    
     <p>${message}</p>
     <a href="<c:url value='/' />" class="btn-home">홈으로 돌아가기</a>
 </div>

@@ -78,21 +78,21 @@
                             <div class="mt-3">
                                 <c:choose>
 								    <c:when test="${dto.review_written}">
-									    <a href="<c:url value='/review/myreviews'/>?id=${dto.review_id}" class="btn btn-outline-success btn-sm">
-									        ✅ 리뷰 보기
-									    </a>
-									</c:when>
-									<c:otherwise>
-									    <c:if test="${dto.buyer_id eq loggedInUser.member_id}">
-									        <a href="<c:url value='/review/form' />?historyId=${dto.history_id}
-									            &buyerId=${dto.buyer_id}
-									            &sellerId=${dto.seller_id}
-									            &talentId=${dto.talent_id}
-									            &category=${dto.category}"
-									           class="btn btn-outline-warning btn-sm">✍ 리뷰 작성
-									        </a>
-									    </c:if>
-									</c:otherwise>
+								        <a href="<c:url value='/review/myreviews'/>?id=${dto.review_id}" class="btn btn-outline-success btn-sm">
+								            ✅ 리뷰 보기
+								        </a>
+								    </c:when>
+								    <c:otherwise>
+								        <c:if test="${dto.buyer_id eq loggedInUser.member_id and dto.review_id == null}">
+								            <a href="<c:url value='/review/form' />?historyId=${dto.history_id}
+								                &buyerId=${dto.buyer_id}
+								                &sellerId=${dto.seller_id}
+								                &talentId=${dto.talent_id}
+								                &category=${dto.category}"
+								               class="btn btn-outline-warning btn-sm">✍ 리뷰 작성
+								            </a>
+								        </c:if>
+								    </c:otherwise>
 								</c:choose>
                             </div>
                         </div>

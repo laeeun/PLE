@@ -16,6 +16,8 @@ public class TalentDTO {
 	private boolean expert;
 	private int RequestCount;
 	private boolean favorite;
+	private double averageRating;
+	private int reviewCount;
 	
 	public TalentDTO() {}
 	public TalentDTO(int talent_id, String member_id, String title, String description, String category,
@@ -35,6 +37,18 @@ public class TalentDTO {
 	}
 	
 	
+	public double getAverageRating() {
+		return averageRating;
+	}
+	public void setAverageRating(double averageRating) {
+		this.averageRating = averageRating;
+	}
+	public int getReviewCount() {
+		return reviewCount;
+	}
+	public void setReviewCount(int reviewCount) {
+		this.reviewCount = reviewCount;
+	}
 	public boolean isFavorite() {
 		return favorite;
 	}

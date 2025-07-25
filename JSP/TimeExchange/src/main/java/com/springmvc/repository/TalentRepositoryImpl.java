@@ -18,27 +18,27 @@ public class TalentRepositoryImpl implements TalentRepository {
 
     @Override
     public void create(TalentDTO dto) {
-       String sql = "INSERT INTO talent (member_id, title, description, category, created_at, timeSlot) VALUES (?, ?, ?, ?, ?, ?)";
-       template.update(sql,
-           dto.getMember_id(),
-           dto.getTitle(),
-           dto.getDescription(),
-           dto.getCategory(),
-           Timestamp.valueOf(dto.getCreated_at()),
-           dto.getTimeSlot()
-       );
+    	String sql = "INSERT INTO talent (member_id, title, description, category, created_at, timeSlot) VALUES (?, ?, ?, ?, ?, ?)";
+    	template.update(sql,
+    	    dto.getMember_id(),
+    	    dto.getTitle(),
+    	    dto.getDescription(),
+    	    dto.getCategory(),
+    	    Timestamp.valueOf(dto.getCreated_at()),
+    	    dto.getTimeSlot()
+    	);
     }
 
     @Override
     public void update(TalentDTO dto) {
-        String sql = "UPDATE talent SET title=?, description=?, category=?, timeSlot=? WHERE talent_id=?";
-           template.update(sql,
-               dto.getTitle(),
-               dto.getDescription(),
-               dto.getCategory(),
-               dto.getTimeSlot(),
-               dto.getTalent_id()
-           );
+    	 String sql = "UPDATE talent SET title=?, description=?, category=?, timeSlot=? WHERE talent_id=?";
+    	    template.update(sql,
+    	        dto.getTitle(),
+    	        dto.getDescription(),
+    	        dto.getCategory(),
+    	        dto.getTimeSlot(),
+    	        dto.getTalent_id()
+    	    );
     }
 
     @Override
@@ -73,40 +73,48 @@ public class TalentRepositoryImpl implements TalentRepository {
     @Override
     public List<TalentDTO> readTalents(int page, int size, String expert, String category, String keyword) {
         StringBuilder sql = new StringBuilder("""
-            SELECT t.*, m.username, m.expert
+            SELECT 
+                t.*, 
+                m.username, 
+                m.expert, 
+                IFNULL(AVG(r.rating), 0) AS averageRating,         
+                COUNT(r.review_id) AS ratingCount,                 
+                COUNT(DISTINCT pr.request_id) AS requestCount      
             FROM talent t
             JOIN member m ON t.member_id = m.member_id
+            LEFT JOIN review r ON t.talent_id = r.talent_id
+            LEFT JOIN purchase_request pr ON t.talent_id = pr.talent_id
             WHERE 1=1
         """);
 
         List<Object> params = new ArrayList<>();
 
-        // 전문가 필터
+        // ✅ 조건 동적 추가
         if (!"all".equals(expert)) {
             sql.append(" AND m.expert = ?");
             params.add("true".equals(expert) ? 1 : 0);
         }
 
-        // 카테고리 필터
         if (category != null && !category.isEmpty()) {
             sql.append(" AND t.category = ?");
             params.add(category);
         }
 
-        // 키워드 검색
         if (keyword != null && !keyword.isEmpty()) {
             sql.append(" AND (t.title LIKE ? OR t.description LIKE ?)");
             params.add("%" + keyword + "%");
             params.add("%" + keyword + "%");
         }
 
-        // 정렬 + 페이징
+        // ✅ 그룹핑 + 정렬 + 페이징
+        sql.append(" GROUP BY t.talent_id");
         sql.append(" ORDER BY t.created_at DESC LIMIT ? OFFSET ?");
         params.add(size);
         params.add((page - 1) * size);
 
         return template.query(sql.toString(), new TalentRowMapper(), params.toArray());
     }
+
 
     @Override
     public int getTalentCount(String expert, String category, String keyword) {

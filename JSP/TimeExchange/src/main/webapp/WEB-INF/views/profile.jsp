@@ -81,7 +81,6 @@
             <h4>${member.userName}님의 프로필</h4>
         </div>
         <div class="card-body">
-            <p><strong>ID:</strong> ${member.member_id}</p>
             <p><strong>닉네임:</strong> ${member.userName}</p>
             <p><strong>이름:</strong> ${member.name}</p>
             <p><strong>이메일:</strong> ${member.email}</p>

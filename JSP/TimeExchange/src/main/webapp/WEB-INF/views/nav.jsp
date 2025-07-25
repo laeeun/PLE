@@ -181,6 +181,7 @@
                     <a href="<c:url value='/signUp' />" class="btn btn-outline-secondary btn-sm">회원가입</a>
                 </c:otherwise>
             </c:choose>
+            <a href="<c:url value='/report' />" class="btn btn-outline-secondary btn-sm">신고목록</a>
         </div>
 
     </div>
