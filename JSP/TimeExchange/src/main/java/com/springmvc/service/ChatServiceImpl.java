@@ -18,23 +18,33 @@ public class ChatServiceImpl implements ChatService {
 
     
 
-    @Override
-    public void saveMessage(ChatMessage message) {
-        ChatEntity entity = new ChatEntity(
-                message.getRoomId(),
-                message.getSenderId(),
-                message.getReceiverId(),
-                message.getContent(),
-                message.getType().name(),
-                message.getCreatedAt()
-            );
+	@Override
+	public void saveMessage(ChatMessage message) {
+	    Long roomId = Long.parseLong(message.getRoomId());
 
-            chatRepository.save(entity);    
-    }
+	    ChatEntity entity = new ChatEntity(
+	        roomId,
+	        message.getSenderId(),
+	        message.getReceiverId(),
+	        message.getContent(),
+	        message.getType().name(),
+	        message.getCreatedAt(),
+	        message.getFileUrl(),
+	        false,  // 읽음 여부
+	        false   // 삭제 여부
+	    );
+
+	    chatRepository.saveMessage(entity);
+	}
+
+
+
+	@Override
+	public List<ChatListDTO> getChatListByMemberId(String memberId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
-    @Override
-    public List<ChatListDTO> getChatListByMemberId(String memberId) {
-        return chatRepository.findChatListByMemberId(memberId);
-    }
+    
     
 }

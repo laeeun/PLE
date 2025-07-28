@@ -3,6 +3,8 @@ package com.springmvc.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ExpertProfileDTO {
     
     private Long id;                 // 전문가 프로필 고유 ID
@@ -14,6 +16,8 @@ public class ExpertProfileDTO {
     private String introduction;    // 자기소개 ✅
 
     private List<String> fileNames; // 첨부 파일명 리스트
+    private List<String> deleteFiles;              // 삭제할 파일 이름들
+    private List<MultipartFile> newFiles;          // 새로 업로드한 파일들
 
     private LocalDateTime submittedAt;  // 제출 시각
 
@@ -96,10 +100,29 @@ public class ExpertProfileDTO {
         this.submittedAt = submittedAt;
     }
 
-    @Override
-    public String toString() {
-        return "ExpertProfileDTO [id=" + id + ", memberId=" + memberId + ", career=" + career + ", university="
-                + university + ", certification=" + certification + ", introduction=" + introduction 
-                + ", fileNames=" + fileNames + ", submittedAt=" + submittedAt + "]";
-    }
+	public List<String> getDeleteFiles() {
+		return deleteFiles;
+	}
+
+	public void setDeleteFiles(List<String> deleteFiles) {
+		this.deleteFiles = deleteFiles;
+	}
+
+	public List<MultipartFile> getNewFiles() {
+		return newFiles;
+	}
+
+	public void setNewFiles(List<MultipartFile> newFiles) {
+		this.newFiles = newFiles;
+	}
+
+	@Override
+	public String toString() {
+		return "ExpertProfileDTO [id=" + id + ", memberId=" + memberId + ", career=" + career + ", university="
+				+ university + ", certification=" + certification + ", introduction=" + introduction + ", fileNames="
+				+ fileNames + ", deleteFiles=" + deleteFiles + ", newFiles=" + newFiles + ", submittedAt=" + submittedAt
+				+ "]";
+	}
+    
+    
 }

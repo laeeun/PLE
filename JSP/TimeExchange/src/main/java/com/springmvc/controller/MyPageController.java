@@ -1,5 +1,8 @@
 package com.springmvc.controller;
 
+import java.io.File;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +18,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.springmvc.domain.ExpertProfileDTO;
 import com.springmvc.domain.HistoryDTO;
 import com.springmvc.domain.Member;
 import com.springmvc.domain.PasswordHistoryDTO;
@@ -59,9 +65,10 @@ public class MyPageController  {
 	    model.addAttribute("member", member);
 
 	    // ✅ 전문가 프로필 추가
-	    expertProfileService.findByMemberId(loginId)
-	        .ifPresent(profile -> model.addAttribute("expertProfile", profile));
-
+	    ExpertProfileDTO expertProfile = expertProfileService.findByMemberId(loginId);
+	    if (expertProfile != null) {
+	        model.addAttribute("expertProfile", expertProfile);
+	    }
 	    return "mypage";
     }
 	
@@ -237,8 +244,141 @@ public class MyPageController  {
 
 	    return "History";
 	}
-
-
 	
+	@GetMapping("/expert/edit")
+	public String expertEditForm(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+	    Member loginUser = (Member) session.getAttribute("loggedInUser");
+
+	    if (loginUser == null) {
+	        redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
+	        return "redirect:/login";
+	    }
+
+	    String memberId = loginUser.getMember_id();
+	    ExpertProfileDTO expertProfile = expertProfileService.findByMemberId(memberId);
+
+	    if (expertProfile == null) {
+	        redirectAttributes.addFlashAttribute("error", "전문가 정보가 존재하지 않습니다.");
+	        return "redirect:/mypage";
+	    }
+
+	    model.addAttribute("expertDTO", expertProfile);
+	    return "expertEdit";  // 전문가 수정화면 JSP
+	}
+
+
+
+
+	@PostMapping("/expert/edit")
+	public String expertEditSubmit(@ModelAttribute ExpertProfileDTO expertDTO,
+	                               @RequestParam(value = "expertFiles", required = false) MultipartFile[] newFiles,
+	                               HttpSession session,
+	                               RedirectAttributes redirectAttributes) {
+
+	    Member loginUser = (Member) session.getAttribute("loggedInUser");
+
+	    if (loginUser == null) {
+	        redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
+	        return "redirect:/login";
+	    }
+
+	    // 로그인한 사용자 ID 보안상 재설정
+	    expertDTO.setMemberId(loginUser.getMember_id());
+
+	    // 새로 업로드된 파일들 저장
+	    if (newFiles != null && newFiles.length > 0) {
+	        expertDTO.setNewFiles(Arrays.asList(newFiles)); // ✨ DTO에 List<MultipartFile> 필드 필요
+	    }
+
+	    // 수정 서비스 로직 호출 (deleteFiles는 AJAX로 따로 처리)
+	    expertProfileService.update(expertDTO);
+
+	    redirectAttributes.addFlashAttribute("success", "전문가 정보가 성공적으로 수정되었습니다.");
+	    return "redirect:/mypage";
+	}
+
+	@PostMapping("/expert/deleteFile")
+	@ResponseBody
+	public String deleteExpertFile(@RequestParam("fileName") String fileName,
+	                               HttpSession session) {
+	    Member loginUser = (Member) session.getAttribute("loggedInUser");
+	    if (loginUser == null) {
+	        return "unauthorized";
+	    }
+
+	    String memberId = loginUser.getMember_id();
+
+	    // 1. 전문가 정보 조회
+	    ExpertProfileDTO expert = expertProfileService.findByMemberId(memberId);
+	    if (expert == null) {
+	        return "fail";
+	    }
+
+	    // 2. 삭제할 파일이 실제로 있는지 확인 후 제거
+	    List<String> currentFiles = expert.getFileNames();
+	    if (currentFiles != null && currentFiles.contains(fileName)) {
+	        currentFiles.remove(fileName);
+	    } else {
+	        return "fail";
+	    }
+
+	    // 3. 파일 삭제 (물리적 삭제)
+	    File file = new File("C:/upload/expert", fileName);
+	    if (file.exists()) {
+	        file.delete();
+	    }
+
+	    // 4. 최종 저장된 파일명 문자열로 만들기
+	    expert.setFileNames(currentFiles);
+	    expert.setNewFiles(null); // 새 파일 없으니까 null
+	    expert.setDeleteFiles(null); // 삭제 파일도 따로 안 넘김
+	    expert.setSubmittedAt(LocalDateTime.now()); // 시간 갱신
+
+	    expertProfileService.update(expert); // update로 DB 반영
+
+	    return "success";
+	}
+
+
+	@PostMapping("/expert/update")
+	public String updateExpert(
+	    @ModelAttribute ExpertProfileDTO expertDTO,
+	    @RequestParam(value = "expertFiles", required = false) List<MultipartFile> newFiles,
+	    @RequestParam(value = "deleteFiles", required = false) List<String> deleteFiles,
+	    HttpSession session,
+	    RedirectAttributes redirectAttributes) {
+
+	    Member loginUser = (Member) session.getAttribute("loggedInUser");
+
+	    if (loginUser == null) {
+	        redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
+	        return "redirect:/login";
+	    }
+
+	    String memberId = loginUser.getMember_id();
+	    expertDTO.setMemberId(memberId);
+
+	    // ✅ 기존 파일명을 서비스에서 조회해서 DTO에 세팅
+	    ExpertProfileDTO existing = expertProfileService.findByMemberId(memberId);
+	    if (existing != null) {
+	        expertDTO.setFileNames(existing.getFileNames()); // 기존 파일명 리스트 유지
+	    }
+
+	    if (newFiles != null && !newFiles.isEmpty()) {
+	        expertDTO.setNewFiles(newFiles);
+	    }
+
+	    if (deleteFiles != null && !deleteFiles.isEmpty()) {
+	        expertDTO.setDeleteFiles(deleteFiles);
+	    }
+
+	    expertProfileService.update(expertDTO);
+
+	    redirectAttributes.addFlashAttribute("success", "전문가 정보가 수정되었습니다.");
+	    return "redirect:/mypage";
+	}
+
+
+
 	
 }

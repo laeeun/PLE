@@ -6,9 +6,22 @@ import com.springmvc.domain.ChatEntity;
 import com.springmvc.domain.ChatListDTO;
 
 public interface ChatRepository {
-    void save(ChatEntity message);
 
-    List<ChatEntity> findByRoomId(String roomId);
-    
-    List<ChatListDTO> findChatListByMemberId(String memberId);
+    // 💬 메시지 저장
+    void saveMessage(ChatEntity message);
+
+    // 💬 채팅방 내 메시지 전체 조회
+    List<ChatEntity> findMessagesByRoomId(Long roomId);
+
+    // 📩 채팅방 목록 (내가 참여한 방들)
+    List<ChatListDTO> findChatListByUserId(String userId);
+
+    // 🧠 채팅방 ID 찾기 (이미 있는지 확인)
+    Long findRoomIdByUserIds(String user1Id, String user2Id);
+
+    // ➕ 없으면 새 방 생성
+    Long createChatRoom(String user1Id, String user2Id);
+
+    // 🧠 혹시 chat_room 전체 조회 필요 시
+    boolean existsRoom(String user1Id, String user2Id);
 }

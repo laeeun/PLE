@@ -16,6 +16,10 @@
 	     2.@annotation을 사용할 수있게 설정해줌
 	 -->
 	<annotation-driven enable-matrix-variables="true"/>
+	
+	<!-- C:/upload/profile → /upload/profile/** 로 매핑 -->
+	<resources mapping="/upload/profile/**" location="file:///C:/upload/profile/" />
+	<resources mapping="/upload/expert/**" location="file:///C:/upload/expert/" />
 
 	<!-- css,image,js와 같은 공유되는 파일의 위치를 정하고 MVC외 처리를 실시함
 	     디스페쳐서블리은 관여하지말고 그냥 통과시켜~

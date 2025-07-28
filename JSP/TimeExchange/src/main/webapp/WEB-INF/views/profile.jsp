@@ -9,8 +9,6 @@
 
     <!-- 감성 폰트 Pretendard -->
     <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
-
-    <!-- Bootstrap -->
     <link href="<c:url value='/resources/css/bootstrap.min.css' />" rel="stylesheet">
 
     <style>
@@ -33,19 +31,6 @@
         .card-header h4 {
             color: #ff69b4;
             margin-bottom: 0;
-        }
-
-        p {
-            font-size: 1rem;
-            margin: 0.5rem 0;
-        }
-
-        strong {
-            color: #ff69b4;
-        }
-
-        .talent-list li {
-            margin: 0.75rem 0;
         }
 
         .talent-title {
@@ -75,12 +60,22 @@
 <jsp:include page="/WEB-INF/views/nav.jsp" />
 
 <div class="container mt-5">
+
     <!-- 프로필 카드 -->
     <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h4>${member.userName}님의 프로필</h4>
+
+            <!-- 팔로우 버튼 -->
+            <c:if test="${not empty loggedInUser and loggedInUser.member_id ne member.member_id}">
+                <button id="followBtn" class="btn ${isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'}"
+                        data-id="${member.member_id}">
+                    ${isFollowing ? '언팔로우 💔' : '팔로우 💗'}
+                </button>
+            </c:if>     
         </div>
         <div class="card-body">
+            <p><strong>ID:</strong> ${member.member_id}</p>
             <p><strong>닉네임:</strong> ${member.userName}</p>
             <p><strong>이름:</strong> ${member.name}</p>
             <p><strong>이메일:</strong> ${member.email}</p>
@@ -95,7 +90,7 @@
         <div class="card-body">
             <c:choose>
                 <c:when test="${not empty talentlist}">
-                    <ul class="talent-list list-unstyled">
+                    <ul class="list-unstyled">
                         <c:forEach var="talent" items="${talentlist}">
                             <li>
                                 <a class="talent-title" href="<c:url value='/talent/view?id=${talent.talent_id}' />">
@@ -116,5 +111,33 @@
 </div>
 
 <jsp:include page="/WEB-INF/views/footer.jsp" />
+
+<!-- ✅ JS 포함 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // ✅ URL을 변수로 분리 (안정적이고 유지보수 쉬움)
+    const API_URL = {
+        toggleFollow: '<c:url value="/follow/toggle" />'
+    };
+
+    $(document).ready(function () {
+        $('#followBtn').click(function () {
+            const $btn = $(this);
+            const followingId = $btn.data('id');
+
+            $.post(API_URL.toggleFollow, { followingId }, function (result) {
+                if (result === 'followed') {
+                    $btn.text('언팔로우 💔')
+                        .removeClass('btn-outline-primary')
+                        .addClass('btn-outline-danger');
+                } else if (result === 'unfollowed') {
+                    $btn.text('팔로우 💗')
+                        .removeClass('btn-outline-danger')
+                        .addClass('btn-outline-primary');
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

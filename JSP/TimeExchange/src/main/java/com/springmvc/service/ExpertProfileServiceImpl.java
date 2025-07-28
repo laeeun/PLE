@@ -1,36 +1,43 @@
 package com.springmvc.service;
 
-import com.springmvc.domain.ExpertProfileDTO;
-import com.springmvc.repository.ExpertProfileRepository;
+import java.io.File;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.springmvc.domain.ExpertProfileDTO;
+import com.springmvc.repository.ExpertProfileRepository;
 
 @Service
 public class ExpertProfileServiceImpl implements ExpertProfileService {
 
     @Autowired
-    private ExpertProfileRepository expertRepo;
+    private ExpertProfileRepository expertRepository;
 
     @Override
     public void save(ExpertProfileDTO expert) {
-        expertRepo.save(expert);
+    	expertRepository.save(expert);
     }
 
     @Override
-    public Optional<ExpertProfileDTO> findByMemberId(String memberId) {
-        return expertRepo.findByMemberId(memberId);
+    public ExpertProfileDTO findByMemberId(String memberId) {
+        return expertRepository.findByMemberId(memberId);
     }
 
     @Override
     public List<ExpertProfileDTO> findAll() {
-        return expertRepo.findAll();
+        return expertRepository.findAll();
     }
 
     @Override
     public void delete(Long id) {
-        expertRepo.deleteById(id);
+        expertRepository.deleteById(id);
     }
+
+	@Override
+	public void update(ExpertProfileDTO expert) {
+		expertRepository.update(expert);
+	}
+    
 }

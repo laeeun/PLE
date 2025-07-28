@@ -61,7 +61,7 @@
         </div>
         <div class="card-body">
             <p><strong>🧑‍💻 작성자:</strong>
-                <a href="<c:url value='/profile?id=${talent.member_id}' />">${talent.username}</a></p>
+                <a href="<c:url value='/profile/${talent.member_id}' />">${talent.username}</a>
             <p><strong>📂 카테고리:</strong> ${talent.category}</p>
             <p><strong>🕒 판매 시간:</strong> ${talent.timeSlotDisplay}</p>
             <p><strong>🗓️ 등록일:</strong>

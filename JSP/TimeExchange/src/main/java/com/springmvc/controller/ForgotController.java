@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.springmvc.domain.HistoryDTO;
 import com.springmvc.domain.Member;
 import com.springmvc.domain.PasswordHistoryDTO;
 import com.springmvc.service.MailService;

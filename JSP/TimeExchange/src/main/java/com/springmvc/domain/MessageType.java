@@ -1,7 +1,8 @@
 package com.springmvc.domain;
 
 public enum MessageType {
-    CHAT,
-    ENTER,
-    LEAVE
+    CHAT,       // 일반 메시지
+    ENTER,      // 입장 알림
+    LEAVE,      // 퇴장 알림
+    IMAGE       // 이미지 전송
 }

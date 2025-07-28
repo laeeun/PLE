@@ -9,13 +9,16 @@ public interface ExpertProfileService {
 
     // 전문가 정보 저장
     void save(ExpertProfileDTO expert);
+    
+    void update(ExpertProfileDTO expert);
 
     // 회원 ID로 조회
-    Optional<ExpertProfileDTO> findByMemberId(String memberId);
+    ExpertProfileDTO findByMemberId(String memberId);
 
     // 전체 전문가 목록
     List<ExpertProfileDTO> findAll();
 
     // 삭제
     void delete(Long id);
+ 
 }

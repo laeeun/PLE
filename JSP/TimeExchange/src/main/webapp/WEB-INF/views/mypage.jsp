@@ -164,6 +164,8 @@
 			    <a href="<c:url value='/purchase/sent' />" class="custom-btn btn-outline">내 구매 신청</a>
 			    <a href="<c:url value='/review/myreviews' />" class="custom-btn btn-outline">내 리뷰 목록</a>
 			    <a href="<c:url value='/chat/list' />" class="custom-btn btn-outline">💬 채팅함</a>
+			    <a href="<c:url value='/follow/followers' />" class="custom-btn btn-outline">내 팔로워</a>
+             	<a href="<c:url value='/follow/following' />" class="custom-btn btn-outline">팔로잉</a>
             </div>
         </div>
         <c:if test="${not empty expertProfile}">
@@ -193,13 +195,6 @@
 	
 	            <div class="btn-group-wrap">
 	                <a href="<c:url value='/mypage/expert/edit' />" class="custom-btn btn-edit">정보 수정</a>
-	
-	                <form action="<c:url value='/mypage/expert/delete'/>" method="post"
-	                      onsubmit="return confirm('정말 전문가 정보를 삭제하시겠습니까?')"
-	                      style="display:inline;">
-	                    <input type="hidden" name="id" value="${expertProfile.id}" />
-	                    <button type="submit" class="custom-btn btn-delete">삭제</button>
-	                </form>
 	            </div>
 	        </div>
 	    </div>

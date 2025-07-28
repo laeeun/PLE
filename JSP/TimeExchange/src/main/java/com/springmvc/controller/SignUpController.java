@@ -106,6 +106,9 @@ public class SignUpController {
         MultipartFile file = member.getProfileImageFile();
         if (file != null && !file.isEmpty()) {
             try {
+            	System.out.println("📷 프로필 이미지 객체: " + member.getProfileImageFile());
+            	System.out.println("📷 파일명: " + (member.getProfileImageFile() != null ? member.getProfileImageFile().getOriginalFilename() : "null"));
+
                 String originalFilename = file.getOriginalFilename();
                 String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
                 String savedFilename = timestamp + "_" + originalFilename;

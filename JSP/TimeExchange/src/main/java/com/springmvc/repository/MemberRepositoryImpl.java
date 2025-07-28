@@ -29,23 +29,26 @@ public class MemberRepositoryImpl implements MemberRepository {
     // ✅ 회원 저장
     @Override
     public void save(Member member) {
-        String sql = "INSERT INTO member(member_id, username, pw, name, email, phone, birthDate, gender, addr, addr_detail,  expert, created_at, account) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO member(member_id, username, pw, name, email, phone, birthDate, gender, addr, addr_detail, expert, created_at, account, profile_image) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
         template.update(sql,
-            member.getMember_id(),
-            member.getUserName(),
-            member.getPw(),
-            member.getName(),
-            member.getEmail(),
-            member.getPhone(),
-            member.getBirthDate(),
-            member.getGender(),
-            member.getAddr(),
-            member.getAddrDetail(),
-            member.isExpert(),
-            Timestamp.valueOf(member.getCreatedAt()),
-            member.getAccount()
+            member.getMember_id(),                    // member_id
+            member.getUserName(),                     // username
+            member.getPw(),                           // pw
+            member.getName(),                         // name
+            member.getEmail(),                        // email
+            member.getPhone(),                        // phone
+            member.getBirthDate(),                    // birthDate
+            member.getGender(),                       // gender
+            member.getAddr(),                         // addr
+            member.getAddrDetail(),                   // addr_detail
+            member.isExpert(),                        // expert
+            Timestamp.valueOf(member.getCreatedAt()), // created_at
+            member.getAccount(),                      // ✅ account 먼저
+            member.getProfileImage()                  // ✅ profile_image 다음
         );
     }
+
 
     // ✅ 회원 ID로 조회 (회원 상세보기 등)
     @Override
@@ -66,7 +69,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     // ✅ 회원 정보 수정
     @Override
     public void update(Member member) {
-        String sql = "UPDATE member SET name = ?, email = ?, phone = ?, birthDate = ?, gender = ?, addr = ?, addr_detail = ?, expert = ?, email_verified = ?, email_token = ?, token_created_at = ? WHERE member_id = ?";
+        String sql = "UPDATE member SET name = ?, email = ?, phone = ?, birthDate = ?, gender = ?, addr = ?, addr_detail = ?, expert = ?, email_verified = ?, email_token = ?, token_created_at = ?, profile_image = ? WHERE member_id = ?";
         
         template.update(sql,
             member.getName(),
@@ -80,6 +83,7 @@ public class MemberRepositoryImpl implements MemberRepository {
             member.isEmailVerified(),           // ✅ 이메일 인증 여부
             member.getEmailToken(),             // ✅ 토큰
             member.getTokenCreatedAt(),         // ✅ 토큰 생성시간
+            member.getProfileImage(),
             member.getMember_id()
         );
     }
