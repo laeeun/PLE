@@ -111,7 +111,7 @@
 		    border-radius: 50%;
 		    border: 4px solid white;
 		    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-		    background-color: white;
+		    background-color: #f9fafb;
 		    margin: 0 auto 20px;
 		    display: block;
 		}
@@ -128,13 +128,15 @@
         <div class="card-body">
         
         	<c:choose>
-			    <c:when test="${not empty member.profileImage}">
-			        <img src="${pageContext.request.contextPath}/upload/profile/${member.profileImage}" alt="프로필 이미지" class="profile-image" />
-			    </c:when>
-			    <c:otherwise>
-			        <img src="${pageContext.request.contextPath}/resources/images/default-profile.png" alt="기본 이미지" class="profile-image" />
-			    </c:otherwise>
+			  <c:when test="${member.profileImage ne null and member.profileImage ne 'default_profile.png' and fn:length(member.profileImage) > 0}">
+			      <img src="${pageContext.request.contextPath}/upload/profile/${member.profileImage}" alt="프로필 이미지" class="profile-image" />
+			  </c:when>
+			  <c:otherwise>
+			      <img src="<c:url value='/resources/images/default-profile.png' />" alt="기본 이미지" class="profile-image" />
+			  </c:otherwise>
 			</c:choose>
+
+
         	
             <p><strong>ID:</strong> ${member.member_id}</p>
             <p><strong>닉네임:</strong> ${member.userName}</p>

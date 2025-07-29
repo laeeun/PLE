@@ -2,6 +2,8 @@ package com.springmvc.controller;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -99,49 +101,78 @@ public class MyPageController  {
 	        }
 	    }
 	    System.out.println(member);
+	    
 	    model.addAttribute("member", member);
+	    model.addAttribute("mode", "edit");
 
 	    return "editForm";
 	}
 
 	
 	@PostMapping("/edit")
-	   public String edit(@ModelAttribute Member member, HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
-	      Member login = (Member) session.getAttribute("loggedInUser");
-	          if (login == null) {
-	              return "redirect:/login"; // 로그인 안 된 경우
-	             }
-	       // 이메일 조합
-	       String emailId = request.getParameter("emailId");
-	       String emailDomain = request.getParameter("emailDomain");
-	       if (emailId != null && emailDomain != null) {
-	           member.setEmail(emailId + "@" + emailDomain);
-	           member.setEmailId(emailId);
-	           member.setEmailDomain(emailDomain);
-	       }
-	       
-	       // 전화번호 조합
-	       String phone1 = request.getParameter("phone1");
-	       String phone2 = request.getParameter("phone2");
-	       String phone3 = request.getParameter("phone3");
-	       if (phone1 != null && phone2 != null && phone3 != null) {
-	           member.setPhone1(phone1);
-	           member.setPhone2(phone2);
-	           member.setPhone3(phone3);
-	           member.setPhone(phone1 + "-" + phone2 + "-" + phone3); // 필요시
-	       }
-	       member.setEmailVerified(login.isEmailVerified());
-	       member.setRole(login.getRole());
-	       member.setAccount(login.getAccount());
-	       member.setCreatedAt(login.getCreatedAt());
-	       member.setProfileImage(login.getProfileImage());
-	       // 회원 정보 업데이트 처리
-	       memberService.update(member);
-	       session.setAttribute("loggedInUser", member);
-	       redirectAttributes.addFlashAttribute("success", "회원 정보가 수정되었습니다.");
+	public String edit(@ModelAttribute Member member,
+	                   HttpServletRequest request,
+	                   RedirectAttributes redirectAttributes,
+	                   HttpSession session, Model model) {
+		
 
-	       return "redirect:/mypage";
-	   }
+	    Member login = (Member) session.getAttribute("loggedInUser");
+	    if (login == null) {
+	        return "redirect:/login";
+	    }
+
+	    // 이메일 조합
+	    String emailId = request.getParameter("emailId");
+	    String emailDomain = request.getParameter("emailDomain");
+	    if (emailId != null && emailDomain != null) {
+	        member.setEmail(emailId + "@" + emailDomain);
+	        member.setEmailId(emailId);
+	        member.setEmailDomain(emailDomain);
+	    }
+
+	    // 전화번호 조합
+	    String phone1 = request.getParameter("phone1");
+	    String phone2 = request.getParameter("phone2");
+	    String phone3 = request.getParameter("phone3");
+	    if (phone1 != null && phone2 != null && phone3 != null) {
+	        member.setPhone1(phone1);
+	        member.setPhone2(phone2);
+	        member.setPhone3(phone3);
+	        member.setPhone(phone1 + "-" + phone2 + "-" + phone3);
+	    }
+
+	    // 기존 정보 유지
+	    member.setEmailVerified(login.isEmailVerified());
+	    member.setRole(login.getRole());
+	    member.setAccount(login.getAccount());
+	    member.setCreatedAt(login.getCreatedAt());
+	    member.setProfileImage(login.getProfileImage());
+
+	    // ✅ 전문가 여부 전환 감지
+	    boolean wasExpert = login.isExpert();           // 기존 상태
+	    boolean nowExpert = member.isExpert();          // 바뀐 값
+
+	    // 업데이트
+	    memberService.update(member);
+	    session.setAttribute("loggedInUser", member);
+	    System.out.println("✅ 기존 전문가 상태 (wasExpert): " + wasExpert);
+	    
+
+	    // ✅ 전문가로 바뀌었고, 전문가 정보가 없으면 → 입력 페이지로 이동
+	    if (!wasExpert && nowExpert) {
+	        boolean hasProfile = expertProfileService.existsByMemberId(member.getMember_id());
+	        if (!hasProfile) {
+	            model.addAttribute("memberId", member.getMember_id());  // ✅ 추가
+	            model.addAttribute("expertProfile", new ExpertProfileDTO()); // ✅ 새 DTO
+	            model.addAttribute("mode", "create"); 
+	            return "expertForm";
+	        }
+	    }
+
+	    redirectAttributes.addFlashAttribute("success", "회원 정보가 수정되었습니다.");
+	    return "redirect:/mypage";
+	}
+
 
 
 	
@@ -257,13 +288,17 @@ public class MyPageController  {
 	    String memberId = loginUser.getMember_id();
 	    ExpertProfileDTO expertProfile = expertProfileService.findByMemberId(memberId);
 
+	    // ✅ 전문가 정보가 없더라도 form 진입 허용
 	    if (expertProfile == null) {
-	        redirectAttributes.addFlashAttribute("error", "전문가 정보가 존재하지 않습니다.");
-	        return "redirect:/mypage";
+	        expertProfile = new ExpertProfileDTO(); // 빈 객체 생성해서 폼에 넘김
 	    }
 
-	    model.addAttribute("expertDTO", expertProfile);
-	    return "expertEdit";  // 전문가 수정화면 JSP
+	    // ✅ 폼에 필요한 정보 전달
+	    model.addAttribute("expertDTO", expertProfile);   // 비어있거나 기존 데이터
+	    model.addAttribute("mode", "edit");               // edit 모드로 진입
+	    model.addAttribute("memberId", memberId);         // 히든 input 용도
+
+	    return "expertForm";  // 전문가 정보 입력/수정 폼 JSP
 	}
 
 
@@ -294,6 +329,56 @@ public class MyPageController  {
 	    expertProfileService.update(expertDTO);
 
 	    redirectAttributes.addFlashAttribute("success", "전문가 정보가 성공적으로 수정되었습니다.");
+	    return "redirect:/mypage";
+	}
+	
+	@PostMapping("/expert/submit")
+	public String expertSubmit(@RequestParam("memberId") String memberId,
+	                           @RequestParam("career") String career,
+	                           @RequestParam("university") String university,
+	                           @RequestParam("certification") String certification,
+	                           @RequestParam("introduction") String introduction,
+	                           @RequestParam("expertFiles") List<MultipartFile> files,
+	                           RedirectAttributes redirectAttributes) {
+
+	    List<String> savedFileNames = new ArrayList<>();
+
+	    if (files != null && !files.isEmpty()) {
+	        for (MultipartFile file : files) {
+	            if (!file.isEmpty()) {
+	                try {
+	                    String originalFilename = file.getOriginalFilename();
+	                    String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+	                    String savedName = timestamp + "_" + originalFilename;
+
+	                    String uploadDir = "c:/upload/expert/";
+	                    File dir = new File(uploadDir);
+	                    if (!dir.exists()) dir.mkdirs();
+
+	                    File dest = new File(uploadDir + savedName);
+	                    file.transferTo(dest);
+
+	                    savedFileNames.add(savedName);
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                    redirectAttributes.addFlashAttribute("error", "파일 업로드 중 오류가 발생했습니다.");
+	                    return "redirect:/mypage";
+	                }
+	            }
+	        }
+	    }
+
+	    ExpertProfileDTO dto = new ExpertProfileDTO(
+	        memberId,
+	        career,
+	        university,
+	        certification,
+	        introduction,
+	        savedFileNames
+	    );
+
+	    expertProfileService.save(dto);
+	    redirectAttributes.addFlashAttribute("success", "전문가 정보가 저장되었습니다!");
 	    return "redirect:/mypage";
 	}
 

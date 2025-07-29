@@ -138,7 +138,11 @@ public class ExpertProfileRepositoryImpl implements ExpertProfileRepository {
         );
     }
 
-
+    @Override
+    public int countByMemberId(String memberId) {
+        String sql = "SELECT COUNT(*) FROM expert_profile WHERE member_id = ?";
+        return template.queryForObject(sql, Integer.class, memberId);
+    }
 
 
     

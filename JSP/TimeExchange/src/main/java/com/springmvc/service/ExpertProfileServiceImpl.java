@@ -40,4 +40,8 @@ public class ExpertProfileServiceImpl implements ExpertProfileService {
 		expertRepository.update(expert);
 	}
     
+	@Override
+    public boolean existsByMemberId(String memberId) {
+        return expertRepository.countByMemberId(memberId) > 0;
+    }
 }

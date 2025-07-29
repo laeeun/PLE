@@ -20,4 +20,6 @@ public interface ExpertProfileRepository {
     // ✅ 삭제
     void deleteById(Long id);    
     
+    int countByMemberId(String memberId);
+    
 }

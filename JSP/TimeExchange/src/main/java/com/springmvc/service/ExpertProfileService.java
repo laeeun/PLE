@@ -21,4 +21,6 @@ public interface ExpertProfileService {
     // 삭제
     void delete(Long id);
  
+    boolean existsByMemberId(String memberId);
+
 }

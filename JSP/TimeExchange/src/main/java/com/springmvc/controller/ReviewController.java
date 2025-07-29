@@ -56,13 +56,13 @@ public class ReviewController {
     // 리뷰 제출 처리
     @PostMapping("/submit")
     public String reviewSubmit(@RequestParam Long historyId,
-                                @RequestParam String sellerId,
-                                @RequestParam Long talentId,
-                                @RequestParam String category,
-                                @RequestParam int rating,
-                                @RequestParam String comment,
-                                HttpSession session,
-                                RedirectAttributes ra) {
+                               @RequestParam String sellerId,
+                               @RequestParam Long talentId,
+                               @RequestParam String category,
+                               @RequestParam int rating,
+                               @RequestParam String comment,
+                               HttpSession session,
+                               RedirectAttributes ra) {
 
         Member login = (Member) session.getAttribute("loggedInUser");
         if (login == null) {
@@ -71,15 +71,15 @@ public class ReviewController {
 
         String memberId = login.getMember_id();
 
-        // 거래 확인 및 권한 체크
+        // 거래 확인
         HistoryDTO history = historyService.findById(historyId);
-        if (history == null || 
+        if (history == null ||
             (!memberId.equals(history.getBuyer_id()) && !memberId.equals(history.getSeller_id()))) {
             ra.addFlashAttribute("error", "유효하지 않은 거래입니다.");
             return "redirect:/review/form";
         }
 
-        // 🚨 거래 단위로 리뷰 중복 방지
+        // 중복 체크
         if (reviewService.existsByHistoryId(historyId)) {
             ra.addFlashAttribute("error", "이 거래에 대해 이미 리뷰를 작성하셨습니다.");
             return "redirect:/review/form";
@@ -94,20 +94,29 @@ public class ReviewController {
         dto.setCategory(category);
         dto.setRating(rating);
         dto.setComment(comment);
-
         reviewService.save(dto);
-        
-        String sender = login.getUserName();
-        String receiver = memberService.findById(sellerId).getUserName();
-        notificationService.createSimpleNotification(sender, 
-        					receiver, 
-        					"리뷰", 
-        					sender + "님이 당신에게 리뷰를 남겼습니다.", 
-        					dto.getReviewId(), 
-        					"review");      
+
+        // 알림 처리
+        Member sellerMember = memberService.findById(sellerId);
+        if (sellerMember != null) {
+            String sender = login.getUserName();
+            String receiver = sellerMember.getUserName();
+            notificationService.createSimpleNotification(
+                sender,
+                receiver,
+                "리뷰",
+                sender + "님이 당신에게 리뷰를 남겼습니다.",
+                dto.getReviewId(),
+                "review"
+            );
+        } else {
+            System.err.println("🚨 sellerId에 해당하는 회원을 찾을 수 없음: " + sellerId);
+        }
+
         ra.addAttribute("id", dto.getReviewId());
         return "redirect:/review/myreviews";
     }
+
 
     // 리뷰 상세
     @GetMapping("/view")
