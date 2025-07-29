@@ -9,10 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springmvc.domain.Member;
-import com.springmvc.domain.MemberStatus;
 import com.springmvc.repository.MemberRepository;
 import com.springmvc.repository.purchaseRepository;
-
 
 @Service // ✅ 이 클래스는 비즈니스 로직을 처리하는 서비스 계층으로, 스프링이 관리하는 Bean이다
 public class MemberServiceImpl implements MemberService {
@@ -54,10 +52,7 @@ public class MemberServiceImpl implements MemberService {
     // ✅ 회원 삭제 (회원 탈퇴)
     @Override
     public void delete(String member_id) {
-    	Member member = new Member();
-    	member.setMember_id(member_id);
-        member.setStatus(MemberStatus.INACTIVE); 
-        memberRepository.update(member);
+        memberRepository.delete(member_id);
     }
 
     // ✅ 로그인 처리: member_id로 회원 조회 후 비밀번호는 Security 또는 Controller에서 확인
@@ -77,8 +72,7 @@ public class MemberServiceImpl implements MemberService {
     // ✅ ID 중복 여부 확인 (true면 중복 있음)
     @Override
     public boolean isDuplicateId(String member_id) {
-        System.out.println("💡 Service 도착: 중복체크 대상 ID = " + member_id);
-        return memberRepository.isDuplicateId(member_id);
+        return memberRepository.findById(member_id) != null;
     }
 
     // ✅ username 중복 여부 확인
@@ -175,9 +169,5 @@ public class MemberServiceImpl implements MemberService {
 	public Member updateAccountAndReturn(String memberId, int amount) {
 		memberRepository.updateAccountBalance(memberId, amount);
 		return memberRepository.findById(memberId); 
-	}
-
-
-
-	
+	}   
 }

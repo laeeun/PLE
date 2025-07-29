@@ -11,7 +11,7 @@ public interface HistoryService {
 	List<HistoryDTO> findByMemberId(String member_id);
 	
 	HistoryDTO findById(Long historyId);
-	
+
     boolean existsBySellerId(String sellerId);
     boolean existsByBuyerId(String buyerId);
 }

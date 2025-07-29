@@ -1,5 +1,6 @@
 package com.springmvc.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +36,28 @@ public class ReportRepositoryImpl implements ReportRepository{
 
 	@Override
 	public List<ReportDTO> pagedReportList(String targetType, String status, int page, int size) {
-	    String sql = "SELECT * FROM report WHERE target_type = ? AND status = ? " +
-	                 "ORDER BY created_at DESC LIMIT ?, ?";
+	    StringBuilder sql = new StringBuilder("SELECT * FROM report WHERE 1=1");
+	    List<Object> params = new ArrayList<>();
 
-	    int offset = (page - 1) * size; // 페이지 번호는 1부터 시작한다고 가정
+	    // 조건 1: target_type 있을 때만 추가
+	    if (targetType != null && !targetType.trim().isEmpty()) {
+	        sql.append(" AND target_type = ?");
+	        params.add(targetType);
+	    }
 
-	    return template.query(sql, new ReportRowMapper(),
-	            targetType,
-	            status,
-	            offset,
-	            size
-	    );
+	    // 조건 2: status 있을 때만 추가
+	    if (status != null && !status.trim().isEmpty()) {
+	        sql.append(" AND status = ?");
+	        params.add(status);
+	    }
+
+	    // 정렬 + 페이징
+	    sql.append(" ORDER BY created_at DESC LIMIT ?, ?");
+	    int offset = (page - 1) * size;
+	    params.add(offset);
+	    params.add(size);
+
+	    return template.query(sql.toString(), new ReportRowMapper(), params.toArray());
 	}
 
 	@Override
@@ -71,6 +83,12 @@ public class ReportRepositoryImpl implements ReportRepository{
 	public int countReports(String targetType, String status) {
 		 String sql = "SELECT COUNT(*) FROM report WHERE target_type = ? AND status = ?";
 		 return template.queryForObject(sql, Integer.class, targetType, status);
+	}
+	
+	@Override
+	public int countByTargetId(String targetId) {
+		String sql = "SELECT COUNT(*) FROM report WHERE target_id = ? AND status = 'approved'";
+	    return template.queryForObject(sql, Integer.class, targetId);
 	}
 	
 }

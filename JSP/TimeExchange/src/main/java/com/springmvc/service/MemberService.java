@@ -78,5 +78,4 @@ public interface MemberService {
     public void updatePasswordWithTemp(String member_id, String encodedPw, String tempPw);
 
     Member updateAccountAndReturn(String sellerId,int price);
-    
 }

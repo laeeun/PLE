@@ -43,5 +43,10 @@ public class ReportServiceImpl implements ReportService{
 	public int countReports(String targetType, String status) {
 		return reportRepository.countReports(targetType, status);
 	}
+
+	@Override
+	public int getReportCountForUser(String targetId) {
+		return reportRepository.countByTargetId(targetId);
+	}
 	
 }

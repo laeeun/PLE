@@ -7,22 +7,23 @@ import com.springmvc.domain.ChatEntity;
 
 public class ChatRowMapper implements RowMapper<ChatEntity> {
 
-    @Override
-    public ChatEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-        ChatEntity entity = new ChatEntity();
-        entity.setId(rs.getLong("id"));
-        entity.setRoomId(rs.getLong("room_id")); // Long 타입일 경우
-        entity.setSenderId(rs.getString("sender_id"));
-        entity.setReceiverId(rs.getString("receiver_id"));
-        entity.setContent(rs.getString("message"));
-        entity.setType(rs.getString("type"));
-        entity.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+	@Override
+	public ChatEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+	    ChatEntity entity = new ChatEntity();
+	    entity.setId(rs.getLong("id"));
+	    entity.setRoomId(rs.getString("room_id"));
+	    entity.setSenderId(rs.getString("sender_id"));
+	    entity.setReceiverId(rs.getString("receiver_id"));
+	    entity.setContent(rs.getString("message"));
+	    entity.setType(rs.getString("type"));
+	    entity.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
 
-        // ✅ 추가된 필드들
-        entity.setFileUrl(rs.getString("file_url"));
-        entity.setRead(rs.getBoolean("read"));
-        entity.setDeleted(rs.getBoolean("deleted"));
+	    // ✅ 추가 필드
+	    entity.setFileUrl(rs.getString("file_url"));
+	    entity.setRead(rs.getBoolean("read"));
+	    entity.setDeleted(rs.getBoolean("deleted"));
 
-        return entity;
-    }
+	    return entity;
+	}
+
 }

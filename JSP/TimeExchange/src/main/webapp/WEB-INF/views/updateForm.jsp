@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:url var="updateUrl" value="/talent/update" />
 <!DOCTYPE html>
 <html lang="ko">
@@ -60,13 +61,13 @@
     		<h4>재능 수정</h4>
 		</div>
         <div class="card-body">
-            <!-- 기존 form:form 코드 그대로 유지 -->
-            <form:form modelAttribute="updateTalent" method="post" action="${updateUrl}">
+            
+            <form:form modelAttribute="updateTalent" method="post" action="${updateUrl}" enctype="multipart/form-data">
                 <form:hidden path="talent_id"/>
-
+				<form:hidden path="filename"/>
                 <div class="mb-3">
                     <label class="form-label">제목</label>
-                    <form:input path="title" class="form-control" />
+                    <form:input path="title" class="form-control" required="required"/>
                 </div>
 
                 <div class="mb-3">
@@ -77,7 +78,7 @@
                 <div class="mb-3">
                     <label class="form-label">카테고리</label><br/>
                     <div class="form-check">
-                        <form:radiobutton path="category" value="디자인" class="form-check-input" id="cat1" />
+                        <form:radiobutton path="category" value="디자인" class="form-check-input" id="cat1" required="required"/>
                         <label class="form-check-label" for="cat1">디자인</label>
                     </div>
                     <div class="form-check">
@@ -101,10 +102,34 @@
                         <label class="form-check-label" for="cat6">기타</label>
                     </div>
                 </div>
-
+				<c:if test="${not empty updateTalent.filename}">
+				    <div class="mb-3">
+				        <label class="form-label">기존 첨부 파일</label><br/>
+				        <c:choose>
+				            <c:when test="${fn:endsWith(updateTalent.filename, '.jpg') 
+				                        || fn:endsWith(updateTalent.filename, '.jpeg') 
+				                        || fn:endsWith(updateTalent.filename, '.png') 
+				                        || fn:endsWith(updateTalent.filename, '.gif')}">
+				                <img src="<c:url value='/resources/uploads/${updateTalent.filename}' />"
+				                     alt="첨부 이미지"
+				                     style="max-width: 100%; height: auto; border-radius: 10px;" />
+				            </c:when>
+				            <c:otherwise>
+				                <a href="<c:url value='/resources/uploads/${updateTalent.filename}' />" download>
+				                    ${updateTalent.filename}
+				                </a>
+				            </c:otherwise>
+				        </c:choose>
+				    </div>
+				</c:if>
+				<div class="mb-3">
+				    <label class="form-label">첨부 파일 변경</label>
+				    <input type="file" name="uploadFile" class="form-control" />
+				    <small class="text-muted">※ 파일을 선택하지 않으면 기존 파일이 유지됩니다</small>
+				</div>
                 <div class="mb-3">
                     <label class="form-label">판매 시간 (분)</label>
-                    <form:input path="timeSlot" type="number" class="form-control" />
+                    <input type="number" name="timeSlot" class="form-control" id="timeSlot" min="1" required />
                 </div>
 
                 <div class="text-end">

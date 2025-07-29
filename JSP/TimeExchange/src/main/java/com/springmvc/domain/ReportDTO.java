@@ -1,6 +1,7 @@
 package com.springmvc.domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ReportDTO {
     private int report_id; // 신고 고유 번호 (PK)
@@ -29,6 +30,12 @@ public class ReportDTO {
 		this.admin_note = admin_note;
 	}
 	public ReportDTO() {}
+	
+	public String getFormattedCreatedAt() {
+	    if (created_at == null) return "";
+	    return created_at.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+	}
+	
 	public int getReport_id() {
 		return report_id;
 	}

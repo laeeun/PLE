@@ -215,6 +215,24 @@
       background-color: rgba(0,0,0,0.08);
       width: 80%;
     }
+    .category-link {
+	  display: inline-block;
+	  margin: 8px;
+	  padding: 10px 20px;
+	  border-radius: 12px;
+	  background-color: rgba(167, 139, 250, 0.15); /* 연보라 배경 */
+	  color: #5b21b6;
+	  font-weight: 600;
+	  text-decoration: none;
+	  transition: all 0.2s ease-in-out;
+	  border: 1px solid rgba(167, 139, 250, 0.3);
+	}
+	
+	.category-link:hover {
+	  background-color: rgba(167, 139, 250, 0.25);
+	  color: #4c1d95;
+	  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.15);
+	}
   </style>
 </head>
 <body>
@@ -224,6 +242,7 @@
       <div>
         <a class="nav-link" href="<c:url value='/' />">홈</a>
         <a class="nav-link" href="<c:url value='/talent' />">시간 거래소</a>
+        
         <c:if test="${not empty sessionScope.loggedInUser}">
 		        <a class="nav-link" href="<c:url value='/charge' />">시간 충전소</a>
 		    </c:if>
@@ -239,8 +258,9 @@
 		</div>
     </div>
     </div>
+    
   </nav>
-
+	
   <div class="content-wrapper">
     <h1>우리의 Time을 Change해요</h1>
     <div class="slide-text" id="slide-text">
@@ -267,72 +287,21 @@
       "시간은 흘러가지만, 나누면 남는다."
     </div>
   </div>
-
+  <h2 style="text-align: center; color: #5b21b6; margin-top: 60px; margin-bottom: 20px;">
+  전체 카테고리 보기
+</h2>
+  <div style="margin: 40px auto; text-align: center;">
+	<a href="<c:url value='/talent?category=프로그래밍' />" class="category-link">프로그래밍</a>
+	<a href="<c:url value='/talent?category=디자인' />" class="category-link">디자인</a>
+	<a href="<c:url value='/talent?category=번역' />" class="category-link">번역</a>
+	<a href="<c:url value='/talent?category=음악' />" class="category-link">음악</a>
+	<a href="<c:url value='/talent?category=영상편집' />" class="category-link">영상편집</a>
+	<a href="<c:url value='/talent?category=글쓰기' />" class="category-link">글쓰기</a>
+	<a href="<c:url value='/talent?category=과외' />" class="category-link">과외</a>
+	<a href="<c:url value='/talent?category=생활서비스' />" class="category-link">생활서비스</a>
+	<a href="<c:url value='/talent?category=기획창작' />" class="category-link">기획창작</a>
+  </div>
   <hr>
-
-	<div class="container" style="max-width: 1080px; padding: 40px 0;">
-	  <h2 style="text-align:center; margin-bottom: 30px; color: #5b21b6;">전체 카테고리 보기</h2>
-	  <div class="row" style="display: flex; flex-wrap: wrap; justify-content: center;">
-	    <c:forEach var="entry" items="${categoryRankingMap}">
-	      <div class="col-md-4 mb-4" style="padding: 12px;">
-	        <div class="card text-center h-100" style="
-	            border-radius: 16px;
-	            background: rgba(216, 180, 254, 0.9); /* 진한 연보라 + 투명도 */
-	            box-shadow: 0 8px 24px rgba(128, 90, 213, 0.2);
-	            padding: 40px 20px;
-	            backdrop-filter: blur(10px);
-	            transition: all 0.3s ease;
-	            animation: fadeIn 0.8s ease;
-	        ">
-	          <!-- 아이콘 -->
-	          <div style="margin-bottom: 24px;">
-	            <c:choose>
-	              <c:when test="${entry.key == '디자인'}">
-	                <i class="fas fa-paint-brush fa-3x" style="color: #ffffff;"></i>
-	              </c:when>
-	              <c:when test="${entry.key == '번역'}">
-	                <i class="fas fa-language fa-3x" style="color: #ffffff;"></i>
-	              </c:when>
-	              <c:when test="${entry.key == '음악'}">
-	                <i class="fas fa-music fa-3x" style="color: #ffffff;"></i>
-	              </c:when>
-	              <c:when test="${entry.key == '프로그래밍'}">
-	                <i class="fas fa-code fa-3x" style="color: #ffffff;"></i>
-	              </c:when>
-	              <c:when test="${entry.key == '영상 편집'}">
-	                <i class="fas fa-video fa-3x" style="color: #ffffff;"></i>
-	              </c:when>
-	              <c:otherwise>
-	                <i class="fas fa-star fa-3x" style="color: #ffffff;"></i>
-	              </c:otherwise>
-	            </c:choose>
-	          </div>
-	
-	          <!-- 카테고리명 -->
-	          <h5 style="font-size: 20px; color: #ffffff; margin-bottom: 12px;">${entry.key}</h5>
-	
-	          <!-- 버튼 -->
-	          <a href="<c:url value='/talent/${entry.key}' />" style="
-	              font-size: 14px;
-	              padding: 10px 22px;
-	              border-radius: 8px;
-	              background: rgba(255, 255, 255, 0.25);
-	              color: #ffffff;
-	              font-weight: 600;
-	              text-decoration: none;
-	              backdrop-filter: blur(4px);
-	              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-	              transition: all 0.3s ease;
-	              display: inline-block;
-	          " onmouseover="this.style.background='rgba(255,255,255,0.45)';"
-	             onmouseout="this.style.background='rgba(255,255,255,0.25)';">
-	            보러 가기 →
-	          </a>
-	        </div>
-	      </div>
-	    </c:forEach>
-	  </div>
-	</div>
 	<h2 style="text-align: center; color: #5b21b6; margin-bottom: 10px;">
  	 우리 동네에 이런 재능이 있어요!
 	</h2>
@@ -364,8 +333,8 @@
 	              </c:otherwise>
 	            </c:choose>
 	          </p>
-	          <p style="font-size: 13px; color: #94a3b8;">작성자: ${talent.writerNickname}</p>
-	          <a href="<c:url value='/talent/view?talentId=${talent.id}' />" style="
+	          <p style="font-size: 13px; color: #94a3b8;">작성자: ${talent.username}</p>
+	          <a href="<c:url value="/talent/view?id=${talent.talent_id }" />" style="
 	            display: inline-block;
 	            margin-top: 12px;
 	            font-size: 13px;
@@ -382,6 +351,7 @@
   <jsp:include page="/WEB-INF/views/footer.jsp" />
 
   <script>
+  
     const texts = document.querySelectorAll('#slide-text span');
     let index = 0;
     setInterval(() => {
@@ -390,6 +360,8 @@
       texts[index].classList.add('active');
     }, 3000);
     lucide.createIcons();
+    
+    
   </script>
 </body>
 </html>

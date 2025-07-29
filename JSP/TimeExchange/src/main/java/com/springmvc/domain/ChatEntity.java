@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 
 public class ChatEntity {
     private Long id;
-    private Long roomId;
+    private String roomId;
     private String senderId;
     private String receiverId;
     private String senderName;          // 선택: 닉네임 표시
     private String senderProfileImage;  // 선택: 프로필 사진
+    private String receiverName;
+    private String receiverProfileImage;
     private String content;
     private String type;                // CHAT, IMAGE 등
     private String fileUrl;             // 이미지/파일 경로
@@ -22,7 +24,7 @@ public class ChatEntity {
     }
     
     // 생성자
-    public ChatEntity(Long roomId, String senderId, String receiverId,
+    public ChatEntity(String roomId, String senderId, String receiverId,
             String content, String type, LocalDateTime createdAt,
             String fileUrl, boolean read, boolean deleted) {
         this.roomId = roomId;
@@ -44,11 +46,11 @@ public class ChatEntity {
 		this.id = id;
 	}
 
-	public Long getRoomId() {
+	public String getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(Long roomId) {
+	public void setRoomId(String roomId) {
 		this.roomId = roomId;
 	}
 
@@ -82,6 +84,22 @@ public class ChatEntity {
 
 	public void setSenderProfileImage(String senderProfileImage) {
 		this.senderProfileImage = senderProfileImage;
+	}
+
+	public String getReceiverName() {
+		return receiverName;
+	}
+
+	public void setReceiverName(String receiverName) {
+		this.receiverName = receiverName;
+	}
+
+	public String getReceiverProfileImage() {
+		return receiverProfileImage;
+	}
+
+	public void setReceiverProfileImage(String receiverProfileImage) {
+		this.receiverProfileImage = receiverProfileImage;
 	}
 
 	public String getContent() {
@@ -143,10 +161,10 @@ public class ChatEntity {
 	@Override
 	public String toString() {
 		return "ChatEntity [id=" + id + ", roomId=" + roomId + ", senderId=" + senderId + ", receiverId=" + receiverId
-				+ ", senderName=" + senderName + ", senderProfileImage=" + senderProfileImage + ", content=" + content
-				+ ", type=" + type + ", fileUrl=" + fileUrl + ", read=" + read + ", readAt=" + readAt + ", deleted="
-				+ deleted + ", createdAt=" + createdAt + "]";
+				+ ", senderName=" + senderName + ", senderProfileImage=" + senderProfileImage + ", receiverName="
+				+ receiverName + ", receiverProfileImage=" + receiverProfileImage + ", content=" + content + ", type="
+				+ type + ", fileUrl=" + fileUrl + ", read=" + read + ", readAt=" + readAt + ", deleted=" + deleted
+				+ ", createdAt=" + createdAt + "]";
 	}
 
-	
 }

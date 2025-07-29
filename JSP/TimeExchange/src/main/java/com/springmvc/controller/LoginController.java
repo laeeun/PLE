@@ -110,6 +110,7 @@ public class LoginController {
         System.out.println("업데이트 후 DB 기준 login_fail_count = " + refreshed.getLoginFailCount());
 
         session.setAttribute("loggedInUser", refreshed);
+        session.setAttribute("loggedInId", refreshed.getMember_id()); 
         session.removeAttribute("captcha"); // 캡차 제거
 
         return "redirect:/";

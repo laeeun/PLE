@@ -1,13 +1,19 @@
 package com.springmvc.config;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import com.springmvc.domain.Member;
 import com.springmvc.domain.TalentDTO;
+import com.springmvc.service.NotificationService;
 import com.springmvc.service.TalentService;
 
 @ControllerAdvice
@@ -15,6 +21,9 @@ public class GlobalModelAttributeConfig {
 
     @Autowired
     private TalentService talentService;
+    
+    @Autowired
+    private NotificationService notificationService;
 
     @ModelAttribute("top5CategoryRanking")
     public List<Map.Entry<String, Integer>> populateTop5Ranking() {
@@ -37,5 +46,14 @@ public class GlobalModelAttributeConfig {
             .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
             .limit(5)
             .collect(Collectors.toList());
+    }
+    
+    @ModelAttribute("unreadCount")
+    public int addUnreadCount(HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loggedInUser");
+        if (loginUser != null) {
+            return notificationService.countUnread(loginUser.getUserName());
+        }
+        return 0;
     }
 }

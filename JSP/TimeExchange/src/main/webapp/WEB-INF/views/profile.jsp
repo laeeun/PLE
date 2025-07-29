@@ -60,19 +60,30 @@
 <jsp:include page="/WEB-INF/views/nav.jsp" />
 
 <div class="container mt-5">
-
+	<c:set var="loginId" value="${sessionScope.loggedInUser.member_id}" />
+	<c:set var="otherId" value="${member.member_id}" />
+	<c:set var="roomId" value="${loginId}_${otherId}" />
+	
     <!-- 프로필 카드 -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4>${member.userName}님의 프로필</h4>
 
             <!-- 팔로우 버튼 -->
-            <c:if test="${not empty loggedInUser and loggedInUser.member_id ne member.member_id}">
-                <button id="followBtn" class="btn ${isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'}"
-                        data-id="${member.member_id}">
-                    ${isFollowing ? '언팔로우 💔' : '팔로우 💗'}
-                </button>
-            </c:if>     
+			<c:if test="${not empty loggedInUser and loggedInUser.member_id ne member.member_id}">
+			    <div class="d-flex gap-2">
+			        <button id="followBtn" class="btn ${isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'}"
+			                data-id="${member.member_id}">
+			            ${isFollowing ? '언팔로우 💔' : '팔로우 💗'}
+			        </button>
+			
+			        <!-- ✅ 채팅 보내기 버튼 추가 -->
+			        <a href="<c:url value='/chat/room?roomId=${roomId}' />" class="btn btn-outline-secondary">
+					    💬 채팅 보내기
+					</a>
+			    </div>
+			</c:if>
+   
         </div>
         <div class="card-body">
             <p><strong>ID:</strong> ${member.member_id}</p>

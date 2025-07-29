@@ -68,6 +68,7 @@ public class HomeController {
 	    String userId = user.getMember_id();
 
 	    List<TalentDTO> localTalents = talentService.getTalentByAddr(userId, baseAddr);
+	    
 	    model.addAttribute("localTalents", localTalents);
         return "home";
     }

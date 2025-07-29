@@ -20,6 +20,8 @@ import com.springmvc.domain.Member;
 import com.springmvc.domain.ReviewDTO;
 import com.springmvc.domain.ReviewReplyDTO;
 import com.springmvc.service.HistoryService;
+import com.springmvc.service.MemberService;
+import com.springmvc.service.NotificationService;
 import com.springmvc.service.ReviewService;
 
 @RequestMapping("/review")
@@ -31,7 +33,10 @@ public class ReviewController {
 
     @Autowired
     private HistoryService historyService;
-
+    @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private MemberService memberService;
     // 리뷰 작성 폼
     @GetMapping("/form")
     public String reviewForm(@RequestParam String category,
@@ -91,7 +96,15 @@ public class ReviewController {
         dto.setComment(comment);
 
         reviewService.save(dto);
-
+        
+        String sender = login.getUserName();
+        String receiver = memberService.findById(sellerId).getUserName();
+        notificationService.createSimpleNotification(sender, 
+        					receiver, 
+        					"리뷰", 
+        					sender + "님이 당신에게 리뷰를 남겼습니다.", 
+        					dto.getReviewId(), 
+        					"review");      
         ra.addAttribute("id", dto.getReviewId());
         return "redirect:/review/myreviews";
     }

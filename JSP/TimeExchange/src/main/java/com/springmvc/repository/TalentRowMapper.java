@@ -44,7 +44,13 @@ public class TalentRowMapper implements RowMapper<TalentDTO>{
 	    } catch (SQLException ignore) {
 	        talent.setReviewCount(0);
 	    }
-
+	    
+	    try {
+            rs.findColumn("file_name"); // 이 컬럼이 존재하는지 확인
+            talent.setFilename(rs.getString("file_name")); // DTO에 넣기
+        } catch (SQLException e) {
+            // 컬럼이 없으면 무시 (다른 조회 쿼리에도 영향 없게)
+        }
 	    return talent;
 	}
 	

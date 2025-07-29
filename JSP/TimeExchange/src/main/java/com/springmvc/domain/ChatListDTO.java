@@ -3,7 +3,7 @@ package com.springmvc.domain;
 import java.time.LocalDateTime;
 
 public class ChatListDTO {
-    private Long roomId;
+    private String roomId;
     private String partnerId;
     private String partnerName;
     private String partnerProfileImage;
@@ -16,10 +16,10 @@ public class ChatListDTO {
     
     
     
-	public Long getRoomId() {
+	public String getRoomId() {
 		return roomId;
 	}
-	public void setRoomId(Long roomId) {
+	public void setRoomId(String roomId) {
 		this.roomId = roomId;
 	}
 	public String getPartnerId() {

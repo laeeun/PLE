@@ -23,4 +23,6 @@ public interface ReportRepository {
     // ✅ 총 개수 조회 (페이징용)
     int countReports(String targetType, String status);
 	
+    // 신고 대상 사용자의 신고 횟수 조회
+    int countByTargetId(String targetId);
 }

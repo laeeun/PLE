@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.springmvc.domain.ChatEntity;
 import com.springmvc.domain.ChatListDTO;
+import com.springmvc.domain.ChatMessage;
 
 @Repository
 public class ChatRepositoryImpl implements ChatRepository {
@@ -20,7 +21,7 @@ public class ChatRepositoryImpl implements ChatRepository {
     public void saveMessage(ChatEntity message) {
         String sql = """
             INSERT INTO chat_message
-            (room_id, sender_id, receiver_id, message, type, created_at, file_url, read, deleted)
+            (room_id, sender_id, receiver_id, message, type, created_at, file_url, `read`, deleted)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
         template.update(sql,
@@ -38,7 +39,7 @@ public class ChatRepositoryImpl implements ChatRepository {
 
     // 💬 채팅방 메시지 조회
     @Override
-    public List<ChatEntity> findMessagesByRoomId(Long roomId) {
+    public List<ChatEntity> findMessagesByRoomId(String roomId) {
         String sql = "SELECT * FROM chat_message WHERE room_id = ? AND deleted = FALSE ORDER BY created_at ASC";
         return template.query(sql, new ChatRowMapper(), roomId);
     }
@@ -48,7 +49,7 @@ public class ChatRepositoryImpl implements ChatRepository {
     public List<ChatListDTO> findChatListByUserId(String memberId) {
         String sql = """
             SELECT cm.room_id,
-                   CASE WHEN cm.sender_id = ? THEN cm.receiver_id ELSE cm.sender_id END AS partner_name,
+                   m.username AS partner_name,
                    cm.message AS last_message,
                    cm.created_at AS last_message_time
             FROM chat_message cm
@@ -58,28 +59,35 @@ public class ChatRepositoryImpl implements ChatRepository {
                 WHERE sender_id = ? OR receiver_id = ?
                 GROUP BY room_id
             ) latest ON cm.room_id = latest.room_id AND cm.created_at = latest.max_time
+            JOIN member m ON m.member_id = (
+                CASE WHEN cm.sender_id = ? THEN cm.receiver_id ELSE cm.sender_id END
+            )
             ORDER BY cm.created_at DESC
         """;
 
         return template.query(sql, (rs, rowNum) -> {
             ChatListDTO dto = new ChatListDTO();
-            dto.setRoomId(rs.getLong("room_id"));
+            dto.setRoomId(rs.getString("room_id"));
             dto.setPartnerName(rs.getString("partner_name"));
             dto.setLastMessage(rs.getString("last_message"));
             dto.setLastMessageTime(rs.getTimestamp("last_message_time").toLocalDateTime());
+            
+            
+            System.out.println("✅ dto.toString = " + dto);
+            
             return dto;
         }, memberId, memberId, memberId);
     }
 
     // 🧠 채팅방 존재 확인
     @Override
-    public Long findRoomIdByUserIds(String user1Id, String user2Id) {
+    public String findRoomIdByUserIds(String user1Id, String user2Id) {
         String sql = """
             SELECT room_id FROM chat_room
             WHERE (user1_id = ? AND user2_id = ?) OR (user1_id = ? AND user2_id = ?)
         """;
-        List<Long> result = template.query(sql,
-                (rs, rowNum) -> rs.getLong("room_id"),
+        List<String> result = template.query(sql,
+                (rs, rowNum) -> rs.getString("room_id"),
                 user1Id, user2Id, user2Id, user1Id
         );
         return result.isEmpty() ? null : result.get(0);
@@ -87,13 +95,14 @@ public class ChatRepositoryImpl implements ChatRepository {
 
     // ➕ 채팅방 생성
     @Override
-    public Long createChatRoom(String user1Id, String user2Id) {
-        String sql = "INSERT INTO chat_room (user1_id, user2_id) VALUES (?, ?)";
-        template.update(sql, user1Id, user2Id);
+    public String createChatRoom(String user1Id, String user2Id) {
+        // ✅ room_id를 직접 생성 (예: "user1_user2" 형식으로)
+        String roomId = user1Id + "_" + user2Id;
 
-        // 생성된 room_id 반환
-        String getIdSql = "SELECT LAST_INSERT_ID()";
-        return template.queryForObject(getIdSql, Long.class);
+        String sql = "INSERT INTO chat_room (room_id, user1_id, user2_id) VALUES (?, ?, ?)";
+        template.update(sql, roomId, user1Id, user2Id);
+
+        return roomId; // ✅ 생성된 room_id를 그대로 반환
     }
 
     @Override
@@ -108,5 +117,27 @@ public class ChatRepositoryImpl implements ChatRepository {
         return count != null && count > 0;
     }
     
-    
+    @Override
+    public List<ChatEntity> findAllMessagesByMemberId(String memberId) {
+        String sql = """
+            SELECT cm.*, 
+                   s.nickname AS sender_name,
+                   s.profile_image AS sender_profile_image,
+                   r.nickname AS receiver_name,
+                   r.profile_image AS receiver_profile_image
+            FROM chat_message cm
+            JOIN member s ON cm.sender_id = s.member_id
+            JOIN member r ON cm.receiver_id = r.member_id
+            WHERE cm.room_id IN (
+                SELECT DISTINCT room_id
+                FROM chat_message
+                WHERE sender_id = ? OR receiver_id = ?
+            )
+            ORDER BY cm.room_id, cm.created_at ASC
+        """;
+
+        return template.query(sql, new ChatRowMapper(), memberId, memberId);
+    }
+
+
 }

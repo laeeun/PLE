@@ -143,6 +143,7 @@
                 <a class="nav-link" href="<c:url value='/charge' />">시간 충전소</a>
                 <a class="nav-link" href="<c:url value='/todo' />">TODO 리스트</a>
                 <a class="nav-link" href="<c:url value='/favorite' />">나의 찜 목록</a>
+                
             </c:if>
 
             <!-- 🔥 인기 카테고리 드롭다운 -->
@@ -169,11 +170,20 @@
         <div class="d-flex align-items-center">
             <c:choose>
                 <c:when test="${not empty sessionScope.loggedInUser}">
+	                
                     <span class="user-name">${sessionScope.loggedInUser.userName}님</span>
                     <a href="<c:url value='/mypage' />" class="btn btn-mypage me-2">
                         마이페이지
-                        <span id="notification-badge" class="badge bg-danger ms-2" style="display:none">0</span>
                     </a>
+                    <button onclick="window.open('<c:url value="/notification/popup" />', '알림 목록', 'width=500,height=600')"
+				          class="btn btn-outline-secondary btn-sm position-relative">
+				  		  전체 알림 보기
+					    <c:if test="${unreadCount > 0}">
+					      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+					        ${unreadCount}		        
+					      </span>
+					    </c:if>
+				  	</button>
                     <a href="<c:url value='/logout' />" class="btn btn-logout">로그아웃</a>
                 </c:when>
                 <c:otherwise>

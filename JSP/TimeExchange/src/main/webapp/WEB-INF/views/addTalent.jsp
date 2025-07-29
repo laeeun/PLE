@@ -99,23 +99,24 @@
     <h2 class="mb-4">재능 등록</h2>
 
     <form:form modelAttribute="newTalent"
-               method="post"
-               action="${addurl}">
+           method="post"
+           action="${addurl}"
+           enctype="multipart/form-data">
 
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>
-            <form:input path="title" cssClass="form-control" id="title"/>
+            <form:input path="title" cssClass="form-control" id="title" required="required"/>
         </div>
 
         <div class="mb-3">
             <label for="description" class="form-label">설명</label>
             <form:textarea path="description" rows="5" cssClass="form-control" id="description"/>
         </div>
-
+		
         <div class="mb-3">
             <label class="form-label">카테고리</label>
             <div class="form-check">
-                <form:radiobutton path="category" value="디자인" cssClass="form-check-input" id="cat1"/>
+                <form:radiobutton path="category" value="디자인" cssClass="form-check-input" id="cat1" required="required"/>
                 <label for="cat1" class="form-check-label">디자인</label>
             </div>
             <div class="form-check">
@@ -151,12 +152,17 @@
                 <label for="cat9" class="form-check-label">기획/창작</label>
             </div>
         </div>
-
+				
+	    <div class="mb-3">
+	        <label for="uploadFile" class="form-label">첨부 파일</label>
+	        <input type="file" name="uploadFile" id="uploadFile" class="form-control" />
+	    </div>
+		
         <div class="mb-3">
             <label for="timeSlot" class="form-label">판매 시간 (분 단위)</label>
-            <form:input path="timeSlot" cssClass="form-control" id="timeSlot"/>
+            <input type="number" name="timeSlot" class="form-control" id="timeSlot" min="1" required />
         </div>
-
+		
         <button type="submit" class="btn btn-primary">등록하기</button>
     </form:form>
 </div>

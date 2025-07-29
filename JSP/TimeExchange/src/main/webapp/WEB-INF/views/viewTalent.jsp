@@ -60,14 +60,31 @@
             <h3 class="text-white">${talent.title}</h3>
         </div>
         <div class="card-body">
-            <p><strong>🧑‍💻 작성자:</strong>
+            <!--  <p><strong>🧑‍💻 작성자:</strong>
+			    <c:choose>
+			        <c:when test="${talent.member_id == sessionScope.loggedInUser.member_id}">
+			            <a href="<c:url value='/mypage' />">${talent.username}</a>
+			        </c:when>
+			        <c:otherwise>
+			            <a href="<c:url value='/profile/${talent.member_id}' />">${talent.username}</a>
+			        </c:otherwise>
+			    </c:choose>
+			</p> -->
+			<p><strong>🧑‍💻 작성자:</strong>
                 <a href="<c:url value='/profile/${talent.member_id}' />">${talent.username}</a>
             <p><strong>📂 카테고리:</strong> ${talent.category}</p>
             <p><strong>🕒 판매 시간:</strong> ${talent.timeSlotDisplay}</p>
             <p><strong>🗓️ 등록일:</strong>
                 <fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd HH:mm" />
             </p>
-
+			<c:if test="${not empty talent.filename}">
+			    <div class="mb-3">
+			        <label class="form-label">첨부 파일</label><br/>
+			        <a href="<c:url value='/resources/uploads/${talent.filename}' />" download>
+			            ${talent.filename}
+			        </a>
+			    </div>
+			</c:if>
             <hr>
             <p><strong>📌 설명:</strong></p>
             <p>${talent.description}</p>
@@ -230,9 +247,19 @@ $(document).ready(function () {
                         html += `
                             <button class="btn btn-sm btn-outline-secondary edit-btn">수정</button>
                             <button class="btn btn-sm btn-outline-danger delete-btn">삭제</button>
+                            
+                        `;
+                    }else {
+                        // ✅ 댓글 신고 버튼 추가 (본인이 아닌 경우에만)
+                        html += `
+                            <button class="btn btn-sm btn-outline-warning report-btn"
+                                    data-writer="\${comment.writerId}"
+                                    data-id="\${comment.commentId}">
+                                🚨 신고
+                            </button>
                         `;
                     }
-
+					              
                     html += "</div>";
 
                     console.log("🧪 HTML:", html);

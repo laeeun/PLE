@@ -44,7 +44,6 @@
 <jsp:include page="/WEB-INF/views/nav.jsp"/>
 
 <h2>💬 채팅 목록</h2>
-
 <!-- 채팅방 리스트 반복 -->
 <c:forEach var="chat" items="${chatList}">
     <a href="<c:url value='/chat/room?roomId=${chat.roomId}'/>" style="text-decoration: none;">

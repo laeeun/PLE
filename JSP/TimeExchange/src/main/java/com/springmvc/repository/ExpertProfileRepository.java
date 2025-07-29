@@ -18,8 +18,6 @@ public interface ExpertProfileRepository {
     List<ExpertProfileDTO> findAll();
 
     // ✅ 삭제
-    void deleteById(Long id);
-    
-    
+    void deleteById(Long id);    
     
 }

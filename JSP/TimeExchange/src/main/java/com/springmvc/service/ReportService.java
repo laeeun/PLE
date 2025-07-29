@@ -22,4 +22,6 @@ public interface ReportService {
 
     // ✅ 총 개수 조회 (페이징용)
     int countReports(String targetType, String status);
+    
+    public int getReportCountForUser(String targetId);
 }

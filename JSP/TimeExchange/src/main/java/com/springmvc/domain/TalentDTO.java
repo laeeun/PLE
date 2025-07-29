@@ -3,6 +3,8 @@ package com.springmvc.domain;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class TalentDTO {
 	private long talent_id;
 	private	String member_id;
@@ -18,7 +20,8 @@ public class TalentDTO {
 	private boolean favorite;
 	private double averageRating;
 	private int reviewCount;
-	
+	private MultipartFile uploadFile;
+	private String filename;
 	public TalentDTO() {}
 	public TalentDTO(int talent_id, String member_id, String title, String description, String category,
 			LocalDateTime created_at, int timeSlot) {
@@ -35,8 +38,19 @@ public class TalentDTO {
 	    if (created_at == null) return "";
 	    return created_at.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 	}
-	
-	
+		
+	public MultipartFile getUploadFile() {
+		return uploadFile;
+	}
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
 	public double getAverageRating() {
 		return averageRating;
 	}

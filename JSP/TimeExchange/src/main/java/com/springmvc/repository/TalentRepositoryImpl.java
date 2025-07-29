@@ -18,27 +18,29 @@ public class TalentRepositoryImpl implements TalentRepository {
 
     @Override
     public void create(TalentDTO dto) {
-    	String sql = "INSERT INTO talent (member_id, title, description, category, created_at, timeSlot) VALUES (?, ?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO talent (member_id, title, description, category, created_at, timeSlot, file_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
     	template.update(sql,
     	    dto.getMember_id(),
     	    dto.getTitle(),
     	    dto.getDescription(),
     	    dto.getCategory(),
     	    Timestamp.valueOf(dto.getCreated_at()),
-    	    dto.getTimeSlot()
+    	    dto.getTimeSlot(),
+    	    dto.getFilename()  // ← 추가됨!
     	);
     }
 
     @Override
     public void update(TalentDTO dto) {
-    	 String sql = "UPDATE talent SET title=?, description=?, category=?, timeSlot=? WHERE talent_id=?";
-    	    template.update(sql,
-    	        dto.getTitle(),
-    	        dto.getDescription(),
-    	        dto.getCategory(),
-    	        dto.getTimeSlot(),
-    	        dto.getTalent_id()
-    	    );
+    	String sql = "UPDATE talent SET title=?, description=?, category=?, timeSlot=?, file_name=? WHERE talent_id=?";
+        template.update(sql,
+            dto.getTitle(),
+            dto.getDescription(),
+            dto.getCategory(),
+            dto.getTimeSlot(),
+            dto.getFilename(),        // ✅ 새로 저장된 파일명 (또는 기존 파일명)
+            dto.getTalent_id()
+        );
     }
 
     @Override
@@ -105,7 +107,7 @@ public class TalentRepositoryImpl implements TalentRepository {
             params.add("%" + keyword + "%");
             params.add("%" + keyword + "%");
         }
-
+        
         // ✅ 그룹핑 + 정렬 + 페이징
         sql.append(" GROUP BY t.talent_id");
         sql.append(" ORDER BY t.created_at DESC LIMIT ? OFFSET ?");
@@ -162,6 +164,7 @@ public class TalentRepositoryImpl implements TalentRepository {
 		 String sql = "SELECT DISTINCT category FROM talent ORDER BY category ASC";
 		 return template.queryForList(sql, String.class);
 	}
+	
 	@Override
 	public List<TalentDTO> findTopTalentsByRequestCount(String category, int limit) {
 	    String sql = """
