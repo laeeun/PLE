@@ -1,6 +1,7 @@
 package com.springmvc.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,5 +105,25 @@ public class TodoServiceImpl implements TodoService {
         return todoRepository.findByCompleted(receiverId, completed);
     }
 
+	@Override
+	public Map<String, Object> getTodayStats(String receiverId) {
+		return todoRepository.getTodayStats(receiverId);
+	}
+
+	@Override
+	public Map<String, Object> getTodayStatsAll(String receiverId) {
+		return todoRepository.getTodayStatsAll(receiverId);
+	}
+
+	@Override
+	public Map<String, Object> getTodayStatsAssigned(String receiverId) {
+		return todoRepository.getTodayStatsAssigned(receiverId);
+	}
+
+	@Override
+	public Map<String, Object> getTodayStatsCreated(String writerId) {
+		return todoRepository.getTodayStatsCreated(writerId);
+	}
+    
     
 }

@@ -1,6 +1,8 @@
 package com.springmvc.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -65,7 +67,7 @@ public class MyPageController  {
 	    String loginId = sessionMember.getMember_id();
 	    Member member = memberService.findById(loginId);
 	    model.addAttribute("member", member);
-
+	    System.out.println(member);
 	    // ✅ 전문가 프로필 추가
 	    ExpertProfileDTO expertProfile = expertProfileService.findByMemberId(loginId);
 	    if (expertProfile != null) {
@@ -100,11 +102,15 @@ public class MyPageController  {
 	            member.setPhone3(phoneParts[2]);
 	        }
 	    }
+	    
+	    if (member.getProfileImage() != null && member.getProfileImage().trim().isEmpty()) {
+	        member.setProfileImage(null);
+	    }
 	    System.out.println(member);
 	    
 	    model.addAttribute("member", member);
 	    model.addAttribute("mode", "edit");
-
+	    
 	    return "editForm";
 	}
 
@@ -113,12 +119,19 @@ public class MyPageController  {
 	public String edit(@ModelAttribute Member member,
 	                   HttpServletRequest request,
 	                   RedirectAttributes redirectAttributes,
-	                   HttpSession session, Model model) {
-		
+	                   HttpSession session, Model model,
+	                   @RequestParam(value = "profileImageFile", required = false) MultipartFile file,
+	                   @RequestParam(value = "resetProfile", required = false) String resetProfile) {
 
 	    Member login = (Member) session.getAttribute("loggedInUser");
 	    if (login == null) {
 	        return "redirect:/login";
+	    }
+
+	    // ⭐ 닉네임 중복 검사 (자기 자신은 제외)
+	    if (memberService.existsByUsernameExceptMe(member.getUserName(), member.getMember_id())) {
+	        model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
+	        return "editForm";
 	    }
 
 	    // 이메일 조합
@@ -148,23 +161,68 @@ public class MyPageController  {
 	    member.setCreatedAt(login.getCreatedAt());
 	    member.setProfileImage(login.getProfileImage());
 
-	    // ✅ 전문가 여부 전환 감지
-	    boolean wasExpert = login.isExpert();           // 기존 상태
-	    boolean nowExpert = member.isExpert();          // 바뀐 값
+	    // === 업로드 처리 ===
+	    final Path uploadDir = java.nio.file.Paths.get("c:/upload/profile/");
+	    try {
+	        java.nio.file.Files.createDirectories(uploadDir);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    // ✅ 기본 이미지로 초기화 요청이 있다면
+	    if ("true".equals(resetProfile)) {
+	        // 기존 이미지가 있다면 삭제
+	        if (login.getProfileImage() != null) {
+	            try {
+	                java.nio.file.Files.deleteIfExists(uploadDir.resolve(login.getProfileImage()));
+	            } catch (IOException ignore) {}
+	        }
+	        // 기본 이미지로 설정
+	        member.setProfileImage("default_profile.png");
+
+	    } else if (file != null && !file.isEmpty()) {
+	        // ✅ 새 이미지 업로드 처리
+	        String original = file.getOriginalFilename();
+	        String ext = (original != null && original.lastIndexOf('.') != -1)
+	                ? original.substring(original.lastIndexOf('.')).toLowerCase()
+	                : "";
+	        String newName = java.util.UUID.randomUUID().toString().replace("-", "") + ext;
+
+	        if (login.getProfileImage() != null) {
+	            try {
+	                java.nio.file.Files.deleteIfExists(uploadDir.resolve(login.getProfileImage()));
+	            } catch (IOException ignore) {}
+	        }
+
+	        try {
+	            file.transferTo(uploadDir.resolve(newName).toFile());
+	        } catch (IllegalStateException | IOException e) {
+	            e.printStackTrace();
+	        }
+
+	        member.setProfileImage(newName);
+
+	    } else {
+	        // 아무것도 안 하면 기존 이미지 유지
+	        member.setProfileImage(login.getProfileImage());
+	    }
+
+	    // 전문가 여부 확인
+	    boolean wasExpert = login.isExpert();
+	    boolean nowExpert = member.isExpert();
 
 	    // 업데이트
 	    memberService.update(member);
 	    session.setAttribute("loggedInUser", member);
 	    System.out.println("✅ 기존 전문가 상태 (wasExpert): " + wasExpert);
-	    
 
-	    // ✅ 전문가로 바뀌었고, 전문가 정보가 없으면 → 입력 페이지로 이동
+	    // 전문가로 바뀐 경우, 프로필 정보 없으면 입력 폼 이동
 	    if (!wasExpert && nowExpert) {
 	        boolean hasProfile = expertProfileService.existsByMemberId(member.getMember_id());
 	        if (!hasProfile) {
-	            model.addAttribute("memberId", member.getMember_id());  // ✅ 추가
-	            model.addAttribute("expertProfile", new ExpertProfileDTO()); // ✅ 새 DTO
-	            model.addAttribute("mode", "create"); 
+	            model.addAttribute("memberId", member.getMember_id());
+	            model.addAttribute("expertProfile", new ExpertProfileDTO());
+	            model.addAttribute("mode", "create");
 	            return "expertForm";
 	        }
 	    }
@@ -174,6 +232,13 @@ public class MyPageController  {
 	}
 
 
+	@GetMapping("/checkUsername")
+	@ResponseBody
+	public String checkUsername(@RequestParam String userName, HttpSession session) {
+	    Member login = (Member) session.getAttribute("loggedInUser");
+	    boolean exists = memberService.existsByUsernameExceptMe(userName, login.getMember_id());
+	    return exists ? "duplicated" : "available";
+	}
 
 	
 	@PostMapping("/delete")

@@ -27,4 +27,13 @@ public interface ChatRepository {
     boolean existsRoom(String user1Id, String user2Id);
     
     List<ChatEntity> findAllMessagesByMemberId(String memberId);
+    
+    void deleteChatRoomById(String roomId);
+    
+    int markMessagesAsRead(String roomId, String receiverId);
+    
+    int countUnreadMessages(String roomId, String receiverId);
+    
+    List<String> findSendersWithUnreadMessages(String roomId, String receiverId);
+
 }

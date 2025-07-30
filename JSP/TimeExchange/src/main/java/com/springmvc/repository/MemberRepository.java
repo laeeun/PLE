@@ -80,4 +80,6 @@ public interface MemberRepository {
     void updateAccountBalance(String memberId, int amount);  
     
     boolean isDuplicateId(String member_id); 
+    
+    boolean existsByUsernameExceptMe(String username, String myId);
 }

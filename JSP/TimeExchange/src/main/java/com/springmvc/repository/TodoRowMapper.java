@@ -21,6 +21,8 @@ public class TodoRowMapper implements RowMapper<TodoDTO> {
         dto.setPriority(rs.getInt("priority"));
         dto.setCompleted(rs.getBoolean("completed"));
         dto.setPersonal(rs.getBoolean("is_personal"));
+        java.sql.Date d = rs.getDate("deadline");
+        dto.setDeadline(d != null ? d.toLocalDate() : null);
         dto.setCreated_at(rs.getTimestamp("created_at").toLocalDateTime());
         dto.setUpdated_at(rs.getTimestamp("updated_at").toLocalDateTime());
         return dto;

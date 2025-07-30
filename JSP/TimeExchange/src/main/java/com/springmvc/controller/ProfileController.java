@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.springmvc.domain.ExpertProfileDTO;
 import com.springmvc.domain.Member;
 import com.springmvc.domain.TalentDTO;
+import com.springmvc.service.ExpertProfileService;
 import com.springmvc.service.FollowService;
 import com.springmvc.service.MemberService;
 import com.springmvc.service.TalentService;
@@ -27,6 +29,8 @@ public class ProfileController {
     private TalentService talentService;
     @Autowired 
     private FollowService followService;
+    @Autowired
+    private ExpertProfileService expertProfileService;
 
     @GetMapping("/{memberId}")
     public String viewProfile(@PathVariable String memberId, Model model, HttpSession session) {
@@ -41,6 +45,11 @@ public class ProfileController {
         model.addAttribute("talentlist", talentList);
         model.addAttribute("isFollowing", isFollowing);
         model.addAttribute("loggedInUser", login);
+        
+        ExpertProfileDTO expertProfile = expertProfileService.findByMemberId(memberId);
+        model.addAttribute("expertProfile", expertProfile);
+        
+        System.out.println("🎯 expertProfile = " + expertProfile);
 
         return "profile";
     }

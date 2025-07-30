@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import com.springmvc.domain.ChatEntity;
 import com.springmvc.domain.ChatListDTO;
 import com.springmvc.domain.ChatMessage;
+import com.springmvc.domain.Member;
 import com.springmvc.domain.MessageType;
 import com.springmvc.repository.ChatRepository;
+import com.springmvc.repository.MemberRepository;
 
 @Service
 public class ChatServiceImpl implements ChatService {
@@ -17,6 +19,9 @@ public class ChatServiceImpl implements ChatService {
     @Autowired
     private ChatRepository chatRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+    
     @Override
     public List<ChatEntity> findMessagesByRoomId(String roomId) {
         return chatRepository.findMessagesByRoomId(roomId);
@@ -84,5 +89,25 @@ public class ChatServiceImpl implements ChatService {
             return m;
         }
     
+        @Override
+        public Member findMemberById(String memberId) {
+            return memberRepository.findById(memberId);
+        }
+        
+        @Override
+        public void deleteChatRoomById(String roomId) {
+            chatRepository.deleteChatRoomById(roomId);
+        }
 
+        @Override
+        public void markMessagesAsRead(String roomId, String receiverId) {
+            chatRepository.markMessagesAsRead(roomId, receiverId);
+        }
+
+		@Override
+		public List<String> findSendersWithUnreadMessages(String roomId, String userId) {
+			return chatRepository.findSendersWithUnreadMessages(roomId, userId);
+		}
+        
+        
 }

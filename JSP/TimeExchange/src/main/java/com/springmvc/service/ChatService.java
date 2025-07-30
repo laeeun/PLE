@@ -5,6 +5,7 @@ import java.util.List;
 import com.springmvc.domain.ChatEntity;
 import com.springmvc.domain.ChatListDTO;
 import com.springmvc.domain.ChatMessage;
+import com.springmvc.domain.Member;
 
 public interface ChatService {
 
@@ -27,4 +28,12 @@ public interface ChatService {
     boolean existsRoom(String user1Id, String user2Id);
     
     List<ChatMessage> getAllMessagesByMemberId(String memberId);
+    
+    Member findMemberById(String memberId);
+    
+    void deleteChatRoomById(String roomId);
+    
+    void markMessagesAsRead(String roomId, String receiverId);
+    
+    List<String> findSendersWithUnreadMessages(String roomId, String userId);
 }

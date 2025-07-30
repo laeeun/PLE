@@ -50,8 +50,16 @@ public class ChatRepositoryImpl implements ChatRepository {
         String sql = """
             SELECT cm.room_id,
                    m.username AS partner_name,
+                   m.profile_image AS partner_profile_image,
                    cm.message AS last_message,
-                   cm.created_at AS last_message_time
+                   cm.created_at AS last_message_time,
+                   (
+                       SELECT COUNT(*) 
+                       FROM chat_message cm2 
+                       WHERE cm2.room_id = cm.room_id 
+                         AND cm2.receiver_id = ? 
+                         AND cm2.read = false
+                   ) AS unread_count
             FROM chat_message cm
             JOIN (
                 SELECT room_id, MAX(created_at) AS max_time
@@ -69,15 +77,29 @@ public class ChatRepositoryImpl implements ChatRepository {
             ChatListDTO dto = new ChatListDTO();
             dto.setRoomId(rs.getString("room_id"));
             dto.setPartnerName(rs.getString("partner_name"));
+
+            String rawImage = rs.getString("partner_profile_image");
+            if (rawImage != null && !rawImage.trim().isEmpty()) {
+                if (!rawImage.startsWith("/upload/")) {
+                    rawImage = "/upload/profile/" + rawImage;
+                }
+                dto.setPartnerProfileImage(rawImage);
+            } else {
+                dto.setPartnerProfileImage("/resources/images/default-profile.png");
+            }
+
             dto.setLastMessage(rs.getString("last_message"));
             dto.setLastMessageTime(rs.getTimestamp("last_message_time").toLocalDateTime());
-            
-            
-            System.out.println("✅ dto.toString = " + dto);
-            
+
+            // ✅ unreadCount도 세팅
+            dto.setUnreadCount(rs.getInt("unread_count"));
+
             return dto;
-        }, memberId, memberId, memberId);
+        }, memberId, memberId, memberId, memberId); // 파라미터 순서 주의
     }
+
+
+
 
     // 🧠 채팅방 존재 확인
     @Override
@@ -138,6 +160,39 @@ public class ChatRepositoryImpl implements ChatRepository {
 
         return template.query(sql, new ChatRowMapper(), memberId, memberId);
     }
+
+	@Override
+	public void deleteChatRoomById(String roomId) {
+	    String deleteMessagesSql = "DELETE FROM chat_message WHERE room_id = ?";
+	    template.update(deleteMessagesSql, roomId);
+
+	    String deleteRoomSql = "DELETE FROM chat_room WHERE room_id = ?";
+	    template.update(deleteRoomSql, roomId);
+	}
+
+	@Override
+    public int markMessagesAsRead(String roomId, String receiverId) {
+        String sql = "UPDATE chat_message " +
+                     "SET `read` = true " +
+                     "WHERE room_id = ? AND receiver_id = ? AND `read` = false";
+        return template.update(sql, roomId, receiverId);
+    }
+	
+	@Override
+	public int countUnreadMessages(String roomId, String receiverId) {
+	    String sql = "SELECT COUNT(*) FROM chat_message " +
+	                 "WHERE room_id = ? AND receiver_id = ? AND `read` = false";
+	    return template.queryForObject(sql, Integer.class, roomId, receiverId);
+	}
+	
+	@Override
+	public List<String> findSendersWithUnreadMessages(String roomId, String receiverId) {
+	    String sql = "SELECT DISTINCT sender_id " +
+	                 "FROM chat_message " +
+	                 "WHERE room_id = ? AND receiver_id = ? AND `read` = FALSE";
+
+	    return template.queryForList(sql, String.class, roomId, receiverId);
+	}
 
 
 }

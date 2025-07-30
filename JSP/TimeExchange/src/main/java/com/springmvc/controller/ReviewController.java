@@ -97,8 +97,9 @@ public class ReviewController {
         reviewService.save(dto);
 
         // 알림 처리
-        Member sellerMember = memberService.findById(sellerId);
+        Member sellerMember = memberService.findById(dto.getTargetId());
         if (sellerMember != null) {
+        	
             String sender = login.getUserName();
             String receiver = sellerMember.getUserName();
             notificationService.createSimpleNotification(
@@ -109,6 +110,7 @@ public class ReviewController {
                 dto.getReviewId(),
                 "review"
             );
+            
         } else {
             System.err.println("🚨 sellerId에 해당하는 회원을 찾을 수 없음: " + sellerId);
         }

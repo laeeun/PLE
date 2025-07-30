@@ -1,6 +1,8 @@
 package com.springmvc.repository;
 
 import java.util.List;
+import java.util.Map;
+
 import com.springmvc.domain.TodoDTO;
 
 public interface TodoRepository {
@@ -43,6 +45,15 @@ public interface TodoRepository {
     
     // 받은 숙제 + 완료 필터
     List<TodoDTO> findAssignedTodos(String receiverId, Boolean completed);
-
-
+    
+    // 마감일이 자정을 지난 투두들 초기화
+    public int resetTodosByDeadline();
+    
+    public Map<String, Object> getTodayStats(String receiverId);
+    
+    Map<String, Object> getTodayStatsAll(String receiverId);       // 전체(내가 받은 모든 것)
+    
+    Map<String, Object> getTodayStatsAssigned(String receiverId);  // 받은 숙제(= is_personal=false)
+    
+    Map<String, Object> getTodayStatsCreated(String writerId);     // 내가 생성한 할일(= writer 기준)
 }

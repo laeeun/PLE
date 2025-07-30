@@ -1,8 +1,7 @@
 package com.springmvc.repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,8 +21,9 @@ public class TodoRepositoryImpl implements TodoRepository {
     // ✅ 새로운 할일 추가 (개인 또는 숙제)
     @Override
     public void createTODO(TodoDTO todo) {
-        String sql = "INSERT INTO todo (trade_id, writer_id, receiver_id, title, content, priority, completed, is_personal) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO todo (trade_id, writer_id, receiver_id, title, content, priority, completed, is_personal, deadline) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, CURDATE()))";
+
         template.update(sql,
             todo.getTradeId(),
             todo.getWriterId(),
@@ -32,7 +32,8 @@ public class TodoRepositoryImpl implements TodoRepository {
             todo.getContent(),
             todo.getPriority(),
             todo.isCompleted(),
-            todo.isPersonal()
+            todo.isPersonal(),
+            (todo.getDeadline() != null ? java.sql.Date.valueOf(todo.getDeadline()) : null)
         );
     }
 
@@ -67,12 +68,15 @@ public class TodoRepositoryImpl implements TodoRepository {
     // ✅ 제목, 내용, 우선순위, 완료 상태 등 전체 업데이트
     @Override
     public void updateTODO(TodoDTO todo) {
-        String sql = "UPDATE todo SET title = ?, content = ?, priority = ?, completed = ?, updated_at = NOW() WHERE todo_id = ?";
+        String sql = "UPDATE todo SET title = ?, content = ?, priority = ?, completed = ?, deadline = ?, updated_at = NOW() " +
+                     "WHERE todo_id = ?";
+
         template.update(sql,
             todo.getTitle(),
             todo.getContent(),
             todo.getPriority(),
             todo.isCompleted(),
+            (todo.getDeadline() != null ? java.sql.Date.valueOf(todo.getDeadline()) : null),
             todo.getTodoId()
         );
     }
@@ -132,6 +136,42 @@ public class TodoRepositoryImpl implements TodoRepository {
         }
         return template.query(sql + " ORDER BY created_at DESC", todoMapper, receiverId);
     }
+    // 마감일이 자정을 지난 투두들 초기화
+	@Override
+	public int resetTodosByDeadline() {
+		 String sql = "UPDATE todo SET completed = FALSE WHERE deadline < CURDATE()";
+	     return template.update(sql);
+	}
+	
+	@Override
+	public Map<String, Object> getTodayStats(String receiverId) {
+	    String sql = "SELECT COUNT(*) AS total, " +
+	                 "SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END) AS completed " +
+	                 "FROM todo WHERE receiver_id = ? AND deadline = CURDATE()";
+	    return template.queryForMap(sql, receiverId);
+	}
+	
+	@Override
+	public Map<String, Object> getTodayStatsAll(String receiverId) {
+	    String sql = "SELECT COUNT(*) AS total, " +
+	                 "COALESCE(SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END), 0) AS completed " +
+	                 "FROM todo WHERE receiver_id = ? AND deadline = CURDATE()";
+	    return template.queryForMap(sql, receiverId);
+	}
 
-    
+	@Override
+	public Map<String, Object> getTodayStatsAssigned(String receiverId) {
+	    String sql = "SELECT COUNT(*) AS total, " +
+	                 "COALESCE(SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END), 0) AS completed " +
+	                 "FROM todo WHERE receiver_id = ? AND is_personal = FALSE AND deadline = CURDATE()";
+	    return template.queryForMap(sql, receiverId);
+	}
+
+	@Override
+	public Map<String, Object> getTodayStatsCreated(String writerId) {
+	    String sql = "SELECT COUNT(*) AS total, " +
+	                 "COALESCE(SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END), 0) AS completed " +
+	                 "FROM todo WHERE writer_id = ? AND deadline = CURDATE()";
+	    return template.queryForMap(sql, writerId);
+	}
 }

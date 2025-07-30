@@ -65,8 +65,10 @@ public class NotificationPageController {
     @PostConstruct
     public void initRedirectMap() {
         redirectMap.put("댓글", id -> UriComponentsBuilder.fromPath("/talent/view").queryParam("id", id).toUriString());
-        redirectMap.put("재능", id -> UriComponentsBuilder.fromPath("/talent/view").queryParam("id", id).toUriString());
-        redirectMap.put("재능구매", id -> UriComponentsBuilder.fromPath("/purchase/received").toUriString());
+        redirectMap.put("재능등록", id -> UriComponentsBuilder.fromPath("/talent/view").queryParam("id", id).toUriString());
+        redirectMap.put("채팅", id -> UriComponentsBuilder.fromPath("/chat/room").queryParam("roomId", id).toUriString());
+        redirectMap.put("재능구매", id -> UriComponentsBuilder.fromPath("/purchase/sent").toUriString());
+        redirectMap.put("재능구매요청", id -> UriComponentsBuilder.fromPath("/purchase/received").toUriString());
         redirectMap.put("팔로우", id -> UriComponentsBuilder.fromPath("/follow/followers").toUriString());
         redirectMap.put("리뷰", id -> UriComponentsBuilder.fromPath("/review/myreviews").toUriString());
     }

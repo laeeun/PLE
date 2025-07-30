@@ -1,6 +1,8 @@
 package com.springmvc.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -113,12 +116,14 @@ public class TodoController {
     @ResponseBody
     public List<TodoDTO> filterTodos(@RequestParam(required = false) String type,
                                      @RequestParam(required = false) String completed,
+                                     @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                      HttpSession session) {
         Member user = (Member) session.getAttribute("loggedInUser");
         if (user == null) return null;
 
         String memberId = user.getMember_id();
         Boolean isCompleted = (completed == null || completed.isEmpty()) ? null : Boolean.parseBoolean(completed);
+        LocalDate target = (date != null) ? date : LocalDate.now(ZoneId.of("Asia/Seoul"));
 
         if ("created".equals(type)) {
             return todoService.findByWriterId(memberId, isCompleted); // 내가 만든 할일

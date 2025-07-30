@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -57,7 +58,11 @@ public class TalentRepositoryImpl implements TalentRepository {
     	        JOIN member m ON t.member_id = m.member_id
     	        WHERE t.talent_id = ?
     	    """;
-        return template.queryForObject(sql, new TalentRowMapper(), talent_id);
+    	try {
+            return template.queryForObject(sql, new TalentRowMapper(), talent_id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
     
     @Override

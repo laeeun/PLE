@@ -60,30 +60,28 @@
 <jsp:include page="/WEB-INF/views/nav.jsp" />
 
 <div class="container mt-5">
-	<c:set var="loginId" value="${sessionScope.loggedInUser.member_id}" />
-	<c:set var="otherId" value="${member.member_id}" />
-	<c:set var="roomId" value="${loginId}_${otherId}" />
-	
+    <c:set var="loginId" value="${sessionScope.loggedInUser.member_id}" />
+    <c:set var="otherId" value="${member.member_id}" />
+    <c:set var="roomId" value="${loginId}_${otherId}" />
+
     <!-- 프로필 카드 -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4>${member.userName}님의 프로필</h4>
+		
+            <!-- 팔로우 및 채팅 버튼 -->
+            <c:if test="${not empty loggedInUser and loggedInUser.member_id ne member.member_id}">
+                <div class="d-flex gap-2">
+                    <button id="followBtn" class="btn ${isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'}"
+                            data-id="${member.member_id}">
+                        ${isFollowing ? '언팔로우 💔' : '팔로우 💗'}
+                    </button>
 
-            <!-- 팔로우 버튼 -->
-			<c:if test="${not empty loggedInUser and loggedInUser.member_id ne member.member_id}">
-			    <div class="d-flex gap-2">
-			        <button id="followBtn" class="btn ${isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'}"
-			                data-id="${member.member_id}">
-			            ${isFollowing ? '언팔로우 💔' : '팔로우 💗'}
-			        </button>
-			
-			        <!-- ✅ 채팅 보내기 버튼 추가 -->
-			        <a href="<c:url value='/chat/room?roomId=${roomId}' />" class="btn btn-outline-secondary">
-					    💬 채팅 보내기
-					</a>
-			    </div>
-			</c:if>
-   
+                    <a href="<c:url value='/chat/room?roomId=${roomId}' />" class="btn btn-outline-secondary">
+                        💬 채팅 보내기
+                    </a>
+                </div>
+            </c:if>
         </div>
         <div class="card-body">
             <p><strong>ID:</strong> ${member.member_id}</p>
@@ -93,7 +91,34 @@
         </div>
     </div>
 
-    <!-- 재능 목록 카드 -->
+    <!-- ✅ 전문가 정보 카드 (순서 이동됨) -->
+    <c:if test="${not empty expertProfile}">
+        <div class="card">
+            <div class="card-header">
+                <h4>🧑‍🏫 ${member.userName}님의 전문가 정보</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>경력:</strong> ${expertProfile.career}</p>
+                <p><strong>출신 대학:</strong> ${expertProfile.university}</p>
+                <p><strong>자격증:</strong> ${expertProfile.certification}</p>
+
+                <c:if test="${not empty expertProfile.fileNames}">
+                    <p><strong>첨부 파일:</strong></p>
+                    <ul>
+                        <c:forEach var="file" items="${expertProfile.fileNames}">
+                            <li>
+                                <a href="<c:url value='/upload/expert/${file}' />" target="_blank">
+                                    ${file}
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
+            </div>
+        </div>
+    </c:if>
+
+    <!-- 재능 목록 카드 (아래로 이동됨) -->
     <div class="card">
         <div class="card-header">
             <h4>${member.userName}님의 재능 목록</h4>
@@ -123,10 +148,9 @@
 
 <jsp:include page="/WEB-INF/views/footer.jsp" />
 
-<!-- ✅ JS 포함 -->
+<!-- JS 포함 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // ✅ URL을 변수로 분리 (안정적이고 유지보수 쉬움)
     const API_URL = {
         toggleFollow: '<c:url value="/follow/toggle" />'
     };

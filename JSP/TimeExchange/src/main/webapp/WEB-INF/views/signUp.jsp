@@ -139,6 +139,12 @@
 		    background: linear-gradient(to right, #9333ea, #f43f5e);
 		    box-shadow: 0 4px 10px rgba(168, 85, 247, 0.5);
 		}
+		
+		#usernameCheckMsg {
+    min-height: 20px; /* or 1.2em 정도 */
+    transition: all 0.2s ease;
+    display: block;
+}
     </style>
 </head>
 <body>
@@ -336,6 +342,8 @@ function checkId() {
 }
 
 
+let usernameTimer;  // 타이머 저장용 전역 변수
+
 function checkUsername() {
     const username = document.getElementById("userName").value;
     const msg = document.getElementById("usernameCheckMsg");
@@ -349,17 +357,23 @@ function checkUsername() {
         return;
     }
 
-    fetch('${pageContext.request.contextPath}/signUp/checkUsername?userName=' + username)
-        .then(res => res.text())
-        .then(result => {
-            if (result === "duplicated") {
-                msg.textContent = "이미 사용 중인 닉네임입니다.";
-                msg.style.color = "#ef4444";
-            } else {
-                msg.textContent = "사용 가능한 닉네임입니다.";
-                msg.style.color = "#10b981";
-            }
-        });
+    // 타이머 초기화 (입력 중엔 fetch 안 날림)
+    clearTimeout(usernameTimer);
+
+    // 디바운스: 입력 후 500ms 뒤에 실행
+    usernameTimer = setTimeout(() => {
+        fetch('${pageContext.request.contextPath}/signUp/checkUsername?userName=' + username)
+            .then(res => res.text())
+            .then(result => {
+                if (result === "duplicated") {
+                    msg.textContent = "이미 사용 중인 닉네임입니다.";
+                    msg.style.color = "#ef4444";
+                } else {
+                    msg.textContent = "사용 가능한 닉네임입니다.";
+                    msg.style.color = "#10b981";
+                }
+            });
+    }, 500); // 0.5초 후 실행
 }
 </script>
 

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.springmvc.domain.FollowDTO;
 import com.springmvc.domain.Member;
 import com.springmvc.domain.TalentDTO;
 import com.springmvc.service.FavoriteService;
@@ -96,6 +97,9 @@ public class TalentController {
     @GetMapping("/talent/view")
     public String viewTalent(@RequestParam("id") int id, Model model, HttpSession session) {
         TalentDTO talent = talentService.readone(id);
+        if (talent == null) { 
+            return "redirect:/talent";            
+        }
         LocalDateTime ldt = talent.getCreated_at();
         Date createdDate = java.sql.Timestamp.valueOf(ldt);
         Member user = (Member) session.getAttribute("loggedInUser");
@@ -125,6 +129,7 @@ public class TalentController {
     @PostMapping("/addtalent")
     public String submitTalentForm(@ModelAttribute("newTalent") TalentDTO dto, HttpSession session, HttpServletRequest request) {
         Member loginUser = (Member) session.getAttribute("loggedInUser");
+        if (loginUser == null) return "redirect:/login";
         MultipartFile file = dto.getUploadFile();
         dto.setMember_id(loginUser.getMember_id());
         dto.setCreated_at(LocalDateTime.now());
@@ -148,19 +153,17 @@ public class TalentController {
         talentService.formatTimeSlot(dto);
         talentService.create(dto);
         // ✅ 팔로우 여부 및 알림
-        String followingId = dto.getMember_id(); // 본인 ID
-        boolean isNowFollowing = followService.toggleFollow(loginUser.getMember_id(), followingId);
-        if (!loginUser.getMember_id().equals(followingId)) {
-        	if (isNowFollowing) {
-	            notificationService.createSimpleNotification(
-	                followingId, // 팔로우 대상 ID
-	                loginUser.getUserName(), // 알림 보낸 사람
-	                "재능",
-	                loginUser.getUserName() + "님이 게시글을 등록했습니다.",
-	                null,
-	                null
-	            );
-	        }
+        List<FollowDTO> followers = followService.findFollowerList(loginUser.getMember_id()); // 나를 팔로우하는 사람 목록
+        for (FollowDTO f : followers) {
+            String followerId = f.getFollower_id(); 
+            notificationService.createSimpleNotification(
+                followerId,
+                loginUser.getUserName(),
+                "재능등록",
+                loginUser.getUserName() + "님이 새로운 재능을 등록했습니다: " + dto.getTitle(),
+                dto.getTalent_id(),
+                "talent"
+            );
         }
         return "redirect:/talent";
     }

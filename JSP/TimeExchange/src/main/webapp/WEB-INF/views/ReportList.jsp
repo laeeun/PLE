@@ -21,7 +21,7 @@
 	<form method="get" action="<c:url value='/report' />" class="mb-4" style="display: inline-block;">
 	    <label for="statusFilter">상태:</label>
 	    <select name="status" id="statusFilter" onchange="this.form.submit()" class="form-select d-inline w-auto">
-	        <option value="" ${empty status ? 'selected' : ''}>전체</option>
+	        
 	        <option value="pending" ${status == 'pending' ? 'selected' : ''}>🕓 대기 중</option>
 	        <option value="resolved" ${status == 'resolved' ? 'selected' : ''}>✅ 처리 완료</option>
 	        <option value="rejected" ${status == 'rejected' ? 'selected' : ''}>❌ 처리 거절</option>
@@ -34,10 +34,10 @@
                 <th>신고자</th>
                 <th>대상자</th>
                 <th>대상 타입</th>
-                
+       
                 <th>상태</th>
                 <th>신고일</th>
-                <th>신고 누적</th> <!-- ✅ 추가 -->
+
                 <th>자세히</th>
             </tr>
         </thead>

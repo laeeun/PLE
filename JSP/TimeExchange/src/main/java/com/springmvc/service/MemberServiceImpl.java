@@ -170,4 +170,10 @@ public class MemberServiceImpl implements MemberService {
 		memberRepository.updateAccountBalance(memberId, amount);
 		return memberRepository.findById(memberId); 
 	}   
+	
+	@Override
+	public boolean existsByUsernameExceptMe(String username, String myId) {
+	    return memberRepository.existsByUsernameExceptMe(username, myId);
+	}
+
 }

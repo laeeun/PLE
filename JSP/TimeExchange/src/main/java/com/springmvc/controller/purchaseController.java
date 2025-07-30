@@ -79,7 +79,7 @@ public class purchaseController {
         purchaseService.save(dto);
         notificationService.createSimpleNotification(sender, 
         		receiver, 
-        		"재능구매", 
+        		"재능구매요청", 
         		"구매요청이 도착했습니다.", 
         		dto.getRequest_id(), 
         		"purchase");

@@ -47,14 +47,14 @@
             <div class="user-card">
                 <c:choose>
 				  <c:when test="${not empty user.profileImage}">
-				    <img src="<c:url value='/resources/images/${user.profileImage}' />" alt="프로필" 
-				         class="rounded-circle" width="48" height="48" />
+				    <img src="<c:url value='/upload/profile/${user.profileImage}' />" 
+				         alt="프로필" class="rounded-circle" width="48" height="48" />
 				  </c:when>
 				  <c:otherwise>
-				    <img src="<c:url value='/resources/images/default-profile.png' />" alt="기본 프로필"
-				         class="rounded-circle" width="48" height="48" />
+				    <img src="<c:url value='/resources/images/default-profile.png' />" 
+				         alt="기본 프로필" class="rounded-circle" width="48" height="48" />
 				  </c:otherwise>
-				</c:choose>
+				</c:choose> 
                 <a class="user-name" href="${pageContext.request.contextPath}/profile/${user.follower_id}">${user.userName}</a>
                 <c:if test="${loggedInUser.member_id ne user.follower_id}">
                     <button class="follow-btn btn btn-sm btn-outline-primary"

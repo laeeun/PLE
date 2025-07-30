@@ -69,9 +69,10 @@ public class MemberRepositoryImpl implements MemberRepository {
     // ✅ 회원 정보 수정
     @Override
     public void update(Member member) {
-        String sql = "UPDATE member SET name = ?, email = ?, phone = ?, birthDate = ?, gender = ?, addr = ?, addr_detail = ?, expert = ?, email_verified = ?, email_token = ?, token_created_at = ?, profile_image = ? WHERE member_id = ?";
+        String sql = "UPDATE member SET username = ?, name = ?, email = ?, phone = ?, birthDate = ?, gender = ?, addr = ?, addr_detail = ?, expert = ?, email_verified = ?, email_token = ?, token_created_at = ?, profile_image = ? WHERE member_id = ?";
         
         template.update(sql,
+            member.getUserName(),              
             member.getName(),
             member.getEmail(),
             member.getPhone(),
@@ -80,9 +81,9 @@ public class MemberRepositoryImpl implements MemberRepository {
             member.getAddr(),
             member.getAddrDetail(),
             member.isExpert(),
-            member.isEmailVerified(),           // ✅ 이메일 인증 여부
-            member.getEmailToken(),             // ✅ 토큰
-            member.getTokenCreatedAt(),         // ✅ 토큰 생성시간
+            member.isEmailVerified(),
+            member.getEmailToken(),
+            member.getTokenCreatedAt(),
             member.getProfileImage(),
             member.getMember_id()
         );
@@ -245,5 +246,10 @@ public class MemberRepositoryImpl implements MemberRepository {
 	    return count != null && count > 0;
 	}
    
-    
+	@Override
+	public boolean existsByUsernameExceptMe(String username, String myId) {
+	    String sql = "SELECT COUNT(*) FROM member WHERE username = ? AND member_id != ?";
+	    Integer count = template.queryForObject(sql, Integer.class, username, myId);
+	    return count != null && count > 0;
+	}
 }

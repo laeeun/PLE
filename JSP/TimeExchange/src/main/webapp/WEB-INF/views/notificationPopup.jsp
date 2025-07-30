@@ -57,6 +57,7 @@
 	        <select name="type" id="typeSelect" onchange="this.form.submit()">
 	            <option value="">전체 보기</option>
 	            <option value="재능구매" ${type == '재능구매' ? 'selected' : ''}>재능구매</option>
+	            <option value="재능등록" ${type == '재능등록' ? 'selected' : ''}>재능등록</option>
 	            <option value="댓글" ${type == '댓글' ? 'selected' : ''}>댓글</option>
 	            <option value="팔로우" ${type == '팔로우' ? 'selected' : ''}>팔로우</option>
 	            <option value="리뷰" ${type == '리뷰' ? 'selected' : ''}>리뷰</option>

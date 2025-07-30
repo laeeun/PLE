@@ -13,10 +13,13 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.springmvc.domain.ChatEnterDTO;
 import com.springmvc.domain.ChatEntity;
 import com.springmvc.domain.ChatListDTO;
 import com.springmvc.domain.ChatMessage;
@@ -40,21 +43,57 @@ public class ChatController {
     public void sendMessage(@Payload ChatMessage message) {
         message.setCreatedAt(LocalDateTime.now());
 
-        // ✅ 이미 존재하는 방인지 확인
         String roomId = chatService.findRoomIdByUserIds(message.getSenderId(), message.getReceiverId());
-
-        // ❗ 없으면 새로 생성
         if (roomId == null) {
             roomId = chatService.createChatRoom(message.getSenderId(), message.getReceiverId());
         }
-
-        // ✅ 메시지에 roomId 설정
         message.setRoomId(roomId);
 
-        // ✅ 메시지 저장 및 전송
         chatService.saveMessage(message);
+
+        
+        Member sender = chatService.findMemberById(message.getSenderId());
+        System.out.println("👤 Sender Profile: " + sender.getProfileImage());
+        if (sender != null) {
+            message.setSenderName(sender.getUserName());
+
+            String profile = sender.getProfileImage();
+            message.setSenderProfileImage(
+                (profile != null && !profile.startsWith("/upload/")) ? "/upload/" + profile : profile
+            );
+        }
+
+        
+        Member receiver = chatService.findMemberById(message.getReceiverId());
+        System.out.println("👤 Receiver Profile: " + receiver.getProfileImage());
+        if (receiver != null) {
+            message.setReceiverName(receiver.getUserName());
+
+            String profile = receiver.getProfileImage();
+            message.setReceiverProfileImage(
+                (profile != null && !profile.startsWith("/upload/")) ? "/upload/" + profile : profile
+            );
+        }
+        
         messagingTemplate.convertAndSend("/topic/room/" + roomId, message);
     }
+    
+    
+    @MessageMapping("/chat.enter")
+    public void enterRoom(ChatEnterDTO dto) {
+        // 1. 안읽은 메시지 read = true + readAt 시간 업데이트
+        chatService.markMessagesAsRead(dto.getRoomId(), dto.getUserId());
+
+        // 2. 그 메시지들을 보낸 사람에게 STOMP로 "읽음 알림" 전송
+        List<String> senderIds = chatService.findSendersWithUnreadMessages(dto.getRoomId(), dto.getUserId());
+
+        for (String senderId : senderIds) {
+            messagingTemplate.convertAndSend("/topic/read/" + senderId, dto.getRoomId());
+        }
+    }
+
+
+
 
     
     @GetMapping("/list")
@@ -75,19 +114,17 @@ public class ChatController {
     public String enterChatRoom(@RequestParam("roomId") String roomId,
                                 HttpSession session,
                                 Model model) {
-
         Member loginUser = (Member) session.getAttribute("loggedInUser");
-
         if (loginUser == null) {
             return "redirect:/login";
         }
 
         String senderId = loginUser.getMember_id();
-
-        // ✅ roomId에서 sender/receiver 추출하는 로직이 필요해!
-        // 예: 222_111 → 둘 중 하나가 sender, 하나가 receiver니까
         String[] parts = roomId.split("_");
         String receiverId = parts[0].equals(senderId) ? parts[1] : parts[0];
+
+        // ✅ 읽음 처리
+        chatService.markMessagesAsRead(roomId, senderId);
 
         List<ChatEntity> entities = chatService.findMessagesByRoomId(roomId);
         List<ChatMessage> messages = new ArrayList<>();
@@ -99,27 +136,23 @@ public class ChatController {
             msg.setContent(entity.getContent());
             msg.setType(MessageType.valueOf(entity.getType()));
             msg.setCreatedAt(entity.getCreatedAt());
+            msg.setRead(entity.isRead());
             messages.add(msg);
         }
-
+        System.out.println(messages.get(0).getCreatedAt());
         model.addAttribute("roomId", roomId);
         model.addAttribute("receiverId", receiverId);
         model.addAttribute("senderId", senderId);
         model.addAttribute("messages", messages);
+
         return "chat";
     }
 
 
-
-    // 예시: 1:1 채팅방 ID 생성 규칙
-    private String generateRoomId(String user1, String user2) {
-        return user1.compareTo(user2) < 0 ? user1 + "_" + user2 : user2 + "_" + user1;
-    }
-
     @GetMapping("/messages")
     @ResponseBody
     public List<ChatMessage> getMessages(@RequestParam("roomId") String roomId) {
-    	List<ChatEntity> entities = chatService.findMessagesByRoomId(roomId);
+        List<ChatEntity> entities = chatService.findMessagesByRoomId(roomId);
         List<ChatMessage> messages = new ArrayList<>();
 
         for (ChatEntity entity : entities) {
@@ -128,12 +161,48 @@ public class ChatController {
             msg.setSenderId(entity.getSenderId());
             msg.setReceiverId(entity.getReceiverId());
             msg.setContent(entity.getContent());
-            msg.setType(MessageType.valueOf(entity.getType())); // enum 변환
+            msg.setType(MessageType.valueOf(entity.getType()));
             msg.setCreatedAt(entity.getCreatedAt());
-            // 필요 시 프로필 이미지 등 추가 세팅
+            msg.setRead(entity.isRead());
+
+            // ✅ sender 정보 설정
+            Member sender = chatService.findMemberById(entity.getSenderId());
+            if (sender != null) {
+                msg.setSenderName(sender.getUserName());
+
+                String profile = sender.getProfileImage();
+                if (profile != null) {
+                    // ⚠ 기본 이미지나 사용자 이미지 모두 upload 경로 붙여서 처리
+                	msg.setSenderProfileImage(profile.startsWith("/upload/profile/")
+                		    ? profile
+                		    : "/upload/profile/" + profile);
+                }
+            }
+
+            // ✅ receiver 정보 설정
+            Member receiver = chatService.findMemberById(entity.getReceiverId());
+            if (receiver != null) {
+                msg.setReceiverName(receiver.getUserName());
+
+                String profile = receiver.getProfileImage();
+                if (profile != null) {
+                	msg.setReceiverProfileImage(profile.startsWith("/upload/profile/")
+                		    ? profile
+                		    : "/upload/profile/" + profile);
+                }
+            }
+
             messages.add(msg);
         }
 
         return messages;
     }
+
+    @PostMapping("/deleteRoom")
+    public String deleteChatRoom(@RequestParam("roomId") String roomId, RedirectAttributes redirectAttributes) {
+        chatService.deleteChatRoomById(roomId);
+        redirectAttributes.addFlashAttribute("success", "채팅방이 삭제되었습니다.");
+        return "redirect:/chat/list";
+    }
+
 }
