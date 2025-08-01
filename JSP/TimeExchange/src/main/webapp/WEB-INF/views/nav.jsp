@@ -156,7 +156,7 @@
                     <ul class="dropdown-menu" aria-labelledby="rankingDropdown">
                         <c:forEach var="entry" items="${top5CategoryRanking}" varStatus="loop">
                             <li>
-                                <a class="dropdown-item" href="<c:url value='/talent/${entry.key}' />">
+                                <a class="dropdown-item" href="<c:url value='/talent?category=${entry.key}' />">
                                     ${loop.index + 1}위 - ${entry.key} (${entry.value}건)
                                 </a>
                             </li>

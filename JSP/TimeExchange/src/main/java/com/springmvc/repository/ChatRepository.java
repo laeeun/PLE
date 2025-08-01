@@ -36,4 +36,7 @@ public interface ChatRepository {
     
     List<String> findSendersWithUnreadMessages(String roomId, String receiverId);
 
+    boolean existsRoom(String roomId);
+    
+    int countUnreadMessages(String receiverId); 
 }

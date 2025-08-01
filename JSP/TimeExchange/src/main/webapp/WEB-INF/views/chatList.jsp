@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -143,17 +144,50 @@
         </a>
 
         <div class="chat-actions">
-            <div class="chat-time">${chat.lastMessageTime}</div>
-            <form class="delete-form" method="post" action="<c:url value='/chat/deleteRoom'/>"
-                  onsubmit="return confirm('채팅방을 삭제할까요?');">
-                <input type="hidden" name="roomId" value="${chat.roomId}" />
-                <button type="submit" class="btn-delete">🗑 삭제</button>
-            </form>
-        </div>
+		    <div class="chat-time" data-time="${chat.lastMessageTime}"></div>
+		    <form class="delete-form" method="post" action="<c:url value='/chat/deleteRoom'/>"
+		          onsubmit="return confirm('채팅방을 삭제할까요?');">
+		        <input type="hidden" name="roomId" value="${chat.roomId}" />
+		        <button type="submit" class="btn-delete">🗑 삭제</button>
+		    </form>
+		</div>
+
     </div>
 </c:forEach>
 
 <jsp:include page="/WEB-INF/views/footer.jsp"/>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const timeElements = document.querySelectorAll(".chat-time");
+
+    timeElements.forEach(el => {
+        let raw = el.dataset.time;
+        if (!raw) return;
+
+        if (raw.includes(" ")) raw = raw.replace(" ", "T");
+
+        const date = new Date(raw);
+        if (isNaN(date)) {
+            el.textContent = "시간 정보 없음";
+            return;
+        }
+
+        const formatted = date.toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+
+        el.textContent = formatted;
+    });
+});
+</script>
+
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
 
 </body>
 </html>

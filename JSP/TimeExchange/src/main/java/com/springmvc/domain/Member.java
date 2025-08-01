@@ -34,7 +34,7 @@ public class Member {
     private String addr;
     private String addrDetail; // 상세주소
 
-    private boolean expert; // 기본값: 일반 사용자
+    private Boolean expert; // 기본값: 일반 사용자
 
     private int account = 0;
 
@@ -204,11 +204,11 @@ public class Member {
 		this.addrDetail = addrDetail;
 	}
 
-	public boolean isExpert() {
+	public Boolean getExpert() {
 		return expert;
 	}
 
-	public void setExpert(boolean expert) {
+	public void setExpert(Boolean expert) {
 		this.expert = expert;
 	}
 

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -121,6 +122,22 @@
             white-space: nowrap;
             align-self: center;
         }
+
+        .btn-outline-secondary {
+            background: none;
+            border: 1px solid #ff99cc;
+            color: #d63384;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #ffebf5;
+            color: #d63384;
+        }
     </style>
 </head>
 <body>
@@ -131,11 +148,19 @@
 
 <div class="chat-container">
     <div class="chat-title">💬 채팅방</div>
+
     <div id="chatBox"></div>
+
     <div id="inputArea">
         <input type="text" id="messageInput" placeholder="메시지를 입력하세요" />
         <button onclick="sendMessage()">전송</button>
+    </div>
 
+    <!-- ✅ 버튼을 내부로 이동 -->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="${pageContext.request.contextPath}/chat/list" class="btn-outline-secondary">
+            ← 채팅 목록으로 돌아가기
+        </a>
     </div>
 </div>
 
@@ -150,10 +175,9 @@
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function (frame) {
-            console.log("✅ 웹소켓 연결됨:", frame);
-
             stompClient.subscribe("/topic/room/" + roomId, function (message) {
                 const msg = JSON.parse(message.body);
+                
                 showMessage(msg);
             });
 
@@ -166,15 +190,12 @@
                 }
             });
 
-            
             stompClient.send("/app/chat.enter", {}, JSON.stringify({
                 roomId: roomId,
                 userId: senderId
             }));
 
             loadChatHistory();
-        }, function (error) {
-            console.error("❌ 웹소켓 연결 실패:", error);
         });
     }
 
@@ -182,9 +203,9 @@
         fetch(contextPath + "/chat/messages?roomId=" + roomId)
             .then(response => response.json())
             .then(data => {
+            	console.log(data);
                 data.forEach(showMessage);
-            })
-            .catch(error => console.error("❌ 기록 불러오기 실패:", error));
+            });
     }
 
     function sendMessage() {
@@ -203,8 +224,6 @@
             content: content,
             type: "CHAT"
         };
-        
-        console.log("보낼 메시지 객체:", msg); 
 
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msg));
         document.getElementById("messageInput").value = "";
@@ -216,35 +235,39 @@
         wrapper.classList.add("message-wrapper");
 
         const isMine = (msg.senderId === senderId);
+        
+        console.log(msg.createdAt);
+        const timeString = (() => {
+            const arr = msg.createdAt;
 
-        // ✅ 날짜 처리 (문자열 or 배열 모두 대응)
-        const rawTime = msg.createdAt;
-        let timeString = "";
+            if (!Array.isArray(arr) || arr.length < 3) return "시간 정보 없음";
 
-        if (Array.isArray(rawTime)) {
-            // 예: [2025, 7, 30, 17, 54, 54, 123456789]
-            const hour = rawTime[3];
-            const minute = rawTime[4];
-            const period = hour >= 12 ? "오후" : "오전";
-            const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-            timeString = `\${period} \${formattedHour}:\${String(minute || 0).padStart(2, "0")}`;
-        } else {
-            let time = rawTime ? new Date(rawTime) : null;
-            if (time && !isNaN(time.getTime())) {
-                const hour = time.getHours();
-                const minute = time.getMinutes().toString().padStart(2, "0");
-                const period = hour >= 12 ? "오후" : "오전";
-                const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-                timeString = `${period} ${formattedHour}:${minute}`;
-            } else {
-                timeString = "시간정보없음";
+            const year = Number(arr[0]);
+            const month = Number(arr[1]) - 1;
+            const day = Number(arr[2]);
+            const hour = Number(arr[3] ?? 0);
+            const minute = Number(arr[4] ?? 0);
+            const second = Number(arr[5] ?? 0);
+
+            const date = new Date(year, month, day, hour, minute, second);
+
+            if (isNaN(date.getTime())) {
+                console.warn("❌ 유효하지 않은 날짜:", arr, date);
+                return "시간 정보 없음";
             }
-        }
 
+            const hours = date.getHours();
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+            const period = hours >= 12 ? "오후" : "오전";
+            const hour12 = hours % 12 === 0 ? 12 : hours % 12;
+
+            return `\${period} \${hour12}:\${minutes}`;
+        })();
+       
+		
         const readIcon = msg.read === true ? "✔️" : "⭕";
 
         if (!isMine) {
-            // 받은 메시지
             const row = document.createElement("div");
             row.style.display = "flex";
             row.style.alignItems = "flex-start";
@@ -276,7 +299,7 @@
             timeSpan.style.fontSize = "12px";
             timeSpan.style.color = "#999";
             timeSpan.style.marginTop = "2px";
-            timeSpan.textContent = timeString;
+            timeSpan.textContent = timeString; // ✅ 이제 이 timeString은 "오전/오후 시간:분" 형태입니다.
 
             msgBlock.appendChild(label);
             msgBlock.appendChild(messageDiv);
@@ -286,7 +309,6 @@
             row.appendChild(msgBlock);
             wrapper.appendChild(row);
         } else {
-            // 보낸 메시지
             const row = document.createElement("div");
             row.style.display = "flex";
             row.style.justifyContent = "flex-end";
@@ -306,7 +328,8 @@
             readSpan.classList.add("read-status");
             readSpan.style.fontSize = "12px";
             readSpan.style.color = "#999";
-            readSpan.textContent = readIcon;
+            // readIcon은 읽음 여부 (✔️, ⭕) 이므로 그대로 사용
+            readSpan.textContent = readIcon; 
 
             const messageDiv = document.createElement("div");
             messageDiv.classList.add("message", "my-message");
@@ -319,7 +342,7 @@
             timeSpan.style.fontSize = "11px";
             timeSpan.style.color = "#999";
             timeSpan.style.marginTop = "2px";
-            timeSpan.textContent = timeString;
+            timeSpan.textContent = timeString; // ✅ 이제 이 timeString은 "오전/오후 시간:분" 형태입니다.
 
             msgBlock.appendChild(innerWrapper);
             msgBlock.appendChild(timeSpan);
@@ -332,15 +355,15 @@
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-
-
-
     document.getElementById("messageInput").addEventListener("keydown", function (e) {
         if (e.key === "Enter") sendMessage();
     });
 
     connect();
 </script>
+
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
 
 </body>
 </html>

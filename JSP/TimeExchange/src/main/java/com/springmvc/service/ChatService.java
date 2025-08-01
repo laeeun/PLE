@@ -36,4 +36,8 @@ public interface ChatService {
     void markMessagesAsRead(String roomId, String receiverId);
     
     List<String> findSendersWithUnreadMessages(String roomId, String userId);
+    
+    boolean existsRoom(String roomId);
+    
+    int countUnreadMessages(String receiverId);
 }

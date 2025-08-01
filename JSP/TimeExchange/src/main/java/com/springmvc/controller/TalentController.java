@@ -35,6 +35,8 @@ import com.springmvc.service.TalentService;
 @Controller
 public class TalentController {
 
+    private final CommentController commentController;
+
     @Autowired
     private TalentService talentService;
     @Autowired
@@ -47,6 +49,10 @@ public class TalentController {
 	private MemberService memberService;
 	@Autowired
 	private FollowService followService;
+
+    TalentController(CommentController commentController) {
+        this.commentController = commentController;
+    }
 	
     // ✅ 재능 목록 + 필터 + 검색 통합
     @GetMapping("/talent")
@@ -58,20 +64,32 @@ public class TalentController {
         @RequestParam(value = "keyword", required = false) String keyword,
         Model model,
         HttpSession session) {
+    	
 
         Member user = (Member) session.getAttribute("loggedInUser");
-
+        
         List<TalentDTO> list = talentService.readTalents(page, size, expert, category, keyword);
-        int totalCount = talentService.getTalentCount(expert, category, keyword);
-        int totalPages = (int) Math.ceil((double) totalCount / size);
         
         for (TalentDTO dto : list) {
             talentService.formatTimeSlot(dto);
+
+            // ⭐ 각각의 재능에 대해 평균 별점과 리뷰 수 설정
+            long talentId = dto.getTalent_id();
+            int reviewCount = reviewService.countByTalentId(talentId);
+            double averageRating = reviewService.getAverageRatingByTalentId(talentId);
+
+            dto.setReviewCount(reviewCount);
+            dto.setAverageRating(averageRating);
         }
+        
+        
+        int totalCount = talentService.getTalentCount(expert, category, keyword);
+        int totalPages = (int) Math.ceil((double) totalCount / size);
+
         
         attachFavoriteInfo(list, user);
         
-        
+
         model.addAttribute("talentList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);

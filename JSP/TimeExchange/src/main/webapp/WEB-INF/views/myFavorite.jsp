@@ -15,7 +15,7 @@
             font-family: 'Pretendard', sans-serif;
             background: linear-gradient(135deg, #e0d6ff, #f5f2ff);
             margin: 0;
-            padding: 40px;
+            
         }
 
         h2 {
@@ -138,6 +138,8 @@
         </c:choose>
     </c:forEach>
 </div>
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
 <jsp:include page="/WEB-INF/views/footer.jsp" />
 <script>
     const deleteUrl = '<c:url value="/favorite/delete" />';

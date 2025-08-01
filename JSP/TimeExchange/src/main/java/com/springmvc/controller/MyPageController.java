@@ -208,8 +208,8 @@ public class MyPageController  {
 	    }
 
 	    // 전문가 여부 확인
-	    boolean wasExpert = login.isExpert();
-	    boolean nowExpert = member.isExpert();
+	    boolean wasExpert = login.getExpert();
+	    boolean nowExpert = member.getExpert();
 
 	    // 업데이트
 	    memberService.update(member);

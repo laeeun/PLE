@@ -2,6 +2,7 @@ package com.springmvc.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -16,8 +17,8 @@ public class CommentRowMapper implements RowMapper<CommentDTO>{
 		dto.setTalentId(rs.getLong("talent_id"));
 		dto.setWriterId(rs.getString("writer_id"));
 		dto.setContent(rs.getString("content"));
-		dto.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-		dto.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+		dto.setCreatedAt(rs.getObject("created_at", LocalDateTime.class));
+		dto.setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class));
 		dto.setUsername(rs.getString("username"));
 		return dto;
 	}

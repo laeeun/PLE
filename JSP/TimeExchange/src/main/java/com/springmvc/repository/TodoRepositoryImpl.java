@@ -174,4 +174,25 @@ public class TodoRepositoryImpl implements TodoRepository {
 	                 "FROM todo WHERE writer_id = ? AND deadline = CURDATE()";
 	    return template.queryForMap(sql, writerId);
 	}
+	@Override
+    public int updateTitleContent(long todoId, String title, String content, String ownerId) {
+        String sql = """
+            UPDATE todo
+               SET title = ?, content = ?, updated_at = NOW()
+             WHERE todo_id = ?
+               AND ( ? IS NULL OR writer_id = ? OR receiver_id = ? )
+            """;
+
+        return template.update(sql, ps -> {
+            int i = 1;
+            ps.setString(i++, title);
+            ps.setString(i++, content);
+            ps.setLong(i++, todoId);
+
+            // ownerId가 null이면 소유자 검증을 건너뜁니다.
+            ps.setString(i++, ownerId);
+            ps.setString(i++, ownerId);
+            ps.setString(i++, ownerId);
+        });
+    }
 }

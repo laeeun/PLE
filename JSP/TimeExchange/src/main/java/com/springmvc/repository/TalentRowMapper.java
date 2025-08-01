@@ -1,6 +1,7 @@
 package com.springmvc.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -18,9 +19,9 @@ public class TalentRowMapper implements RowMapper<TalentDTO>{
 	    talent.setTitle(rs.getString("title"));
 	    talent.setDescription(rs.getString("description"));
 	    talent.setCategory(rs.getString("category"));
-	    talent.setCreated_at(rs.getTimestamp("created_at").toLocalDateTime());
+	    talent.setCreated_at(rs.getObject("created_at", LocalDateTime.class));
 	    talent.setTimeSlot(rs.getInt("timeSlot"));
-
+	    
 	    try {
 	        rs.findColumn("username");
 	        talent.setUsername(rs.getString("username"));

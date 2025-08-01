@@ -6,9 +6,9 @@ public class ReviewDTO{
 	
     private Long reviewId;          // 리뷰 고유 ID
     
-    private String writerId;        // 리뷰 작성자 ID
+    private String writerName;        // 리뷰 작성자 ID
     
-    private String targetId;        // 리뷰 대상자 ID (EXPERT)
+    private String targetName;        // 리뷰 대상자 ID (EXPERT)
     
     private Long talentId;          // 어떤 재능에 대한 리뷰인지
     
@@ -41,20 +41,20 @@ public class ReviewDTO{
 		this.reviewId = reviewId;
 	}
 
-	public String getWriterId() {
-		return writerId;
+	public String getWriterName() {
+		return writerName;
 	}
 
-	public void setWriterId(String writerId) {
-		this.writerId = writerId;
+	public void setWriterName(String writerName) {
+		this.writerName = writerName;
 	}
 
-	public String getTargetId() {
-		return targetId;
+	public String getTargetName() {
+		return targetName;
 	}
 
-	public void setTargetId(String targetId) {
-		this.targetId = targetId;
+	public void setTargetName(String targetName) {
+		this.targetName = targetName;
 	}
 
 	public Long getTalentId() {
@@ -139,7 +139,7 @@ public class ReviewDTO{
 
 	@Override
 	public String toString() {
-		return "ReviewDTO [reviewId=" + reviewId + ", writerId=" + writerId + ", targetId=" + targetId + ", talentId="
+		return "ReviewDTO [reviewId=" + reviewId + ", writerId=" + writerName + ", targetId=" + targetName + ", talentId="
 				+ talentId + ", rating=" + rating + ", comment=" + comment + ", category=" + category + ", createdAt="
 				+ createdAt + ", historyId=" + historyId + ", reply=" + reply + ", likeCount=" + likeCount
 				+ ", dislikeCount=" + dislikeCount + ", myReaction=" + myReaction + "]";

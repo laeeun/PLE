@@ -25,7 +25,7 @@ public class TalentRepositoryImpl implements TalentRepository {
     	    dto.getTitle(),
     	    dto.getDescription(),
     	    dto.getCategory(),
-    	    Timestamp.valueOf(dto.getCreated_at()),
+    	    dto.getCreated_at(),
     	    dto.getTimeSlot(),
     	    dto.getFilename()  // ← 추가됨!
     	);

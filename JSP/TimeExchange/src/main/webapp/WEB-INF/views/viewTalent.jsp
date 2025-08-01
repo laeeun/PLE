@@ -60,7 +60,7 @@
             <h3 class="text-white">${talent.title}</h3>
         </div>
         <div class="card-body">
-            <!--  <p><strong>🧑‍💻 작성자:</strong>
+            <p><strong>🧑‍💻 작성자:</strong>
 			    <c:choose>
 			        <c:when test="${talent.member_id == sessionScope.loggedInUser.member_id}">
 			            <a href="<c:url value='/mypage' />">${talent.username}</a>
@@ -69,9 +69,7 @@
 			            <a href="<c:url value='/profile/${talent.member_id}' />">${talent.username}</a>
 			        </c:otherwise>
 			    </c:choose>
-			</p> -->
-			<p><strong>🧑‍💻 작성자:</strong>
-                <a href="<c:url value='/profile/${talent.member_id}' />">${talent.username}</a>
+			</p>
             <p><strong>📂 카테고리:</strong> ${talent.category}</p>
             <p><strong>🕒 판매 시간:</strong> ${talent.timeSlotDisplay}</p>
             <p><strong>🗓️ 등록일:</strong>
@@ -116,8 +114,8 @@
          
              (<fmt:formatNumber value="${averageRating}" pattern="#.0" />점)
          </p>
-            <a href="<c:url value='/review/myreviews'/>?id=${dto.review_id}' />"
-               class="btn btn-outline-secondary mt-2">📝 리뷰 전체 보기</a>
+            <a href="<c:url value='/review/talent?id=${talent.talent_id}' />"
+   					class="btn btn-outline-secondary mt-2">📝 리뷰 전체 보기</a>
         </div>
 
         <div class="card-footer d-flex justify-content-between align-items-center">
@@ -155,12 +153,7 @@
 				    </button>
 				</c:if>
 				
-				<!-- 테스트용 버튼 -->
-				<button class="btn btn-danger" 
-			            onclick="openReportPopup('talent', '${talent.talent_id}', '${talent.member_id}')">
-			        🚨 신고하기
-			    </button>
-				
+			
                 <c:if test="${sessionScope.loggedInUser != null && sessionScope.loggedInUser.member_id != talent.member_id}">
                     <a href="<c:url value='/purchase?id=${talent.talent_id}' />" class="btn btn-primary">💰 구매하기</a>
                 </c:if>
@@ -188,6 +181,7 @@
         </c:if>
     </div>
 </div>
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 
 <jsp:include page="/WEB-INF/views/footer.jsp" />
 

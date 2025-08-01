@@ -2,7 +2,10 @@ package com.springmvc.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+
 import org.springframework.jdbc.core.RowMapper;
+
 import com.springmvc.domain.ChatEntity;
 
 public class ChatRowMapper implements RowMapper<ChatEntity> {
@@ -16,7 +19,7 @@ public class ChatRowMapper implements RowMapper<ChatEntity> {
 	    entity.setReceiverId(rs.getString("receiver_id"));
 	    entity.setContent(rs.getString("message"));
 	    entity.setType(rs.getString("type"));
-	    entity.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+	    entity.setCreatedAt(rs.getObject("created_at", LocalDateTime.class));
 
 	    // ✅ 추가 필드
 	    entity.setFileUrl(rs.getString("file_url"));

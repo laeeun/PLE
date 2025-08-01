@@ -142,4 +142,16 @@ public class ReviewServiceImpl implements ReviewService{
 	    return reviewRepository.getAverageRatingByTalentId(talentId);
 	}
 
+	@Override
+	public List<ReviewDTO> findByTalentId(Long talentId) {
+		return reviewRepository.findByTalentId(talentId);
+	}
+
+	@Override
+	public List<ReviewDTO> findByTalentIdPaged(Long talentId, int offset, int size) {
+		return reviewRepository.findByTalentIdPaged(talentId, offset, size);
+	}
+
+	
+	
 }

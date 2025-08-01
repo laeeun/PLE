@@ -87,5 +87,8 @@
   <c:if test="${not empty error}">
     <p class="error">${error}</p>
   </c:if>
+  
+  <jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+  
 </body>
 </html>

@@ -61,6 +61,7 @@
 	            <option value="댓글" ${type == '댓글' ? 'selected' : ''}>댓글</option>
 	            <option value="팔로우" ${type == '팔로우' ? 'selected' : ''}>팔로우</option>
 	            <option value="리뷰" ${type == '리뷰' ? 'selected' : ''}>리뷰</option>
+	        	<option value="숙제" ${type == '숙제' ? 'selected' : ''}>숙제</option>
 	        </select>
 	        <input type="hidden" name="size" value="${size}" />
 	    </form>

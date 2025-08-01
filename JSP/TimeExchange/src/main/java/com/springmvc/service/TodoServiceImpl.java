@@ -124,6 +124,10 @@ public class TodoServiceImpl implements TodoService {
 	public Map<String, Object> getTodayStatsCreated(String writerId) {
 		return todoRepository.getTodayStatsCreated(writerId);
 	}
-    
-    
+	
+	@Override
+    public int updateTitleContent(long todoId, String title, String content, String ownerId) {
+        return todoRepository.updateTitleContent(todoId, title, content, ownerId);
+    }
+	
 }

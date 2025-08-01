@@ -2,7 +2,6 @@ package com.springmvc.domain;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ChatMessage {
     private String messageId;          // 고유 메시지 ID

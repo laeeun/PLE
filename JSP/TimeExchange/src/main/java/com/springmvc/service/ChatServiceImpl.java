@@ -108,6 +108,15 @@ public class ChatServiceImpl implements ChatService {
 		public List<String> findSendersWithUnreadMessages(String roomId, String userId) {
 			return chatRepository.findSendersWithUnreadMessages(roomId, userId);
 		}
-        
+
+		@Override
+		public boolean existsRoom(String roomId) {
+			return chatRepository.existsRoom(roomId);
+		}
+		
+		@Override
+		public int countUnreadMessages(String memberId) {
+		    return chatRepository.countUnreadMessages(memberId);
+		}
         
 }

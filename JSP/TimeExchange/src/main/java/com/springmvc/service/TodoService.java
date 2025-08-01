@@ -55,4 +55,6 @@ public interface TodoService {
     Map<String, Object> getTodayStatsAssigned(String receiverId);  // 받은 숙제(= is_personal=false)
     
     Map<String, Object> getTodayStatsCreated(String writerId);     // 내가 생성한 할일(= writer 기준)
+    
+    int updateTitleContent(long todoId, String title, String content, String ownerId);
 }

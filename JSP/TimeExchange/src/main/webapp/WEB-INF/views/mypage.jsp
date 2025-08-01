@@ -146,7 +146,7 @@
             <p><strong>주소:</strong> ${member.addr}</p>
             
             <!-- 🕒 보유 시간 (잔액) -->
-    		<p><strong>⏰ 보유 시간:</strong> ${sessionScope.loggedInUser.account} 시간</p>
+    		<p><strong>⏰ 보유 시간:</strong> ${sessionScope.loggedInUser.account} 분</p>
             
 
             <div class="btn-group-wrap">

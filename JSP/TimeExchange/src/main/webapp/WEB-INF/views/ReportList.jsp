@@ -33,11 +33,9 @@
                 
                 <th>신고자</th>
                 <th>대상자</th>
-                <th>대상 타입</th>
-       
+                <th>대상 타입</th> 
                 <th>상태</th>
                 <th>신고일</th>
-
                 <th>자세히</th>
             </tr>
         </thead>
@@ -131,6 +129,9 @@ $(function() {
   });
 });
 </script>
+
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
 </body>
 
 </html>

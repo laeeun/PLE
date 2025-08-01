@@ -82,5 +82,8 @@
     <a href="<c:url value='/' />" class="btn-home">홈으로 가기</a>
 </div>
 
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
+
 </body>
 </html>

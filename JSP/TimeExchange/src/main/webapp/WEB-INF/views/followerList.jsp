@@ -92,5 +92,8 @@
         });
     });
 </script>
+
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
 </body>
 </html>

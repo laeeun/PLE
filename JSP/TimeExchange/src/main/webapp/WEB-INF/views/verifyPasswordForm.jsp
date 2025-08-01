@@ -95,6 +95,7 @@
         <button type="submit" class="btn-gradient">확인</button>
     </form>
 </div>
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 
 </body>
 </html>

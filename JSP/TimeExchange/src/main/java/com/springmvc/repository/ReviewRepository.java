@@ -22,12 +22,14 @@ public interface ReviewRepository {
     void saveReply(ReviewReplyDTO reply);
     void updateReply(ReviewReplyDTO reply);
     void deleteReply(Long reviewId); // reviewId로 답글을 삭제
+    
     //리뷰 리액션
     void saveReviewReaction(Long reviewId, String memberId, String reactionType);
     void deleteReviewReaction(Long reviewId, String memberId);
     String findReviewReaction(Long reviewId, String memberId); // → "LIKE", "DISLIKE", null
     int countReviewLikes(Long reviewId);
     int countReviewDislikes(Long reviewId);
+    public List<ReviewDTO> findByTalentId(Long talentId);
     //리뷰 답글 리액션
     void saveReplyReaction(Long replyId, String memberId, String reactionType);
     void deleteReplyReaction(Long replyId, String memberId);
@@ -37,6 +39,8 @@ public interface ReviewRepository {
     
     int countByTalentId(Long talentId);
     double getAverageRatingByTalentId(Long talentId);
+    List<ReviewDTO> findByTalentIdPaged(Long talentId, int offset, int size);
+
 
 
 

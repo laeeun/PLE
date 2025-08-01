@@ -71,6 +71,7 @@ public class NotificationPageController {
         redirectMap.put("재능구매요청", id -> UriComponentsBuilder.fromPath("/purchase/received").toUriString());
         redirectMap.put("팔로우", id -> UriComponentsBuilder.fromPath("/follow/followers").toUriString());
         redirectMap.put("리뷰", id -> UriComponentsBuilder.fromPath("/review/myreviews").toUriString());
+        redirectMap.put("숙제", id -> UriComponentsBuilder.fromPath("/todo").toUriString());
     }
     
     @GetMapping("/go/{id}")

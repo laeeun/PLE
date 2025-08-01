@@ -112,6 +112,8 @@
             </div>
         </c:forEach>
     </div>
+    
+    
 
     <!-- 내가 받은 리뷰 -->
     <div class="card">
@@ -137,14 +139,14 @@
                 <!-- ▼▼▼ 답글 표시 ▼▼▼ -->
                 <c:if test="${not empty review.reply}">
                     <div class="alert alert-info mt-3">
-                        <strong>판매자 답글:</strong> ${review.reply.content}
+                        <strong>판매자 답글:</strong> ${review.reply.replyContent}
                         <br>
-                        <small class="text-muted">작성일: ${review.reply.createdAt}</small>
+                        <small class="text-muted">작성일: ${review.reply.replyCreatedAt}</small>
                     </div>
                 </c:if>
 
                 <!-- ▼▼▼ 답글 작성 (판매자만) ▼▼▼ -->
-                <c:if test="${empty review.reply && loggedInUser != null && loggedInUser.member_id eq review.targetId}">
+                <c:if test="${empty review.reply && loggedInUser != null && loggedInUser.userName eq review.targetName}">
                     <form action="<c:url value='/review/reply/submit' />" method="post" class="mt-3">
                         <input type="hidden" name="reviewId" value="${review.reviewId}">
                         <div class="input-group">
@@ -160,6 +162,7 @@
             </div>
         </c:forEach>
     </div>
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 
     <jsp:include page="/WEB-INF/views/footer.jsp" />
 

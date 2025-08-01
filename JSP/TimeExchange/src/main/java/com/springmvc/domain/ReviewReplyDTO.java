@@ -6,8 +6,8 @@ public class ReviewReplyDTO {
     private Long replyId;          // 답글 고유 ID
     private Long reviewId;         // 원본 리뷰 ID
     private String sellerId;       // 답글 작성자 (판매자) ID
-    private String content;        // 답글 내용
-    private LocalDateTime createdAt; // 답글 작성 시간
+    private String replyContent;        // 답글 내용
+    private LocalDateTime replyCreatedAt; // 답글 작성 시간
 	public Long getReplyId() {
 		return replyId;
 	}
@@ -26,23 +26,27 @@ public class ReviewReplyDTO {
 	public void setSellerId(String sellerId) {
 		this.sellerId = sellerId;
 	}
-	public String getContent() {
-		return content;
+	public String getReplyContent() {
+		return replyContent; 
 	}
-	public void setContent(String content) {
-		this.content = content;
+	public void setReplyContent(String replyContent) {
+		this.replyContent = replyContent; 
 	}
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
+
+	public LocalDateTime getReplyCreatedAt() {
+		return replyCreatedAt; 
 	}
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
+	public void setReplyCreatedAt(LocalDateTime replyCreatedAt) {
+		this.replyCreatedAt = replyCreatedAt; 
 	}
 	@Override
 	public String toString() {
-		return "ReviewReplyDTO [replyId=" + replyId + ", reviewId=" + reviewId + ", sellerId=" + sellerId + ", content="
-				+ content + ", createdAt=" + createdAt + "]";
+		return "ReviewReplyDTO [replyId=" + replyId + ", reviewId=" + reviewId + ", sellerId=" + sellerId
+				+ ", replyContent=" + replyContent + ", replyCreatedAt=" + replyCreatedAt + "]";
 	}
-    
+
+	
+	
+
     
 }

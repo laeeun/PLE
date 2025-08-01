@@ -145,7 +145,7 @@ public class SignUpController {
         System.out.println("✔ 메일 발송 완료");
 
         // ✅ 전문가 여부에 따라 다음 단계 분기
-        if (member.isExpert()) {
+        if (member.getExpert()) {
             // expertForm에서 사용할 memberId를 세션에 저장
             session.setAttribute("expertMemberId", member.getMember_id());
             return "redirect:/signUp/expertForm";  // 전문가 추가 정보 입력 폼으로 이동
@@ -173,7 +173,7 @@ public class SignUpController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute Member member) {
-        System.out.println("전문가 인가 ? : " + member.isExpert());
+        System.out.println("전문가 인가 ? : " + member.getExpert());
         memberService.save(member);
         return "redirect:/login";
     }
@@ -226,6 +226,7 @@ public class SignUpController {
                                @RequestParam("expertFiles") List<MultipartFile> files,
                                RedirectAttributes redirectAttributes) {
 
+    	
         System.out.println("📥 전문가 정보 제출: " + memberId);
         System.out.println("📌 경력: " + career);
         System.out.println("📌 대학교: " + university);

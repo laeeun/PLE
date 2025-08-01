@@ -23,5 +23,7 @@
         <tr><th>관리자 메모</th><td id="adminNote">${report.admin_note}</td></tr>
     </table>
 
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
 </body>
 </html>

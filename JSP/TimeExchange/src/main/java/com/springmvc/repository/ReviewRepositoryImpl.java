@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 import com.springmvc.controller.ChargeController;
 import com.springmvc.domain.HistoryDTO;
 import com.springmvc.domain.ReviewDTO;
@@ -28,13 +29,13 @@ public class ReviewRepositoryImpl implements ReviewRepository {
      */
     @Override
     public void save(ReviewDTO review) {
-        String sql = "INSERT INTO review (history_id, writer_id, target_id, " +
+        String sql = "INSERT INTO review (history_id, writer_name, target_name, " +
                      "talent_id, rating, comment, category) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         template.update(sql,
             review.getHistoryId(),   
-            review.getWriterId(),    
-            review.getTargetId(),   
+            review.getWriterName(),    
+            review.getTargetName(),   
             review.getTalentId(),
             review.getRating(),
             review.getComment(),
@@ -70,12 +71,14 @@ public class ReviewRepositoryImpl implements ReviewRepository {
      */
     @Override
     public ReviewDTO findById(Long id) {
-        String sql = "SELECT r.*, " +
-                     "rr.reply_id, rr.seller_id AS reply_seller_id, " +
-                     "rr.content AS reply_content, rr.created_at AS reply_created_at " +
-                     "FROM review r " +
-                     "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
-                     "WHERE r.review_id = ?";
+    	String sql = "SELECT r.*, " +
+                "rr.reply_id, rr.seller_id AS seller_id, " +
+                "rr.reply_content AS content, " +
+                "r.created_at AS review_created_at, " +
+                "rr.reply_created_at AS reply_created_at " +
+                "FROM review r " +
+                "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
+                "WHERE r.review_id = ?";
 
         ReviewDTO review = template.queryForObject(sql, new ReviewRowMapper(), id);
 
@@ -115,7 +118,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
      */
     @Override
     public Long findIdByBuyerAndTalent(String buyerId, Long talentId) {
-        String sql = "SELECT review_id FROM review WHERE writer_id = ? AND talent_id = ? LIMIT 1";
+        String sql = "SELECT review_id FROM review WHERE writer_name = ? AND talent_id = ? LIMIT 1";
         return template.queryForObject(sql, Long.class, buyerId, talentId);
     }
 
@@ -126,16 +129,17 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 	}
 
 	@Override
-	public List<ReviewDTO> findByWriterId(String writerId) {
-	    String sql = "SELECT r.review_id, r.writer_id, r.target_id, r.talent_id, " +
-	                 "r.rating, r.comment, r.created_at, r.history_id, r.category, " +
-	                 "rr.reply_id, rr.seller_id AS reply_seller_id, " +
-	                 "rr.content AS reply_content, rr.created_at AS reply_created_at " +
-	                 "FROM review r " +
-	                 "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
-	                 "WHERE r.writer_id = ?";
+	public List<ReviewDTO> findByWriterId(String writerName) {
+		String sql = "SELECT r.review_id, r.writer_name, r.target_name, r.talent_id, " +
+	             "r.rating, r.comment, r.created_at AS review_created_at, r.history_id, r.category, " +
+	             "rr.reply_id, rr.seller_id AS seller_id, " +
+	             "rr.reply_content AS content, rr.reply_created_at AS reply_created_at " +
+	             "FROM review r " +
+	             "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
+	             "WHERE r.writer_name = ?";
 
-	    List<ReviewDTO> list = template.query(sql, new ReviewRowMapper(), writerId);
+
+	    List<ReviewDTO> list = template.query(sql, new ReviewRowMapper(), writerName);
 
 	   
 	    for (ReviewDTO review : list) {
@@ -148,16 +152,16 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 
  
 	@Override
-	public List<ReviewDTO> findByTargetId(String targetId) {
-	    String sql = "SELECT r.review_id, r.writer_id, r.target_id, r.talent_id, " +
-	                 "r.rating, r.comment, r.created_at, r.history_id, r.category, " +
-	                 "rr.reply_id, rr.seller_id AS reply_seller_id, " +
-	                 "rr.content AS reply_content, rr.created_at AS reply_created_at " +
-	                 "FROM review r " +
-	                 "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
-	                 "WHERE r.target_id = ?";
+	public List<ReviewDTO> findByTargetId(String targetName) {
+		String sql = "SELECT r.review_id, r.writer_name, r.target_name, r.talent_id, " +
+	             "r.rating, r.comment, r.created_at AS review_created_at, r.history_id, r.category, " +
+	             "rr.reply_id, rr.seller_id AS seller_id, " +
+	             "rr.reply_content AS content, rr.reply_created_at AS reply_created_at " +
+	             "FROM review r " +
+	             "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
+	             "WHERE r.target_name = ?";
 
-	    List<ReviewDTO> list = template.query(sql, new ReviewRowMapper(), targetId);
+	    List<ReviewDTO> list = template.query(sql, new ReviewRowMapper(), targetName);
 
 	   
 	    for (ReviewDTO review : list) {
@@ -169,17 +173,16 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 	}
 
 
-
 	@Override
 	public void saveReply(ReviewReplyDTO reply) {
-		String sql = "INSERT INTO review_reply (review_id, seller_id, content) VALUES (?, ?, ?)";
-		template.update(sql, reply.getReviewId(), reply.getSellerId(), reply.getContent());
+		String sql = "INSERT INTO review_reply (review_id, seller_id, reply_content) VALUES (?, ?, ?)";
+		template.update(sql, reply.getReviewId(), reply.getSellerId(), reply.getReplyContent());
 	}
 
 	@Override
 	public void updateReply(ReviewReplyDTO reply) {
-		String sql = "UPDATE review_reply SET content = ? WHERE reply_id = ?";
-		template.update(sql, reply.getContent(), reply.getReplyId());
+		String sql = "UPDATE review_reply SET reply_content = ? WHERE reply_id = ?";
+		template.update(sql, reply.getReplyContent(), reply.getReplyId());
 	}
 
 	@Override
@@ -269,6 +272,40 @@ public class ReviewRepositoryImpl implements ReviewRepository {
         String sql = "SELECT IFNULL(AVG(rating), 0) FROM review WHERE talent_id = ?";
         return template.queryForObject(sql, Double.class, talentId);
     }
+
+	@Override
+	public List<ReviewDTO> findByTalentId(Long talentId) {
+		String sql = """
+				SELECT r.review_id, r.writer_name, r.target_name, r.talent_id,
+				       r.rating, r.comment, r.created_at AS review_created_at,
+				       r.history_id, r.category,
+				       rr.reply_id, rr.seller_id,
+				       rr.reply_content AS content,
+				       rr.reply_created_at AS reply_created_at
+				FROM review r
+				LEFT JOIN review_reply rr ON r.review_id = rr.review_id
+				WHERE r.talent_id = ?
+				ORDER BY r.created_at DESC
+			""";
+
+		return template.query(sql, new ReviewRowMapper(), talentId);
+	}
+
+	@Override
+	public List<ReviewDTO> findByTalentIdPaged(Long talentId, int offset, int size) {
+	    String sql = """
+	        SELECT *
+	        FROM review r
+	        LEFT JOIN review_reply rr ON r.review_id = rr.review_id
+	        WHERE r.talent_id = ?
+	        ORDER BY r.created_at DESC
+	        LIMIT ? OFFSET ?
+	    """;
+	    return template.query(sql, new ReviewRowMapper(), talentId, size, offset);
+	}
+	
+	
+    
     
     
 }

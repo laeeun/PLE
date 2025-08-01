@@ -121,6 +121,7 @@
         </div>
     </form>
 </div>
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 
 <!-- ✅ 푸터 인클루드 -->
 <jsp:include page="/WEB-INF/views/footer.jsp" />

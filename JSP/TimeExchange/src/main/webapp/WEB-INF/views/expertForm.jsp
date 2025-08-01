@@ -57,7 +57,7 @@
 <div class="form-container">
     <h3>전문가 추가 정보 입력</h3>
 
-    <form action="${pageContext.request.contextPath}${formAction}" method="post" enctype="multipart/form-data">
+    <form action="${pageContext.request.contextPath}/signUp/expertSubmit" method="post" enctype="multipart/form-data">
 
         <label>경력 사항</label>
         <textarea name="career" class="form-control" rows="3"
@@ -85,6 +85,9 @@
         </div>
     </form>
 </div>
+
+
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 
 </body>
 </html>

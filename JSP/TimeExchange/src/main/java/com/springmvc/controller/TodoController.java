@@ -168,24 +168,49 @@ public class TodoController {
     @ResponseBody
     public Map<String, Object> updateTodoContent(@RequestBody Map<String, Object> body,
                                                  HttpSession session) {
-        Member user = (Member) session.getAttribute("loggedInUser");
-        String memberId = user.getMember_id();
-
-        TodoDTO todo = new TodoDTO();
-        todo.setTodoId(Long.parseLong(body.get("todoId").toString()));
-        todo.setTitle((String) body.get("title"));
-        todo.setContent((String) body.get("content"));
-        todo.setWriterId(memberId);
-        todo.setReceiverId(memberId);
-        todo.setPersonal(true);
-        todo.setUpdated_at(LocalDateTime.now());
-
-        todoService.updateTODO(todo);
-
         Map<String, Object> result = new HashMap<>();
+
+        Member user = (Member) session.getAttribute("loggedInUser");
+        if (user == null) {
+            result.put("success", false);
+            result.put("error", "로그인이 필요합니다.");
+            return result;
+        }
+
+        // 입력값 파싱 & 검증
+        Object idRaw = body.get("todoId");
+        String title   = body.get("title")   != null ? body.get("title").toString().trim()   : null;
+        String content = body.get("content") != null ? body.get("content").toString().trim() : null;
+
+        if (idRaw == null || title == null || title.isEmpty() || content == null || content.isEmpty()) {
+            result.put("success", false);
+            result.put("error", "todoId, title, content는 필수입니다.");
+            return result;
+        }
+
+        long todoId;
+        try {
+            todoId = Long.parseLong(idRaw.toString());
+        } catch (NumberFormatException e) {
+            result.put("success", false);
+            result.put("error", "todoId 형식이 올바르지 않습니다.");
+            return result;
+        }
+
+        // 작성자/수신자 본인만 수정하도록 검증하려면 ownerId 사용
+        String ownerId = user.getMember_id();
+
+        int changed = todoService.updateTitleContent(todoId, title, content, ownerId);
+        if (changed <= 0) {
+            result.put("success", false);
+            result.put("error", "수정 대상이 없거나 권한이 없습니다.");
+            return result;
+        }
+
         result.put("success", true);
         return result;
     }
+
 
 
 

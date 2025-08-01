@@ -88,16 +88,16 @@ public class ReviewController {
         // 리뷰 저장
         ReviewDTO dto = new ReviewDTO();
         dto.setHistoryId(historyId);
-        dto.setWriterId(memberId);
+        dto.setWriterName(memberId);
         dto.setTalentId(talentId);
-        dto.setTargetId(sellerId.trim());
+        dto.setTargetName(sellerId.trim());
         dto.setCategory(category);
         dto.setRating(rating);
         dto.setComment(comment);
         reviewService.save(dto);
 
         // 알림 처리
-        Member sellerMember = memberService.findById(dto.getTargetId());
+        Member sellerMember = memberService.findById(dto.getTargetName());
         if (sellerMember != null) {
         	
             String sender = login.getUserName();
@@ -215,7 +215,7 @@ public class ReviewController {
         }
 
         ReviewDTO review = reviewService.findById(reviewId);
-        if (!review.getTargetId().equals(seller.getMember_id())) {
+        if (!review.getTargetName().equals(seller.getMember_id())) {
             ra.addFlashAttribute("error", "답글 권한이 없습니다.");
             return "redirect:/review/myreviews";
         }
@@ -223,7 +223,7 @@ public class ReviewController {
         ReviewReplyDTO reply = new ReviewReplyDTO();
         reply.setReviewId(reviewId);
         reply.setSellerId(seller.getMember_id());
-        reply.setContent(content);
+        reply.setReplyContent(content);
 
         reviewService.saveReply(reply);
 
@@ -236,7 +236,7 @@ public class ReviewController {
         Member seller = (Member) session.getAttribute("loggedInUser");
         ReviewDTO review = reviewService.findById(reviewId);
 
-        if (seller == null || !seller.getMember_id().equals(review.getTargetId())) {
+        if (seller == null || !seller.getMember_id().equals(review.getTargetName())) {
             return "redirect:/review/view?id=" + reviewId;
         }
 
@@ -254,14 +254,14 @@ public class ReviewController {
         Member seller = (Member) session.getAttribute("loggedInUser");
         ReviewDTO review = reviewService.findById(reviewId);
 
-        if (seller == null || !seller.getMember_id().equals(review.getTargetId())) {
+        if (seller == null || !seller.getMember_id().equals(review.getTargetName())) {
             return "redirect:/review/view?id=" + reviewId;
         }
 
         ReviewReplyDTO reply = new ReviewReplyDTO();
         reply.setReviewId(reviewId);
         reply.setSellerId(seller.getMember_id());
-        reply.setContent(content);
+        reply.setReplyContent(content);
 
         reviewService.updateReply(reply);
 
@@ -274,7 +274,7 @@ public class ReviewController {
         Member seller = (Member) session.getAttribute("loggedInUser");
         ReviewDTO review = reviewService.findById(reviewId);
 
-        if (seller == null || !seller.getMember_id().equals(review.getTargetId())) {
+        if (seller == null || !seller.getMember_id().equals(review.getTargetName())) {
             return "redirect:/review/view?id=" + reviewId;
         }
 
@@ -309,4 +309,37 @@ public class ReviewController {
 
         return "success";
     }
+    
+    // 특정 게시글(talent)에 대한 리뷰 전체 보기
+    @GetMapping("/talent")
+    public String reviewsByTalent(@RequestParam("id") Long talentId,
+                                  @RequestParam(value = "page", defaultValue = "1") int page,
+                                  Model model) {
+
+        int size = 5; // 한 페이지당 리뷰 수
+        int offset = (page - 1) * size;
+
+        // 페이징된 리뷰 조회
+        List<ReviewDTO> reviews = reviewService.findByTalentIdPaged(talentId, offset, size);
+
+        // 좋아요/싫어요 수 계산
+        for (ReviewDTO review : reviews) {
+            review.setLikeCount(reviewService.countReviewLikes(review.getReviewId()));
+            review.setDislikeCount(reviewService.countReviewDislikes(review.getReviewId()));
+        }
+
+        // 전체 리뷰 수 계산
+        int totalCount = reviewService.countByTalentId(talentId);
+        int totalPages = (int) Math.ceil((double) totalCount / size);
+
+        // model에 추가
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("talentId", talentId);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+
+        return "talentReview"; 
+    }
+
+
 }

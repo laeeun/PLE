@@ -1,6 +1,11 @@
 package com.springmvc.repository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import com.springmvc.domain.ChatEntity;
 import com.springmvc.domain.ChatListDTO;
-import com.springmvc.domain.ChatMessage;
 
 @Repository
 public class ChatRepositoryImpl implements ChatRepository {
@@ -41,6 +45,7 @@ public class ChatRepositoryImpl implements ChatRepository {
     @Override
     public List<ChatEntity> findMessagesByRoomId(String roomId) {
         String sql = "SELECT * FROM chat_message WHERE room_id = ? AND deleted = FALSE ORDER BY created_at ASC";
+
         return template.query(sql, new ChatRowMapper(), roomId);
     }
 
@@ -61,14 +66,14 @@ public class ChatRepositoryImpl implements ChatRepository {
                          AND cm2.read = false
                    ) AS unread_count
             FROM chat_message cm
-            JOIN (
-                SELECT room_id, MAX(created_at) AS max_time
+            JOIN member m ON m.member_id = (
+                CASE WHEN cm.sender_id = ? THEN cm.receiver_id ELSE cm.sender_id END
+            )
+            WHERE cm.id IN (
+                SELECT MAX(id)
                 FROM chat_message
                 WHERE sender_id = ? OR receiver_id = ?
                 GROUP BY room_id
-            ) latest ON cm.room_id = latest.room_id AND cm.created_at = latest.max_time
-            JOIN member m ON m.member_id = (
-                CASE WHEN cm.sender_id = ? THEN cm.receiver_id ELSE cm.sender_id END
             )
             ORDER BY cm.created_at DESC
         """;
@@ -89,14 +94,12 @@ public class ChatRepositoryImpl implements ChatRepository {
             }
 
             dto.setLastMessage(rs.getString("last_message"));
-            dto.setLastMessageTime(rs.getTimestamp("last_message_time").toLocalDateTime());
-
-            // ✅ unreadCount도 세팅
+            dto.setLastMessageTime(rs.getObject("last_message_time", LocalDateTime.class));
             dto.setUnreadCount(rs.getInt("unread_count"));
-
             return dto;
-        }, memberId, memberId, memberId, memberId); // 파라미터 순서 주의
+        }, memberId, memberId, memberId, memberId);
     }
+
 
 
 
@@ -104,38 +107,42 @@ public class ChatRepositoryImpl implements ChatRepository {
     // 🧠 채팅방 존재 확인
     @Override
     public String findRoomIdByUserIds(String user1Id, String user2Id) {
-        String sql = """
-            SELECT room_id FROM chat_room
-            WHERE (user1_id = ? AND user2_id = ?) OR (user1_id = ? AND user2_id = ?)
-        """;
+        String[] users = {user1Id, user2Id};
+        Arrays.sort(users);
+        String roomId = users[0] + "_" + users[1];
+
+        String sql = "SELECT room_id FROM chat_room WHERE room_id = ?";
         List<String> result = template.query(sql,
-                (rs, rowNum) -> rs.getString("room_id"),
-                user1Id, user2Id, user2Id, user1Id
+            (rs, rowNum) -> rs.getString("room_id"),
+            roomId
         );
+
         return result.isEmpty() ? null : result.get(0);
     }
 
     // ➕ 채팅방 생성
     @Override
     public String createChatRoom(String user1Id, String user2Id) {
-        // ✅ room_id를 직접 생성 (예: "user1_user2" 형식으로)
-        String roomId = user1Id + "_" + user2Id;
+        // ✅ 항상 같은 순서로 정렬
+        String[] users = {user1Id, user2Id};
+        Arrays.sort(users); // 알파벳 순 정렬 (A_Z → roomId 고정됨)
+
+        String roomId = users[0] + "_" + users[1];
 
         String sql = "INSERT INTO chat_room (room_id, user1_id, user2_id) VALUES (?, ?, ?)";
-        template.update(sql, roomId, user1Id, user2Id);
+        template.update(sql, roomId, users[0], users[1]);
 
-        return roomId; // ✅ 생성된 room_id를 그대로 반환
+        return roomId;
     }
 
     @Override
     public boolean existsRoom(String user1Id, String user2Id) {
-        String sql = """
-            SELECT COUNT(*) FROM chat_room
-            WHERE (user1_id = ? AND user2_id = ?)
-               OR (user1_id = ? AND user2_id = ?)
-        """;
+        String[] users = {user1Id, user2Id};
+        Arrays.sort(users);
+        String roomId = users[0] + "_" + users[1];
 
-        Integer count = template.queryForObject(sql, Integer.class, user1Id, user2Id, user2Id, user1Id);
+        String sql = "SELECT COUNT(*) FROM chat_room WHERE room_id = ?";
+        Integer count = template.queryForObject(sql, Integer.class, roomId);
         return count != null && count > 0;
     }
     
@@ -155,10 +162,21 @@ public class ChatRepositoryImpl implements ChatRepository {
                 FROM chat_message
                 WHERE sender_id = ? OR receiver_id = ?
             )
-            ORDER BY cm.room_id, cm.created_at ASC
+            ORDER BY cm.created_at DESC
         """;
 
-        return template.query(sql, new ChatRowMapper(), memberId, memberId);
+        List<ChatEntity> allMessages = template.query(sql, new ChatRowMapper(), memberId, memberId);
+
+        // ✅ roomId 기준으로 가장 최근 메시지만 남기기
+        Map<String, ChatEntity> latestByRoom = new LinkedHashMap<>();
+        for (ChatEntity msg : allMessages) {
+            String roomId = msg.getRoomId();
+            if (!latestByRoom.containsKey(roomId)) {
+                latestByRoom.put(roomId, msg); // 이미 정렬돼 있어서 제일 앞 메시지가 최신임
+            }
+        }
+
+        return new ArrayList<>(latestByRoom.values());
     }
 
 	@Override
@@ -192,6 +210,26 @@ public class ChatRepositoryImpl implements ChatRepository {
 	                 "WHERE room_id = ? AND receiver_id = ? AND `read` = FALSE";
 
 	    return template.queryForList(sql, String.class, roomId, receiverId);
+	}
+
+	
+	@Override
+	public boolean existsRoom(String roomId) {
+	    String sql = "SELECT COUNT(*) FROM chat_room WHERE room_id = ?";
+	    Integer count = template.queryForObject(sql, Integer.class, roomId);
+	    return count != null && count > 0;
+	}
+
+	@Override
+	public int countUnreadMessages(String receiverId) {
+	    String sql = """
+	        SELECT COUNT(*)
+	        FROM chat_message
+	        WHERE receiver_id = ?
+	          AND `read` = false
+	    """;
+
+	    return template.queryForObject(sql, Integer.class, receiverId);
 	}
 
 

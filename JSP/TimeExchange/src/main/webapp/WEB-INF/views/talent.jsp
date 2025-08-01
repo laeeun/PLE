@@ -393,7 +393,7 @@
                                         <p>카테고리: ${dto.category}</p>
                                         <p>작성자: ${dto.username}</p>
                                         <p>판매 시간: ${dto.timeSlotDisplay}</p>
-                                        <p>등록일: ${dto.formattedCreatedAt}</p>
+                                        <p>등록일: ${dto.created_at}</p>
                                         <p>⭐ 평균 별점: ${dto.averageRating}점 (${dto.reviewCount}개)</p>
                                     </div>
                                 </div>
@@ -426,6 +426,7 @@
         </div>
     </div>
 </div>
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 
 <jsp:include page="/WEB-INF/views/footer.jsp" />
 </body>

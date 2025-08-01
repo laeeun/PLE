@@ -112,5 +112,7 @@ function deleteFile(fileName, elementId) {
 }
 </script>
 
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
 </body>
 </html>

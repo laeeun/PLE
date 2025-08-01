@@ -63,10 +63,10 @@
         <h2>리뷰 상세 보기</h2>
 
         <div class="field">
-            <span class="label">작성자:</span> ${review.writerId}
+            <span class="label">작성자:</span> ${review.writerName}
         </div>
         <div class="field">
-            <span class="label">대상자:</span> ${review.targetId}
+            <span class="label">대상자:</span> ${review.targetName}
         </div>
         <div class="field">
             <span class="label">카테고리:</span> ${review.category}
@@ -94,7 +94,7 @@
                         <input type="hidden" name="reviewId" value="${review.reviewId}" />
                         <div class="form-group">
                             <label class="label">답글 수정:</label>
-                            <textarea name="content" class="form-control" rows="3" required>${review.reply.content}</textarea>
+                            <textarea name="content" class="form-control" rows="3" required>${review.reply.replyContent}</textarea>
                         </div>
                         <div class="text-end mt-2">
                             <button type="submit" class="btn btn-primary">수정 완료</button>
@@ -106,10 +106,10 @@
                     <!-- 기존 답글 표시 -->
                     <div class="field" style="background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
                         <span class="label" style="color: #0d6efd;">판매자 답글:</span>
-                        <p class="mt-2">${review.reply.content}</p>
-                        <small class="text-muted">답변일: ${review.reply.createdAt}</small>
+                        <p class="mt-2">${review.reply.replyContent}</p>
+                        <small class="text-muted">답변일: ${review.reply.replyCreatedAt}</small>
 
-                        <c:if test="${loggedInUser != null && loggedInUser.member_id eq review.targetId}">
+                        <c:if test="${loggedInUser != null && loggedInUser.member_id eq review.targetName}">
                             <div class="mt-2 text-end">
                                 <a href="${pageContext.request.contextPath}/review/reply/edit?reviewId=${review.reviewId}" class="btn btn-sm btn-secondary">✏ 답글 수정</a>
                                 <form action="${pageContext.request.contextPath}/review/reply/delete" method="post" style="display:inline;">
@@ -125,7 +125,7 @@
         </c:if>
 
         <!-- 답글이 없고, 판매자일 경우 답글 작성 -->
-        <c:if test="${empty review.reply && loggedInUser != null && loggedInUser.member_id eq review.targetId}">
+        <c:if test="${empty review.reply && loggedInUser != null && loggedInUser.member_id eq review.targetName}">
             <form action="${pageContext.request.contextPath}/review/reply/submit" method="post" class="mt-4">
                 <input type="hidden" name="reviewId" value="${review.reviewId}" />
                 <div class="form-group">
@@ -140,7 +140,7 @@
 
         <!-- ✏ 리뷰 수정/삭제 버튼 (작성자 전용) -->
         <div class="text-center mt-4">
-            <c:if test="${review.writerId == loggedInUser.member_id}">
+            <c:if test="${review.writerName == loggedInUser.userName}">
                 <a href="${pageContext.request.contextPath}/review/update?id=${review.reviewId}" 
                    class="btn btn-outline-primary me-2">✏ 리뷰 수정</a>
 
@@ -152,6 +152,7 @@
             </c:if>
         </div>
     </div>
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 
     <jsp:include page="/WEB-INF/views/footer.jsp" />
 

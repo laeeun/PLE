@@ -20,6 +20,8 @@ public interface ReviewService{
     void saveReply(ReviewReplyDTO reply);
     void updateReply(ReviewReplyDTO reply);
     void deleteReply(Long reviewId); // reviewId로 답글을 삭제
+    public List<ReviewDTO> findByTalentId(Long talentId);
+
     //리뷰 리액션
     void saveReviewReaction(Long reviewId, String memberId, String reactionType);
     void deleteReviewReaction(Long reviewId, String memberId);
@@ -35,4 +37,5 @@ public interface ReviewService{
     
     int countByTalentId(Long talentId);
     double getAverageRatingByTalentId(Long talentId);
+    List<ReviewDTO> findByTalentIdPaged(Long talentId, int offset, int size);
 }

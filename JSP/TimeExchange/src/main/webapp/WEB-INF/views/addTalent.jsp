@@ -166,6 +166,8 @@
         <button type="submit" class="btn btn-primary">등록하기</button>
     </form:form>
 </div>
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
 <jsp:include page="/WEB-INF/views/footer.jsp" />
 </body>
 </html>

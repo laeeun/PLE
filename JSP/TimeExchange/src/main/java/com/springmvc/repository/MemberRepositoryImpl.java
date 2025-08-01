@@ -42,7 +42,7 @@ public class MemberRepositoryImpl implements MemberRepository {
             member.getGender(),                       // gender
             member.getAddr(),                         // addr
             member.getAddrDetail(),                   // addr_detail
-            member.isExpert(),                        // expert
+            member.getExpert(),                        // expert
             Timestamp.valueOf(member.getCreatedAt()), // created_at
             member.getAccount(),                      // ✅ account 먼저
             member.getProfileImage()                  // ✅ profile_image 다음
@@ -80,7 +80,7 @@ public class MemberRepositoryImpl implements MemberRepository {
             member.getGender(),
             member.getAddr(),
             member.getAddrDetail(),
-            member.isExpert(),
+            member.getExpert(),
             member.isEmailVerified(),
             member.getEmailToken(),
             member.getTokenCreatedAt(),
