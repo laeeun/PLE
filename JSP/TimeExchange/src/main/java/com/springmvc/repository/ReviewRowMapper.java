@@ -28,7 +28,7 @@ public class ReviewRowMapper implements RowMapper<ReviewDTO> {
             reply.setReplyId(rs.getLong("reply_id"));
             reply.setReviewId(rs.getLong("review_id"));
             reply.setSellerId(rs.getString("seller_id"));
-            reply.setReplyContent(rs.getString("reply_content")); // alias 사용
+            reply.setReplyContent(rs.getString("content")); // alias 사용
             reply.setReplyCreatedAt(rs.getObject("reply_created_at", LocalDateTime.class));
             review.setReply(reply);
         }

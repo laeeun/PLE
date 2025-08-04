@@ -61,7 +61,7 @@
             <c:if test="${not fn:contains(pageContext.request.requestURI, '/mypage/withdraw')}">
                 <div class="list-btn" onclick="location.href='${pageContext.request.contextPath}/mypage/withdraw'">❌ 회원 탈퇴</div>
             </c:if>
-            <c:if test="${sessionScope.loggedInUser.isExpert == true and not fn:contains(pageContext.request.requestURI, '/mypage/expert')}">
+			<c:if test="${sessionScope.loggedInUser.expert and not fn:contains(pageContext.request.requestURI, '/mypage/expert')}">
                 <div class="list-btn" onclick="location.href='${pageContext.request.contextPath}/mypage/expert/edit'">🧾 전문가 정보 수정</div>
             </c:if>
         </c:if>

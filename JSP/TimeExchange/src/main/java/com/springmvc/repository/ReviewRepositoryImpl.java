@@ -74,7 +74,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     	String sql = "SELECT r.*, " +
                 "rr.reply_id, rr.seller_id AS seller_id, " +
                 "rr.reply_content AS content, " +
-                "r.created_at AS review_created_at, " +
+                "r.created_at AS created_at, " +
                 "rr.reply_created_at AS reply_created_at " +
                 "FROM review r " +
                 "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
@@ -131,7 +131,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 	@Override
 	public List<ReviewDTO> findByWriterId(String writerName) {
 		String sql = "SELECT r.review_id, r.writer_name, r.target_name, r.talent_id, " +
-	             "r.rating, r.comment, r.created_at AS review_created_at, r.history_id, r.category, " +
+	             "r.rating, r.comment, r.created_at AS created_at, r.history_id, r.category, " +
 	             "rr.reply_id, rr.seller_id AS seller_id, " +
 	             "rr.reply_content AS content, rr.reply_created_at AS reply_created_at " +
 	             "FROM review r " +
@@ -154,7 +154,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 	@Override
 	public List<ReviewDTO> findByTargetId(String targetName) {
 		String sql = "SELECT r.review_id, r.writer_name, r.target_name, r.talent_id, " +
-	             "r.rating, r.comment, r.created_at AS review_created_at, r.history_id, r.category, " +
+	             "r.rating, r.comment, r.created_at AS created_at, r.history_id, r.category, " +
 	             "rr.reply_id, rr.seller_id AS seller_id, " +
 	             "rr.reply_content AS content, rr.reply_created_at AS reply_created_at " +
 	             "FROM review r " +
@@ -277,7 +277,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 	public List<ReviewDTO> findByTalentId(Long talentId) {
 		String sql = """
 				SELECT r.review_id, r.writer_name, r.target_name, r.talent_id,
-				       r.rating, r.comment, r.created_at AS review_created_at,
+				       r.rating, r.comment, r.created_at AS created_at,
 				       r.history_id, r.category,
 				       rr.reply_id, rr.seller_id,
 				       rr.reply_content AS content,

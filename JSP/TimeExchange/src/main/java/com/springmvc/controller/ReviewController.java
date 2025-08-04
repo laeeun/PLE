@@ -249,6 +249,7 @@ public class ReviewController {
     @PostMapping("/reply/update")
     public String updateReply(@RequestParam Long reviewId,
                               @RequestParam String content,
+                              @RequestParam Long replyId,
                               HttpSession session) {
 
         Member seller = (Member) session.getAttribute("loggedInUser");
@@ -257,12 +258,16 @@ public class ReviewController {
         if (seller == null || !seller.getMember_id().equals(review.getTargetName())) {
             return "redirect:/review/view?id=" + reviewId;
         }
-
+        
         ReviewReplyDTO reply = new ReviewReplyDTO();
+        reply.setReplyId(replyId);
         reply.setReviewId(reviewId);
         reply.setSellerId(seller.getMember_id());
         reply.setReplyContent(content);
 
+        System.out.println("🔥 업데이트 대상 reply_id = " + reply.getReplyId());
+        System.out.println("🔥 수정 내용 = " + reply.getReplyContent());
+        
         reviewService.updateReply(reply);
 
         return "redirect:/review/view?id=" + reviewId;

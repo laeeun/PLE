@@ -92,6 +92,7 @@
                     <!-- 답글 수정 폼 -->
                     <form action="${pageContext.request.contextPath}/review/reply/update" method="post" class="mt-4">
                         <input type="hidden" name="reviewId" value="${review.reviewId}" />
+                        <input type="hidden" name="replyId" value="${review.reply.replyId}" />
                         <div class="form-group">
                             <label class="label">답글 수정:</label>
                             <textarea name="content" class="form-control" rows="3" required>${review.reply.replyContent}</textarea>
