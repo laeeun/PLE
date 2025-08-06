@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.springmvc.enums.RecurrenceFreq;
 
 //✅ 할일(Todo) 정보를 담는 DTO 클래스
 public class TodoDTO {
@@ -51,6 +52,70 @@ public class TodoDTO {
 	
 	 // 마지막 수정 시각
 	 private LocalDateTime updated_at = LocalDateTime.now();
+	 public RecurrenceFreq freq;        // DAILY / WEEKLY / MONTHLY
+     public LocalDate startDate;        // NOT NULL
+     public LocalDate endDate;  
+     public Boolean allDay = true;      // default true
+     private String startDateStr;
+     private String endDateStr;
+     private boolean occurrence;
+     
+     
+	public boolean isOccurrence() {
+		return occurrence;
+	}
+
+	public void setOccurrence(boolean occurrence) {
+		this.occurrence = occurrence;
+	}
+
+	public String getStartDateStr() {
+		return startDateStr;
+	}
+
+	public void setStartDateStr(String startDateStr) {
+		this.startDateStr = startDateStr;
+	}
+
+	public String getEndDateStr() {
+		return endDateStr;
+	}
+
+	public void setEndDateStr(String endDateStr) {
+		this.endDateStr = endDateStr;
+	}
+
+	public RecurrenceFreq getFreq() {
+		return freq;
+	}
+
+	public void setFreq(RecurrenceFreq freq) {
+		this.freq = freq;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+
+	public Boolean getAllDay() {
+		return allDay;
+	}
+
+	public void setAllDay(Boolean allDay) {
+		this.allDay = allDay;
+	}
 
 	public LocalDate getDeadline() {
 		return deadline;

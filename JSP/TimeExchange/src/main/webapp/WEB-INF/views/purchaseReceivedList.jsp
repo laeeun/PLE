@@ -323,7 +323,7 @@ $(document).on('click', '.assign-btn', function () {
     const base = "<c:url value='/todo/assign/popup' />";
     const url = base + "?tradeId=" + encodeURIComponent(tradeId)
                       + "&receiverId=" + encodeURIComponent(receiver);
-    window.open(url, "assignTodo", "width=520,height=560,scrollbars=yes,resizable=yes");
+    window.open(url, "assignTodo", "width=640,height=720,scrollbars=yes,resizable=yes");
 });
 </script>
 <jsp:include page="/WEB-INF/views/floatingButtons.jsp" />

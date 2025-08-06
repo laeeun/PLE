@@ -1,14 +1,24 @@
 package com.springmvc.repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.springmvc.domain.TodoCreateRequest;
 import com.springmvc.domain.TodoDTO;
+import com.springmvc.enums.RecurrenceFreq;
 
 @Repository
 public class TodoRepositoryImpl implements TodoRepository {
@@ -21,8 +31,8 @@ public class TodoRepositoryImpl implements TodoRepository {
     // ✅ 새로운 할일 추가 (개인 또는 숙제)
     @Override
     public void createTODO(TodoDTO todo) {
-    	String sql = "INSERT INTO todo (trade_id, writer_id, receiver_id, title, content, priority, completed, is_personal, deadline) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, CURDATE()))";
+        String sql = "INSERT INTO todo (trade_id, writer_id, receiver_id, title, content, priority, completed, is_personal, deadline, start_date, end_date, freq, all_day) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         template.update(sql,
             todo.getTradeId(),
@@ -33,7 +43,11 @@ public class TodoRepositoryImpl implements TodoRepository {
             todo.getPriority(),
             todo.isCompleted(),
             todo.isPersonal(),
-            (todo.getDeadline() != null ? java.sql.Date.valueOf(todo.getDeadline()) : null)
+            (todo.getDeadline() != null ? java.sql.Date.valueOf(todo.getDeadline()) : null),
+            java.sql.Date.valueOf(todo.getStartDate() != null ? todo.getStartDate() : LocalDate.now()),
+            java.sql.Date.valueOf(todo.getEndDate() != null ? todo.getEndDate() : (todo.getStartDate() != null ? todo.getStartDate() : LocalDate.now())), // 🛠 end_date 추가
+            (todo.getFreq() != null ? todo.getFreq().name() : RecurrenceFreq.NONE.name()),
+            (todo.getAllDay() != null ? todo.getAllDay() : Boolean.TRUE)
         );
     }
 
@@ -68,7 +82,17 @@ public class TodoRepositoryImpl implements TodoRepository {
     // ✅ 제목, 내용, 우선순위, 완료 상태 등 전체 업데이트
     @Override
     public void updateTODO(TodoDTO todo) {
-        String sql = "UPDATE todo SET title = ?, content = ?, priority = ?, completed = ?, deadline = ?, updated_at = NOW() " +
+        String sql = "UPDATE todo SET " +
+                     "title = ?, " +
+                     "content = ?, " +
+                     "priority = ?, " +
+                     "completed = ?, " +
+                     "deadline = ?, " +
+                     "start_date = ?, " +
+                     "end_date = ?, " +
+                     "freq = ?, " +
+                     "all_day = ?, " +
+                     "updated_at = NOW() " +
                      "WHERE todo_id = ?";
 
         template.update(sql,
@@ -77,6 +101,10 @@ public class TodoRepositoryImpl implements TodoRepository {
             todo.getPriority(),
             todo.isCompleted(),
             (todo.getDeadline() != null ? java.sql.Date.valueOf(todo.getDeadline()) : null),
+            (todo.getStartDate() != null ? java.sql.Date.valueOf(todo.getStartDate()) : null),
+            (todo.getEndDate() != null ? java.sql.Date.valueOf(todo.getEndDate()) : null),
+            (todo.getFreq() != null ? todo.getFreq().name() : RecurrenceFreq.NONE.name()),
+            (todo.getAllDay() != null ? todo.getAllDay() : Boolean.TRUE),
             todo.getTodoId()
         );
     }
@@ -153,27 +181,192 @@ public class TodoRepositoryImpl implements TodoRepository {
 	
 	@Override
 	public Map<String, Object> getTodayStatsAll(String receiverId) {
-	    String sql = "SELECT COUNT(*) AS total, " +
-	                 "COALESCE(SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END), 0) AS completed " +
-	                 "FROM todo WHERE receiver_id = ? AND deadline = CURDATE()";
-	    return template.queryForMap(sql, receiverId);
+	    String sql = """
+	        SELECT SUM(t.total) AS total,
+	               SUM(t.completed) AS completed,
+	               SUM(CASE WHEN t.priority = 1 THEN 1 ELSE 0 END) AS high_priority_total,
+	               SUM(CASE WHEN t.priority = 1 AND t.completed = TRUE THEN 1 ELSE 0 END) AS high_priority_completed,
+	               SUM(CASE WHEN t.priority = 2 THEN 1 ELSE 0 END) AS medium_priority_total,
+	               SUM(CASE WHEN t.priority = 2 AND t.completed = TRUE THEN 1 ELSE 0 END) AS medium_priority_completed,
+	               SUM(CASE WHEN t.priority = 3 THEN 1 ELSE 0 END) AS low_priority_total,
+	               SUM(CASE WHEN t.priority = 3 AND t.completed = TRUE THEN 1 ELSE 0 END) AS low_priority_completed
+	          FROM (
+	              SELECT COUNT(*) AS total,
+	                     SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END) AS completed,
+	                     priority
+	                FROM todo
+	               WHERE receiver_id = ? AND deadline = CURDATE()
+	               GROUP BY priority
+
+	              UNION ALL
+
+	              SELECT COUNT(*) AS total,
+	                     SUM(CASE WHEN o.completed = TRUE THEN 1 ELSE 0 END) AS completed,
+	                     t.priority
+	                FROM todo_occurrence o
+	                JOIN todo t ON o.todo_id = t.todo_id
+	               WHERE t.receiver_id = ? AND o.occur_date = CURDATE()
+	               GROUP BY t.priority
+	          ) t
+	        """;
+	    return template.queryForMap(sql, receiverId, receiverId);
 	}
 
 	@Override
 	public Map<String, Object> getTodayStatsAssigned(String receiverId) {
-	    String sql = "SELECT COUNT(*) AS total, " +
-	                 "COALESCE(SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END), 0) AS completed " +
-	                 "FROM todo WHERE receiver_id = ? AND is_personal = FALSE AND deadline = CURDATE()";
-	    return template.queryForMap(sql, receiverId);
+	    String sql = """
+	        SELECT SUM(t.total) AS total,
+	               SUM(t.completed) AS completed
+	          FROM (
+	              SELECT COUNT(*) AS total,
+	                     SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END) AS completed
+	                FROM todo
+	               WHERE receiver_id = ? AND is_personal = FALSE AND deadline = CURDATE()
+
+	              UNION ALL
+
+	              SELECT COUNT(*) AS total,
+	                     SUM(CASE WHEN o.completed = TRUE THEN 1 ELSE 0 END) AS completed
+	                FROM todo_occurrence o
+	                JOIN todo t ON o.todo_id = t.todo_id
+	               WHERE t.receiver_id = ? AND t.is_personal = FALSE AND occur_date  = CURDATE()
+	          ) t
+	        """;
+	    return template.queryForMap(sql, receiverId, receiverId);
 	}
 
 	@Override
 	public Map<String, Object> getTodayStatsCreated(String writerId) {
-	    String sql = "SELECT COUNT(*) AS total, " +
-	                 "COALESCE(SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END), 0) AS completed " +
-	                 "FROM todo WHERE writer_id = ? AND deadline = CURDATE()";
-	    return template.queryForMap(sql, writerId);
+	    String sql = """
+	        SELECT SUM(t.total) AS total,
+	               SUM(t.completed) AS completed
+	          FROM (
+	              SELECT COUNT(*) AS total,
+	                     SUM(CASE WHEN completed = TRUE THEN 1 ELSE 0 END) AS completed
+	                FROM todo
+	               WHERE writer_id = ? AND deadline = CURDATE()
+
+	              UNION ALL
+
+	              SELECT COUNT(*) AS total,
+	                     SUM(CASE WHEN o.completed = TRUE THEN 1 ELSE 0 END) AS completed
+	                FROM todo_occurrence o
+	                JOIN todo t ON o.todo_id = t.todo_id
+	               WHERE t.writer_id = ? AND occur_date  = CURDATE()
+	          ) t
+	        """;
+	    return template.queryForMap(sql, writerId, writerId);
 	}
+	
+	// 반복 주기 필터링 메서드들
+	@Override
+	public List<TodoDTO> findByWriterId(String writerId, Boolean completed, String freq) {
+	    String sql = "SELECT * FROM todo WHERE writer_id = ?";
+	    List<Object> params = new ArrayList<>();
+	    params.add(writerId);
+	    
+	    if (completed != null) {
+	        sql += " AND completed = ?";
+	        params.add(completed);
+	    }
+	    
+	    if (freq != null && !freq.isEmpty() && !"ALL".equals(freq)) {
+	        sql += " AND freq = ?";
+	        params.add(freq);
+	    }
+	    
+	    return template.query(sql + " ORDER BY created_at DESC", todoMapper, params.toArray());
+	}
+
+	@Override
+	public List<TodoDTO> findAssignedTodos(String receiverId, Boolean completed, String freq) {
+	    String sql = "SELECT * FROM todo WHERE receiver_id = ? AND is_personal = false";
+	    List<Object> params = new ArrayList<>();
+	    params.add(receiverId);
+	    
+	    if (completed != null) {
+	        sql += " AND completed = ?";
+	        params.add(completed);
+	    }
+	    
+	    if (freq != null && !freq.isEmpty() && !"ALL".equals(freq)) {
+	        sql += " AND freq = ?";
+	        params.add(freq);
+	    }
+	    
+	    return template.query(sql + " ORDER BY created_at DESC", todoMapper, params.toArray());
+	}
+
+	@Override
+	public List<TodoDTO> findAllTodos(String receiverId, Boolean completed, String freq) {
+	    String sql = "SELECT * FROM todo WHERE receiver_id = ?";
+	    List<Object> params = new ArrayList<>();
+	    params.add(receiverId);
+	    
+	    if (completed != null) {
+	        sql += " AND completed = ?";
+	        params.add(completed);
+	    }
+	    
+	    if (freq != null && !freq.isEmpty() && !"ALL".equals(freq)) {
+	        sql += " AND freq = ?";
+	        params.add(freq);
+	    }
+	    
+	    return template.query(sql + " ORDER BY created_at DESC", todoMapper, params.toArray());
+	}
+	
+	@Override
+	public List<TodoDTO> findByDeadline(LocalDate deadline) {
+	    String sql = "SELECT * FROM todo WHERE deadline = ? AND completed = FALSE";
+	    return template.query(sql, todoMapper, deadline);
+	}
+	
+	@Override
+	public int countMissedBackups(LocalDate date) {
+	    String sql = """
+	        SELECT COUNT(*) FROM todo 
+	        WHERE deadline < ? 
+	        AND todo_id NOT IN (
+	            SELECT todo_id FROM todo_history 
+	            WHERE DATE(recorded_at) = ?
+	        )
+	    """;
+	    return template.queryForObject(sql, Integer.class, date, date);
+	}
+	
+	@Override
+	public Map<String, Object> getTodayStatsByPriority(String receiverId) {
+	    String sql = """
+	        SELECT 
+	            SUM(CASE WHEN priority = 1 THEN 1 ELSE 0 END) AS high_total,
+	            SUM(CASE WHEN priority = 1 AND completed = TRUE THEN 1 ELSE 0 END) AS high_completed,
+	            SUM(CASE WHEN priority = 2 THEN 1 ELSE 0 END) AS medium_total,
+	            SUM(CASE WHEN priority = 2 AND completed = TRUE THEN 1 ELSE 0 END) AS medium_completed,
+	            SUM(CASE WHEN priority = 3 THEN 1 ELSE 0 END) AS low_total,
+	            SUM(CASE WHEN priority = 3 AND completed = TRUE THEN 1 ELSE 0 END) AS low_completed
+	        FROM todo 
+	        WHERE receiver_id = ? AND deadline = CURDATE()
+	    """;
+	    return template.queryForMap(sql, receiverId);
+	}
+	
+	@Override
+	public Map<String, Object> getTodayStatsByTimeframe(String receiverId) {
+	    String sql = """
+	        SELECT 
+	            SUM(CASE WHEN HOUR(created_at) BETWEEN 6 AND 11 THEN 1 ELSE 0 END) AS morning_total,
+	            SUM(CASE WHEN HOUR(created_at) BETWEEN 6 AND 11 AND completed = TRUE THEN 1 ELSE 0 END) AS morning_completed,
+	            SUM(CASE WHEN HOUR(created_at) BETWEEN 12 AND 17 THEN 1 ELSE 0 END) AS afternoon_total,
+	            SUM(CASE WHEN HOUR(created_at) BETWEEN 12 AND 17 AND completed = TRUE THEN 1 ELSE 0 END) AS afternoon_completed,
+	            SUM(CASE WHEN HOUR(created_at) BETWEEN 18 AND 23 THEN 1 ELSE 0 END) AS evening_total,
+	            SUM(CASE WHEN HOUR(created_at) BETWEEN 18 AND 23 AND completed = TRUE THEN 1 ELSE 0 END) AS evening_completed
+	        FROM todo 
+	        WHERE receiver_id = ? AND deadline = CURDATE()
+	    """;
+	    return template.queryForMap(sql, receiverId);
+	}
+
 	@Override
     public int updateTitleContent(long todoId, String title, String content, String ownerId) {
         String sql = """
@@ -195,4 +388,92 @@ public class TodoRepositoryImpl implements TodoRepository {
             ps.setString(i++, ownerId);
         });
     }
+	
+ 	@Override
+    public Long insertTodo(TodoCreateRequest req) {
+        String sql = """
+            INSERT INTO todo 
+              (trade_id, writer_id, receiver_id, title, content, priority, completed, is_personal, deadline, freq, start_date, end_date, all_day, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, FALSE, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+        """;
+
+        // KeyHolder로 auto_increment PK(todo_id) 추출
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        template.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setObject(1, req.getTradeId());
+            ps.setString(2, req.getWriterId());
+            ps.setString(3, req.getReceiverId());
+            ps.setString(4, req.getTitle());
+            ps.setString(5, req.getContent());
+            ps.setInt(6, req.getPriority() != null ? req.getPriority() : 2);
+            ps.setBoolean(7, req.getIsPersonal() != null ? req.getIsPersonal() : Boolean.TRUE);
+            ps.setObject(8, req.getDeadline() != null ? java.sql.Date.valueOf(req.getDeadline()) : null);
+            ps.setString(9, req.getFreq() != null ? req.getFreq().name() : RecurrenceFreq.NONE.name());
+            ps.setObject(10, req.getStartDate());
+            ps.setObject(11, req.getEndDate());
+            ps.setBoolean(12, req.getAllDay() != null ? req.getAllDay() : Boolean.TRUE);
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
+    }
+
+    // === 새로 추가된 findByIdAsDto 메서드 ===
+    @Override
+    public Optional<TodoDTO> findByIdAsDto(Long todoId) {
+        String sql = "SELECT * FROM todo WHERE todo_id = ?";
+        try {
+            return Optional.of(template.queryForObject(sql, todoMapper, todoId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+    
+    @Override
+    public int updateBasic(Long todoId, String title, String content, Integer priority, LocalDate deadline,
+                           RecurrenceFreq freq, LocalDate startDate, LocalDate endDate, Boolean allDay) {
+
+        String sql = """
+            UPDATE todo
+               SET title = ?, 
+                   content = ?, 
+                   priority = ?, 
+                   deadline = ?, 
+                   freq = ?, 
+                   start_date = ?, 
+                   end_date = ?, 
+                   all_day = ?, 
+                   updated_at = NOW()
+             WHERE todo_id = ?
+        """;
+
+        return template.update(sql,
+            title,
+            content,
+            priority,
+            (deadline != null ? java.sql.Date.valueOf(deadline) : null),
+            (freq != null ? freq.name() : null),
+            (startDate != null ? java.sql.Date.valueOf(startDate) : null),
+            (endDate != null ? java.sql.Date.valueOf(endDate) : null),
+            (allDay != null ? allDay : Boolean.TRUE),
+            todoId
+        );
+    }
+    
+    @Override
+    public List<TodoDTO> findOccurrencesByReceiverId(String receiverId) {
+        String sql = """
+            SELECT o.todo_id, t.trade_id, t.writer_id, t.receiver_id, t.title, t.content,
+                   t.priority, o.completed, t.is_personal, o.occur_date AS deadline,
+                   t.created_at, t.updated_at, t.freq, t.start_date, t.end_date, t.all_day
+              FROM todo_occurrence o
+              JOIN todo t ON o.todo_id = t.todo_id
+             WHERE t.receiver_id = ?
+             ORDER BY o.occur_date DESC
+        """;
+        return template.query(sql, new TodoRowMapper(), receiverId);
+    }
+    
 }

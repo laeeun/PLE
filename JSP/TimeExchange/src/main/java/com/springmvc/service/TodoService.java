@@ -47,6 +47,11 @@ public interface TodoService {
 
     // 전체 할일 필터링용
     List<TodoDTO> findAllTodos(String receiverId, Boolean completed);
+    
+    // 반복 주기 필터링 추가
+    List<TodoDTO> findByWriterId(String writerId, Boolean completed, String freq);
+    List<TodoDTO> findAssignedTodos(String receiverId, Boolean completed, String freq);
+    List<TodoDTO> findAllTodos(String receiverId, Boolean completed, String freq);
 
     public Map<String, Object> getTodayStats(String receiverId);
     
@@ -57,4 +62,5 @@ public interface TodoService {
     Map<String, Object> getTodayStatsCreated(String writerId);     // 내가 생성한 할일(= writer 기준)
     
     int updateTitleContent(long todoId, String title, String content, String ownerId);
+   
 }

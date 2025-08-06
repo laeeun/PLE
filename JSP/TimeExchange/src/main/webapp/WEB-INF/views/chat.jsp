@@ -4,9 +4,10 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>실시간 채팅</title>
+    <title>TimeFair - 실시간 채팅</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
+    <!-- Pretendard + Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
@@ -15,45 +16,45 @@
         body {
             margin: 0;
             font-family: 'Pretendard', sans-serif;
-            background: linear-gradient(135deg, #fce7f3, #e0f2fe);
+            background: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
+
         .chat-container {
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(10px);
+            background: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
             width: 500px;
             max-width: 90vw;
             padding: 25px;
         }
+
         .chat-title {
             font-size: 1.6rem;
-            font-weight: bold;
+            font-weight: 700;
             text-align: center;
-            color: #d63384;
+            color: #ff6b00;
             margin-bottom: 20px;
         }
+
         #chatBox {
             width: 100%;
             height: 300px;
             border-radius: 12px;
             padding: 15px;
             overflow-y: auto;
-            background-color: rgba(255, 255, 255, 0.85);
-            border: 1px solid #ffcce0;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
             margin-bottom: 15px;
             display: flex;
             flex-direction: column;
         }
-        .message-wrapper {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 10px;
-        }
+
+        .message-wrapper { margin-bottom: 10px; }
+
         .message {
             padding: 10px 14px;
             border-radius: 12px;
@@ -61,25 +62,24 @@
             word-break: break-word;
             font-size: 14px;
         }
+
         .my-message {
-            background-color: #ffd6ec;
+            background-color: #ffe1c6;
             align-self: flex-end;
-            text-align: right;
-            margin-left: auto;
         }
+
         .other-message {
             background-color: #ffffff;
-            align-self: flex-start;
-            text-align: left;
-            margin-right: auto;
             border: 1px solid #eee;
+            align-self: flex-start;
         }
+
         .sender-label {
             font-size: 12px;
             color: #888;
             margin-bottom: 3px;
-            padding: 0 4px;
         }
+
         .profile-img {
             width: 35px;
             height: 35px;
@@ -88,23 +88,26 @@
             object-fit: cover;
             border: 1px solid #ccc;
         }
+
         #inputArea {
             display: flex;
             gap: 10px;
         }
+
         #messageInput {
             flex: 1;
             border: 1px solid #ccc;
             border-radius: 10px;
             padding: 10px;
             font-size: 14px;
-            outline: none;
         }
+
         #messageInput:focus {
-            border-color: #ff99cc;
+            border-color: #ff6b00;
         }
+
         button {
-            background-color: #ff99cc;
+            background-color: #ff6b00;
             border: none;
             padding: 10px 18px;
             border-radius: 10px;
@@ -113,30 +116,31 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         button:hover {
-            background-color: #ff66a3;
+            background-color: #e65c00;
         }
-        .read-meta {
+
+        .read-status {
             font-size: 12px;
             color: #888;
-            white-space: nowrap;
-            align-self: center;
         }
 
         .btn-outline-secondary {
             background: none;
-            border: 1px solid #ff99cc;
-            color: #d63384;
+            border: 1px solid #ff6b00;
+            color: #ff6b00;
             padding: 8px 16px;
             border-radius: 10px;
             font-weight: bold;
             text-decoration: none;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            display: inline-block;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
         }
 
         .btn-outline-secondary:hover {
-            background-color: #ffebf5;
-            color: #d63384;
+            background-color: #fff4e8;
         }
     </style>
 </head>
@@ -156,13 +160,14 @@
         <button onclick="sendMessage()">전송</button>
     </div>
 
-    <!-- ✅ 버튼을 내부로 이동 -->
-    <div style="text-align: center; margin-top: 20px;">
+    <div style="text-align: center;">
         <a href="${pageContext.request.contextPath}/chat/list" class="btn-outline-secondary">
             ← 채팅 목록으로 돌아가기
         </a>
     </div>
 </div>
+
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 
 <script>
     let stompClient = null;
@@ -203,7 +208,7 @@
         fetch(contextPath + "/chat/messages?roomId=" + roomId)
             .then(response => response.json())
             .then(data => {
-            	console.log(data);
+               console.log(data);
                 data.forEach(showMessage);
             });
     }
@@ -264,7 +269,7 @@
             return `\${period} \${hour12}:\${minutes}`;
         })();
        
-		
+      
         const readIcon = msg.read === true ? "✔️" : "⭕";
 
         if (!isMine) {
@@ -361,9 +366,6 @@
 
     connect();
 </script>
-
-<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
-
 
 </body>
 </html>

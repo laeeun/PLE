@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,30 +9,133 @@
     <title>My TODO List</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- (선택) Spring Security CSRF 메타 -->
-    <!--
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    -->
-
     <style>
         /* 기존 스타일 유지 + 필요한 부분만 추가/수정 */
-        .tab-btn {
-            padding: 8px 16px;
-            font-size: 14px;
-            margin-right: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background-color: #f8fafc;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .tab-btn.active {
-            background-color: #e0f2fe;
-            color: #0ea5e9;
-            border-color: #38bdf8;
-        }
+        /* ✅ 탭 버튼 */
+		.tab-btn {
+		  padding: 10px 20px;
+		  font-size: 14px;
+		  border: 1px solid #cbd5e1;
+		  border-radius: 9999px;
+		  background-color: #f1f5f9;
+		  cursor: pointer;
+		  transition: all 0.2s ease;
+		  font-weight: 500;
+		}
+		.tab-btn:hover {
+		  background-color: #e2e8f0;
+		}
+		.tab-btn.active {
+		  background-color: #3b82f6;
+		  color: white;
+		  border-color: #3b82f6;
+		}
+		
+		/* ✅ 라디오 버튼 그룹 */
+		input[type="radio"] {
+		  accent-color: #3b82f6;
+		  margin-right: 6px;
+		}
+		label {
+		  margin-right: 14px;
+		  font-size: 14px;
+		  color: #334155;
+		  cursor: pointer;
+		}
+		
+		/* ✅ 입력 줄 */
+		.inline-input {
+		  display: flex;
+		  flex-wrap: wrap;
+		  gap: 10px;
+		  align-items: center;
+		  margin: 20px 0;
+		}
+		.inline-input input[type="text"],
+		.inline-input input[type="date"],
+		.inline-input select {
+		  padding: 8px 12px;
+		  border: 1px solid #d1d5db;
+		  border-radius: 8px;
+		  font-size: 14px;
+		  background-color: white;
+		  min-width: 180px;
+		}
+		.inline-input button {
+		  background-color: #3b82f6;
+		  color: #2563eb;
+		  border: none;
+		  padding: 8px 16px;
+		  border-radius: 8px;
+		  cursor: pointer;
+		  transition: background-color 0.2s ease;
+		}
+		.inline-input button:hover {
+		  background-color: #2563eb;
+		  color: white;
+		}
+		
+		/* ✅ 테이블 */
+		table {
+		  width: 100%;
+		  border-collapse: collapse;
+		  background-color: white;
+		  border-radius: 8px;
+		  overflow: hidden;
+		}
+		thead th {
+		  background-color: #f1f5f9;
+		  color: #334155;
+		  font-weight: 600;
+		  font-size: 13px;
+		  padding: 10px;
+		  text-align: left;
+		  border-bottom: 1px solid #e2e8f0;
+		}
+		tbody td {
+		  padding: 10px;
+		  font-size: 13px;
+		  border-bottom: 1px solid #f1f5f9;
+		  color: #475569;
+		}
+		tbody tr:hover {
+		  background-color: #f9fafb;
+		}
+		.todo-status.completed {
+		  color: #16a34a;
+		  font-weight: 600;
+		}
+		.todo-status.not-completed {
+		  color: #dc2626;
+		  font-weight: 600;
+		}
+		.title.completed {
+		  text-decoration: line-through;
+		  color: #94a3b8;
+		}
+		
+		/* ✅ 네비 링크 버튼 스타일 */
+		.nav-links {
+		  display: flex;
+		  gap: 10px;
+		  margin-top: 20px;
+		}
+		.nav-links a {
+		  display: inline-block;
+		  padding: 8px 16px;
+		  background-color: #e0f2fe;
+		  color: #0369a1;
+		  text-decoration: none;
+		  border-radius: 6px;
+		  font-weight: 500;
+		  border: 1px solid #bae6fd;
+		  transition: background-color 0.2s ease;
+		}
+		.nav-links a:hover {
+		  background-color: #bae6fd;
+		}
 
+		
         /* 캘린더 */
         #todo-calendar { margin:16px 0; border:1px solid #eee; border-radius:10px; overflow:hidden; background:#fff; }
         #cal-header { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#f8fafc; border-bottom:1px solid #eee; }
@@ -45,7 +149,12 @@
         .cal-bar-inner { height:6px; width:0%; background:#38bdf8; }
         .cal-future { opacity:.55; }
         .cal-muted { background:#f8fafc; }
-
+		.cal-grid {
+					  gap: 0; /* 또는 1px 이하로 최소화 */
+					}
+					.cal-cell {
+					  padding: 0; /* 내부 여백 제거 */
+					}
         /* 입력 줄 */
         .inline-input { display:flex; gap:8px; align-items:center; margin:12px 0; }
         .inline-input input[type="text"] {
@@ -66,20 +175,43 @@
         /* 네비 */
         .nav-links { display:flex; gap:10px; margin:12px 0; }
         .nav-links a { padding:6px 10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; text-decoration:none; color:#111827; }
-
-        /* ✅ 도넛 그래프 */
-        .donut-group { display:grid; gap:14px; margin:14px 0; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-        .donut-card { padding:8px 10px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; }
-        .donut-wrap { display:flex; align-items:center; gap:12px; }
-        .donut { position:relative; width:72px; height:72px; }
-        .donut svg { transform: rotate(-90deg); } /* 위쪽(12시)부터 그리기 */
-        .donut .bg   { stroke:#e5e7eb; stroke-width:10; fill:none; }
-        .donut .ring { stroke:var(--ring-color, #38bdf8); stroke-width:10; fill:none; stroke-linecap:round; transition:stroke-dashoffset .45s ease; }
-        .donut .center { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; }
+    	td[data-date] {
+		  padding: 0;
+		  position: relative;
+		}
+		
+		/* 달력에서 일정 div가 더 자연스럽게 보이도록 */
+		.todo-tag {
+		  display: block;
+		  height: 16px;
+		  background-color: #c7d2fe;
+		  color: #1e293b;
+		  font-size: 11px;
+		  overflow: hidden;
+		  white-space: nowrap;
+		  text-overflow: ellipsis;
+		  box-sizing: border-box;
+		  margin: 2px 0;
+		  padding: 0 6px;
+		  width: 100%;
+		  border-radius: 0; /* 기본: 사각형 */
+		
+		  /* transition 제거해도 됨 */
+		}
+		.todo-tag.start {
+		  border-top-left-radius: 12px;
+		  border-bottom-left-radius: 12px;
+		}
+		.todo-tag.end {
+		  border-top-right-radius: 12px;
+		  border-bottom-right-radius: 12px;
+		}
+    
     </style>
 
     <!-- URL 매핑 -->
-    <c:url var="addTodoUrl" value="/todo/add" />
+    <c:url var="addTodoUrl" value="/todo/recurring" />
+    <c:url var="addRecurringTodoUrl" value="/todo/add" />
     <c:url var="deleteTodoUrl" value="/todo/delete" />
     <c:url var="completeTodoUrl" value="/todo/complete" />
     <c:url var="updateTodoUrl" value="/todo/update" />
@@ -87,68 +219,17 @@
     <c:url var="todayStatsUrl" value="/todo/stats/today" />
     <c:url var="todayStatsByTypeUrl" value="/todo/stats/today/by-type" />
     <c:url var="calendarStatsUrl" value="/todo/stats/calendar" />
+    <c:url var="backupStatusUrl" value="/todo/stats/backup/status" />
 </head>
 <body>
-
-<h2>My TODO List</h2>
-
-<!-- ✅ 오늘 달성률: 도넛 그래프 3종 -->
-<div id="today-progress-group" class="donut-group">
-  <!-- 전체 -->
-  <div class="donut-card" style="--ring-color:#38bdf8;">
-    <div style="font-size:14px;margin-bottom:6px;">오늘 달성률 - 전체</div>
-    <div class="donut-wrap">
-      <div class="donut" data-id="all">
-        <svg width="72" height="72">
-          <circle class="bg"   cx="36" cy="36" r="30"></circle>
-          <circle class="ring" id="ring-all" cx="36" cy="36" r="30"
-                  stroke-dasharray="188.5" stroke-dashoffset="188.5"></circle>
-        </svg>
-        <div class="center" id="pct-all">0%</div>
-      </div>
-      <div class="meta" id="text-all" style="font-size:12px;color:#6b7280;">0% (0/0)</div>
-    </div>
-  </div>
-
-  <!-- 받은 숙제 -->
-  <div class="donut-card" style="--ring-color:#22c55e;">
-    <div style="font-size:14px;margin-bottom:6px;">오늘 달성률 - 받은 숙제</div>
-    <div class="donut-wrap">
-      <div class="donut" data-id="assigned">
-        <svg width="72" height="72">
-          <circle class="bg"   cx="36" cy="36" r="30"></circle>
-          <circle class="ring" id="ring-assigned" cx="36" cy="36" r="30"
-                  stroke-dasharray="188.5" stroke-dashoffset="188.5"></circle>
-        </svg>
-        <div class="center" id="pct-assigned">0%</div>
-      </div>
-      <div class="meta" id="text-assigned" style="font-size:12px;color:#6b7280;">0% (0/0)</div>
-    </div>
-  </div>
-
-  <!-- 내가 생성 -->
-  <div class="donut-card" style="--ring-color:#a78bfa;">
-    <div style="font-size:14px;margin-bottom:6px;">오늘 달성률 - 내가 생성</div>
-    <div class="donut-wrap">
-      <div class="donut" data-id="created">
-        <svg width="72" height="72">
-          <circle class="bg"   cx="36" cy="36" r="30"></circle>
-          <circle class="ring" id="ring-created" cx="36" cy="36" r="30"
-                  stroke-dasharray="188.5" stroke-dashoffset="188.5"></circle>
-        </svg>
-        <div class="center" id="pct-created">0%</div>
-      </div>
-      <div class="meta" id="text-created" style="font-size:12px;color:#6b7280;">0% (0/0)</div>
-    </div>
-  </div>
-</div>
-
+<jsp:include page="/WEB-INF/views/nav.jsp" />
 <div class="container">
     <!-- ✅ 탭 버튼 -->
     <div style="margin-bottom: 20px;">
         <button class="tab-btn active" data-type="all">전체</button>
         <button class="tab-btn" data-type="received">받은 숙제</button>
         <button class="tab-btn" data-type="created">내가 생성한 할일</button>
+        <button class="tab-btn" onclick="showWeeklyMonthlyGoals()">주간/월별 목표 보기</button>
     </div>
 
     <!-- ✅ 완료 여부 라디오 -->
@@ -157,37 +238,66 @@
         <label><input type="radio" name="completed" value="false"> 미완료</label>
         <label><input type="radio" name="completed" value="true"> 완료</label>
     </div>
-
-    <!-- ✅ 할일 추가 -->
-    <div class="inline-input">
-        <input type="text" id="newTodoInput" placeholder="할 일을 입력하세요" required />
-        <input type="text" id="newContentInput" placeholder="상세 내용을 입력하세요" />
-        <button onclick="addTodo()">추가</button>
+    
+    <!-- ✅ 반복 주기 필터 -->
+    <div style="margin-bottom: 10px;">
+        <label>반복 주기: </label>
+        <select id="freqFilter">
+            <option value="">전체</option>
+            <option value="NONE">반복 없음</option>
+            <option value="DAILY">매일</option>
+            <option value="WEEKLY">매주</option>
+            <option value="MONTHLY">매월</option>
+        </select>
     </div>
+	<div class="inline-input">
+	    <input type="text" id="newTodoTitle" placeholder="할 일을 입력하세요" required />
+	    <input type="text" id="newTodoContent" placeholder="상세 내용을 입력하세요" />
+	    
+	    <select id="newTodoFreq">
+	        <option value="NONE">반복 없음</option>
+	        <option value="DAILY">매일</option>
+	        <option value="WEEKLY">매주</option>
+	        <option value="MONTHLY">매월</option>
+	    </select>
+	
+	    <input type="date" id="newStartDate" />
+	    <input type="date" id="newEndDate" />
+	    
+	    
+	    
+	    <button onclick="addTodo()">추가</button>
+	</div>
 
     <!-- ✅ 목록 테이블 -->
     <table id="todoListContainer">
-        <thead>
-            <tr>
-                <th>완료</th>
-                <th>제목</th>
-                <th>상세내용</th>
-                <th>상태</th>
-                <th>관리</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="todo" items="${todolist}">
+        <!-- ✅ 비반복 할일 목록 -->
+<h3 style="margin-top:20px;">📌 비반복 할일</h3>
+<table id="nonRecurringTable">
+    <thead>
+        <tr>
+            <th>완료</th>
+            <th>제목</th>
+            <th>상세내용</th>
+            <th>시작일</th>
+            <th>마감일</th>
+            <th>상태</th>
+            <th>관리</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="todo" items="${todolist}">
+            <c:if test="${todo.freq eq 'NONE'}">
                 <tr id="todo-${todo.todoId}">
                     <td>
                         <input type="checkbox"
-                               onclick="toggleComplete(${todo.todoId})"
+                               onclick="toggleComplete(${todo.todoId}, ${todo.occurrence == true})"
                                <c:if test="${todo.completed}">checked</c:if> />
                     </td>
-                    <td class="title ${todo.completed ? 'completed' : ''}">
-                        ${fn:escapeXml(todo.title)}
-                    </td>
+                    <td class="title ${todo.completed ? 'completed' : ''}">${fn:escapeXml(todo.title)}</td>
                     <td><small>${fn:escapeXml(todo.content)}</small></td>
+                    <td>${todo.startDate}</td>
+                    <td>${todo.endDate}</td>
                     <td class="todo-status ${todo.completed ? 'completed' : 'not-completed'}">
                         <c:choose>
                             <c:when test="${todo.completed}">완료됨</c:when>
@@ -204,8 +314,67 @@
                         <button onclick="deleteTodo(${todo.todoId})">삭제</button>
                     </td>
                 </tr>
-            </c:forEach>
-        </tbody>
+            </c:if>
+        </c:forEach>
+    </tbody>
+</table>
+
+<!-- ✅ 반복 할일 목록 -->
+<h3 style="margin-top:30px;">🔁 반복 할일</h3>
+<table id="recurringTable">
+    <thead>
+        <tr>
+            <th>완료</th>
+            <th>제목</th>
+            <th>상세내용</th>
+            <th>시작일</th>
+            <th>마감일</th>
+            <th>반복</th>
+            <th>상태</th>
+            <th>관리</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="todo" items="${todolist}">
+            <c:if test="${todo.freq ne 'NONE'}">
+                <tr id="todo-${todo.todoId}">
+                    <td>
+                        <input type="checkbox"
+                               onclick="toggleComplete(${todo.todoId}, ${todo.occurrence == true})"
+                               <c:if test="${todo.completed}">checked</c:if> />
+                    </td>
+                    <td class="title ${todo.completed ? 'completed' : ''}">${fn:escapeXml(todo.title)}</td>
+                    <td><small>${fn:escapeXml(todo.content)}</small></td>
+                    <td>${todo.startDate}</td>
+                    <td>${todo.endDate}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${todo.freq == 'DAILY'}">매일</c:when>
+                            <c:when test="${todo.freq == 'WEEKLY'}">매주</c:when>
+                            <c:when test="${todo.freq == 'MONTHLY'}">매월</c:when>
+                            <c:otherwise>반복</c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td class="todo-status ${todo.completed ? 'completed' : 'not-completed'}">
+                        <c:choose>
+                            <c:when test="${todo.completed}">완료됨</c:when>
+                            <c:otherwise>미완료</c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <button class="edit-btn"
+                                data-id="${todo.todoId}"
+                                data-title="${fn:escapeXml(todo.title)}"
+                                data-content="${fn:escapeXml(todo.content)}">
+                            수정
+                        </button>
+                        <button onclick="deleteTodo(${todo.todoId})">삭제</button>
+                    </td>
+                </tr>
+            </c:if>
+        </c:forEach>
+    </tbody>
+</table>
     </table>
 
     <!-- ✅ 달력 -->
@@ -217,7 +386,7 @@
         </div>
         <div id="cal-grid" class="cal-grid"><!-- 요일+날짜 셀은 JS로 렌더 --></div>
     </div>
-
+	<div id="calendar"></div>
     <div class="nav-links">
         <a href="<c:url value='/mypage' />">마이페이지로</a>
         <a href="<c:url value='/' />">홈으로</a>
@@ -231,13 +400,14 @@
        URL 변수
     ------------------------------*/
     const addTodoUrl = '${addTodoUrl}';
+    const addRecurringTodoUrl = '${addRecurringTodoUrl}';
     const deleteTodoUrl = '${deleteTodoUrl}';
     const completeTodoUrl = '${completeTodoUrl}';
     const updateTodoUrl = '${updateTodoUrl}';
     const filterTodoUrl = '${filterTodoUrl}';
     const todayStatsByTypeUrl = '${todayStatsByTypeUrl}';
     const calendarStatsUrl = '${calendarStatsUrl}';
-
+	
     /* -----------------------------
        (선택) CSRF 헤더 자동 포함
     ------------------------------*/
@@ -249,12 +419,37 @@
         xhr.setRequestHeader(header, token);
       });
     })();
+	
+    const tagColors = [
+    	  '#f87171', // red-400
+    	  '#fb923c', // orange-400
+    	  '#facc15', // yellow-400
+    	  '#4ade80', // green-400
+    	  '#38bdf8', // sky-400
+    	  '#a78bfa', // purple-400
+    	  '#f472b6', // pink-400
+    	  '#60a5fa', // blue-400
+    	  '#34d399', // emerald-400
+    	  '#fcd34d'  // amber-400
+    	];
 
+    	// 📌 ID 기반 고정 색상 매핑 함수
+   	function getColorForId(id) {
+   	  const str = String(id);
+   	  let hash = 0;
+   	  for (let i = 0; i < str.length; i++) {
+   	    hash = (hash << 5) - hash + str.charCodeAt(i);
+   	    hash |= 0;
+   	  }
+   	  return tagColors[Math.abs(hash) % tagColors.length];
+   	}
+    
     /* -----------------------------
        탭/필터 상태
     ------------------------------*/
     let currentType = 'all';
     let currentCompleted = '';
+    let currentFreq = '';
 
     $('.tab-btn').on('click', function () {
         $('.tab-btn').removeClass('active');
@@ -271,30 +466,45 @@
         loadTodayProgressByType();
         refreshCalendarIfNeeded();
     });
-
+    
+    $('#freqFilter').on('change', function () {
+        currentFreq = $(this).val();
+        applyFilters();
+        loadTodayProgressByType();
+        refreshCalendarIfNeeded();
+    });
+    function showWeeklyMonthlyGoals() {
+        window.location.href = '<c:url value="/goals" />'; // 또는 모달 열기 등 다른 동작
+      }
     /* -----------------------------
        목록 필터/갱신
     ------------------------------*/
     function applyFilters() {
         $.get(filterTodoUrl, {
             type: currentType,
-            completed: currentCompleted
+            completed: currentCompleted,
+            freq: currentFreq
         }, function (data) {
-            const tbody = $('#todoListContainer tbody').empty();
+            const nonRecurringBody = $('#nonRecurringTable tbody').empty();
+            const recurringBody = $('#recurringTable tbody').empty();
+
             (data || []).forEach(function (todo) {
                 const statusText = todo.completed ? '완료됨' : '미완료';
                 const statusClass = todo.completed ? 'completed' : 'not-completed';
                 const checked = todo.completed ? 'checked' : '';
 
-                // XSS-safe escape
                 const escapedTitle = $('<div>').text(todo.title || '').html();
                 const escapedContent = $('<div>').text(todo.content || '').html();
+                const freqText = getFreqText(todo.freq);
 
                 const row = `
                     <tr id="todo-\${todo.todoId}">
-                        <td><input type="checkbox" onclick="toggleComplete(\${todo.todoId})" \${checked} /></td>
+                        <td><input type="checkbox" onclick="toggleComplete(\${todo.todoId}, \${todo.occurrence == true})" \${checked} /></td>
                         <td class="title \${statusClass}">\${escapedTitle}</td>
                         <td><small>\${escapedContent}</small></td>
+                        <td>\${formatDate(todo.startDate)}</td>
+                        <td>\${formatDate(todo.endDate)}</td>
+                        \${todo.freq === 'NONE' ? '' : `<td>\${freqText}</td>`}
                         <td class="todo-status \${statusClass}">\${statusText}</td>
                         <td>
                             <button class="edit-btn"
@@ -306,52 +516,127 @@
                             <button onclick="deleteTodo(\${todo.todoId})">삭제</button>
                         </td>
                     </tr>`;
-                tbody.append(row);
+
+                // ✅ 조건 분기
+                if (todo.freq === 'NONE') {
+                    nonRecurringBody.append(row);
+                } else {
+                    recurringBody.append(row);
+                }
             });
         });
     }
+    function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `\${year}-\${month}-\${day}`;
+    }
+    
+    function loadTodayProgressByType() {
+        // cache-busting으로 항상 최신값
+        $.get(todayStatsByTypeUrl, { _: Date.now() }, function (res) {
+            // 기본 통계 (전체, 받은 숙제, 내가 생성)
+            const basicSets = [
+                { key: 'all',      text: '#text-all' },
+                { key: 'assigned', text: '#text-assigned' },
+                { key: 'created',  text: '#text-created' }
+            ];
 
+            basicSets.forEach(function (s) {
+                const data = (res && res[s.key]) ? res[s.key] : {};
+                const total = Number(data.total) || 0;
+                const done  = Number(data.completed) || 0;
+                const rate  = (data.rate !== undefined && data.rate !== null)
+                    ? Number(data.rate)
+                    : (total === 0 ? 0 : Math.floor(done * 100 / total));
+
+                $(s.text).text(rate + '% (' + done + '/' + total + ')');
+            });
+        }).fail(function () {
+            // 기본 통계 실패 시
+            ['#text-all', '#text-assigned', '#text-created'].forEach(function (id) {
+                $(id).text('0% (0/0)');
+            });
+        });
+    }
+    function getFreqText(freq) {
+        switch(freq) {
+            case 'NONE': return '반복 없음';
+            case 'DAILY': return '매일';
+            case 'WEEKLY': return '매주';
+            case 'MONTHLY': return '매월';
+            default: return '반복 없음';
+        }
+    }
     /* -----------------------------
        추가/완료/삭제/수정
     ------------------------------*/
     function addTodo() {
-        const title = $('#newTodoInput').val().trim();
-        const content = $('#newContentInput').val().trim();
-
+        const title = $('#newTodoTitle').val().trim();
+        const content = $('#newTodoContent').val().trim();
+        const freq = $('#newTodoFreq').val(); // NONE, DAILY, WEEKLY 등
+        const startDate = $('#newStartDate').val();
+        const endDate = $('#newEndDate').val();
+        
+	    
+        
         if (!title) return alert("제목을 입력하세요");
 
+        const data = {
+            title,
+            content,
+            freq,
+            startDate: startDate || null,
+            endDate: endDate || null
+        };
+		
+        // ✅ 조건 분기
+        const url = (freq === 'NONE') ? addTodoUrl : addRecurringTodoUrl;
+        
         $.ajax({
-            url: addTodoUrl,
+            url: url,
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ title, content }),
-            success: function (data) {
-                if (data && data.success) {
+            data: JSON.stringify(data),
+            success: function (res) {
+            	
+                if (res && res.success) {
+                    alert("추가 성공");
                     applyFilters();
+                    renderCalendar();
                     loadTodayProgressByType();
-                    refreshCalendarIfNeeded();
-                    // 입력창 초기화
-                    $('#newTodoInput').val('');
-                    $('#newContentInput').val('');
-                    $('#newTodoInput').focus();
+                 	
                 } else {
-                    alert("추가 실패");
+                	console.log(data);
+                    alert("추가 실패: " + res.error);
                 }
             },
-            error: function () { alert("추가 실패"); }
+            error: function () {
+                alert("서버 오류 발생");
+            }
         });
     }
 
-    function toggleComplete(todoId) {
-        $.post(completeTodoUrl, { todoId }, function (res) {
+    function toggleComplete(todoId, isOccurrence = false) {
+        $.post(completeTodoUrl, { todoId, isOccurrence }, function (res) {
             if (res && res.success) {
+            	 const $target = $(`[data-id="\${todoId}"]`);
+                 if (res.completed) {
+                     $target.addClass("completed"); // 회색 처리 등                    
+                     $target.remove(); 
+                 } else {
+                     $target.removeClass("completed");
+                     $target.css("opacity", 1);
+                 }
                 applyFilters();
                 loadTodayProgressByType();
                 refreshCalendarIfNeeded();
             }
         });
     }
-
+    
     function deleteTodo(todoId) {
         if (!confirm("정말 삭제할까요?")) return;
         $.post(deleteTodoUrl, { todoId }, function (res) {
@@ -407,65 +692,10 @@
             error: function () { alert("수정 요청 실패"); }
         });
     }
-
     /* -----------------------------
-       ✅ 도넛 그래프 유틸 + 오늘 달성률 로딩
+                캘린더 
     ------------------------------*/
-    const DONUT_R = 30;                               // r=30 (HTML과 동일)
-    const DONUT_C = 2 * Math.PI * DONUT_R;            // 둘레 ≈ 188.5
-
-    function setDonut(key, rate) {
-        const r = Math.max(0, Math.min(Number(rate) || 0, 100)); // 0~100 보정
-        const off = DONUT_C * (1 - r / 100);
-
-        const ring = document.getElementById(`ring-\${key}`);
-        const pct  = document.getElementById(`pct-\${key}`);
-        if (!ring || !pct) return;
-
-        ring.setAttribute('stroke-dasharray', DONUT_C.toFixed(1));
-        ring.style.strokeDashoffset = off.toFixed(1);
-        pct.textContent = `\${r}%`;
-    }
-
-    function loadTodayProgressByType() {
-        // cache-busting으로 항상 최신값
-        $.get(todayStatsByTypeUrl, { _: Date.now() }, function (res) {
-            const sets = [
-                { key: 'all',      text: '#text-all' },
-                { key: 'assigned', text: '#text-assigned' },
-                { key: 'created',  text: '#text-created' }
-            ];
-
-            sets.forEach(function (s) {
-                const data = (res && res[s.key]) ? res[s.key] : {};
-                const total = Number(data.total) || 0;
-                const done  = Number(data.completed) || 0;
-                const rate  = (data.rate !== undefined && data.rate !== null)
-                    ? Number(data.rate)
-                    : (total === 0 ? 0 : Math.floor(done * 100 / total));
-
-                setDonut(s.key, rate);
-                $(s.text).text(rate + '% (' + done + '/' + total + ')');
-            });
-        }).fail(function () {
-            ['all','assigned','created'].forEach(function (k) { setDonut(k, 0); });
-            ['#text-all', '#text-assigned', '#text-created'].forEach(function (id) {
-                $(id).text('0% (0/0)');
-            });
-        });
-    }
-
-    /* -----------------------------
-       캘린더 (월간 달성률 뷰)
-    ------------------------------*/
-    function rateColor(rate) {
-      if (rate >= 80) return '#16a34a';
-      if (rate >= 60) return '#22c55e';
-      if (rate >= 40) return '#84cc16';
-      if (rate >= 20) return '#f59e0b';
-      if (rate > 0)  return '#f97316';
-      return '#94a3b8';
-    }
+    
 
     var calYear = (new Date()).getFullYear();
     var calMonth = (new Date()).getMonth() + 1; // 1~12
@@ -481,65 +711,54 @@
     }
 
     function renderCalendar() {
-      $('#cal-title').text(calYear + '년 ' + (calMonth<10 ? '0'+calMonth : calMonth) + '월');
+   	  $('#cal-title').text(calYear + '년 ' + (calMonth < 10 ? '0' + calMonth : calMonth) + '월');
 
-      var $grid = $('#cal-grid');
-      $grid.empty();
+   	  var $grid = $('#cal-grid');
+   	  $grid.empty();
 
-      appendWeekdayHeaders($grid);
+   	  appendWeekdayHeaders($grid);
 
-      var first = new Date(calYear, calMonth - 1, 1);
-      var firstDow = first.getDay(); // 0~6
-      var daysInMonth = new Date(calYear, calMonth, 0).getDate();
+   	  var first = new Date(calYear, calMonth - 1, 1);
+   	  var firstDow = first.getDay();
+   	  var daysInMonth = new Date(calYear, calMonth, 0).getDate();
 
-      for (var i=0; i<firstDow; i++) {
-        $grid.append($('<div>').addClass('cal-cell cal-muted'));
-      }
+   	  for (var i = 0; i < firstDow; i++) {
+   	    $grid.append($('<div>').addClass('cal-cell cal-muted'));
+   	  }
 
-      $.get(calendarStatsUrl, { year: calYear, month: calMonth }, function(res) {
-        var map = {};
-        if (res && res.days) {
-          for (var j=0; j<res.days.length; j++) {
-            var it = res.days[j];
-            map[it.date] = it; // yyyy-MM-dd
-          }
-        }
+   	  for (var d = 1; d <= daysInMonth; d++) {
+   	    var ymd = calYear + '-' +
+   	      (calMonth < 10 ? '0' + calMonth : calMonth) + '-' +
+   	      (d < 10 ? '0' + d : d);
 
-        for (var d=1; d<=daysInMonth; d++) {
-          var ymd = calYear + '-' + (calMonth<10 ? '0'+calMonth : calMonth) + '-' + (d<10 ? '0'+d : d);
-          var it = map[ymd] || { total:0, completed:0, rate:0, isFuture:false };
+   	    var $cell = $('<div>').addClass('cal-cell');
+   	    $cell.attr('data-date', ymd); // ✅ 날짜 식별자 부여
+   	    $cell.append($('<div>').addClass('cal-day').text(d));
+   	    $grid.append($cell);
+   	  }
 
-          var rate = it.rate || 0;
-          var label = (it.total > 0) ? (rate + '% (' + it.completed + '/' + it.total + ')')
-                                     : (it.isFuture ? '--' : '0% (0/0)');
-          var color = rateColor(rate);
+   	  var totalCells = 7 + firstDow + daysInMonth;
+   	  var tail = (7 - (totalCells % 7)) % 7;
+   	  for (var k = 0; k < tail; k++) {
+   	    $grid.append($('<div>').addClass('cal-cell cal-muted'));
+   	  }
 
-          var $cell = $('<div>').addClass('cal-cell' + (it.isFuture ? ' cal-future' : ''));
-          $cell.append($('<div>').addClass('cal-day').text(d));
-          $cell.append($('<div>').addClass('cal-rate').css('color', color)
-                                 .text((it.total>0) ? (rate + '%') : (it.isFuture ? '--' : '0%')));
-          var $barOuter = $('<div>').addClass('cal-bar-outer');
-          var $barInner = $('<div>').addClass('cal-bar-inner').css({ width: rate + '%', background: color });
-          $barOuter.append($barInner);
-          $cell.append($barOuter);
-          $cell.append($('<div>').css({fontSize:'11px', color:'#64748b', marginTop:'4px'}).text(label));
-
-          $grid.append($cell);
-        }
-
-        var totalCells = 7 /*weekday*/ + firstDow + daysInMonth;
-        var tail = (7 - (totalCells % 7)) % 7;
-        for (var k=0; k<tail; k++) {
-          $grid.append($('<div>').addClass('cal-cell cal-muted'));
-        }
-      }).fail(function() {
-        for (var d=1; d<=daysInMonth; d++) {
-          var $cell = $('<div>').addClass('cal-cell');
-          $cell.append($('<div>').addClass('cal-day').text(d));
-          $grid.append($cell);
-        }
-      });
-    }
+   	  // ✅ 캘린더 할일 불러오기
+   	  fetchCalendarTodos(calYear, calMonth);
+   	}	
+    
+   const todoEventsUrl = '<c:url value="/todo/events" />';
+   function fetchCalendarTodos(calYear, calMonth) {
+   	  const startStr = `\${calYear}-\${String(calMonth).padStart(2, '0')}-01`;
+   	  const endDate = new Date(calYear, calMonth+1, 0);
+   	  console.log(endDate);
+   	  const endStr = `\${calYear}-\${String(calMonth).padStart(2, '0')}-\${String(endDate.getDate()).padStart(2, '0')}`;
+		
+   	  $.get(todoEventsUrl, { start: startStr, end: endStr }, function (todoEvents) {
+   		 console.log("🔥 todoEvents:", todoEvents);
+   	    renderTodosOnCalendar(todoEvents);
+   	  });
+   	}
 
     $(document).on('click', '#cal-prev', function() {
       calMonth--;
@@ -551,17 +770,189 @@
       if (calMonth > 12) { calMonth = 1; calYear++; }
       renderCalendar();
     });
+   
+    function renderTodosOnCalendar(events) {
+    	  events.forEach(event => {
+    		  console.log(event);
+    		if (event.completed) return;  
+    	    const startDate = new Date(event.start);
+    	    const endDate = event.end ? new Date(event.end) : new Date(event.start);
+    	    const startDateStr = event.start;
+    	    const endDateStr = event.end ?? event.start;
+
+    	    const datesToRender = [];
+
+    	    for (
+    	      let date = new Date(startDate);
+    	      date <= endDate;
+    	      date.setDate(date.getDate() + 1)
+    	    ) {
+    	      const dateStr = date.toISOString().split('T')[0];
+    	      datesToRender.push(dateStr);
+    	    }
+			
+    	    // 막대 색상 재사용
+    	    const backgroundColor = event.completed ? '#e2e8f0' : getColorForId(event.id);
+
+    	    datesToRender.forEach((dateStr, idx) => {
+    	      const isStart = dateStr === startDateStr;
+    	      const isEnd = dateStr === endDateStr;
+
+    	      const $cell = $(`[data-date="\${dateStr}"]`);
+    	      if ($cell.length === 0 || event.hidden) return;
+
+    	      const $todoDiv = $('<div>')
+	    	      .addClass('todo-tag')
+	    	      .attr('data-id', event.id)
+	    	      .addClass(isStart ? 'start' : '')   // 좌측 둥근 처리
+	    	      .addClass(isEnd ? 'end' : '')       // 우측 둥근 처리
+	    	      .text(isStart ? event.title + (event.recurring ? ' 🔁' : '') : '')
+	    	      .css({
+	    	        height: '16px',
+	    	        padding: '0 6px',
+	    	        backgroundColor: backgroundColor,
+	    	        color: '#1e293b',
+	    	        textDecoration: event.completed ? 'line-through' : 'none',
+	    	        fontSize: '11px',
+	    	        width: '100%',
+	    	        margin: '2px 0',
+	    	        boxSizing: 'border-box',
+	    	        opacity: event.completed ? 0.3 : 1
+	    	      });
+
+    	      // 툴팁
+    	      $todoDiv.attr('title', event.title);
+
+    	      $cell.append($todoDiv);
+    	    });
+    	  });
+    	}
+
+
+    
+    
+    function shouldShowTodoOnDate(todo, targetDate) {
+        const start = new Date(todo.start);
+        const end = new Date(todo.end);
+		
+        if (targetDate < start || targetDate > end) return false;
+
+        const freq = todo.freq;
+        if (freq === 'DAILY') return true;
+
+        if (freq === 'WEEKLY') return targetDate.getDay() === start.getDay();
+
+        if (freq === 'MONTHLY') return targetDate.getDate() === start.getDate();
+
+        if (freq === 'NONE') {
+          
+            return true;
+        }
+
+        return false;
+    }
+
+    function formatDateLocal(date) {
+        return date.getFullYear() + '-' +
+               String(date.getMonth() + 1).padStart(2, '0') + '-' +
+               String(date.getDate()).padStart(2, '0');
+    }
 
     // 외부에서 필요 시 호출
     window.refreshCalendarIfNeeded = function() { renderCalendar(); };
+    
+    
 
+    // 목표 관련 URL
+    const goalCreateUrl = '<c:url value="/goals/create" />';
+    const goalProgressUrl = '<c:url value="/goals/progress" />';
+    const goalProgressWeeklyUrl = '<c:url value="/goals/progress/weekly" />';
+    const goalProgressmonthlyUrl = '<c:url value="/goals/progress/monthly" />';
+    
+    // 목표 추가 버튼 클릭
+    $('#add-goal-btn').on('click', function() {
+        $('#goalModal').modal('show');
+    });
+    
+    // 목표 저장 버튼 클릭
+    $('#saveGoalBtn').on('click', function() {
+        const goalData = {
+            title: $('#goalTitle').val(),
+            description: $('#goalDescription').val(),
+            goalType: $('#goalType').val(),
+            startDate: $('#goalStartDate').val(),
+            endDate: $('#goalEndDate').val(),
+            targetCount: parseInt($('#goalTargetCount').val())
+        };
+        
+        $.ajax({
+            url: goalCreateUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(goalData),
+            success: function(response) {
+                if (response.success) {
+                    alert('목표가 생성되었습니다!');
+                    $('#goalModal').modal('hide');
+                    $('#goalForm')[0].reset();
+                    loadGoalProgress();
+                } else {
+                    alert('목표 생성에 실패했습니다: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('목표 생성 중 오류가 발생했습니다.');
+            }
+        });
+    });
+    
+    function loadGoalProgress() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        
+        // 월간 목표 진행률
+        $.get(goalProgressmonthlyUrl, { year: year, month: month }, function(response) {
+            if (response.success && response.data) {
+                const data = response.data;
+                const total = Number(data.total_goals) || 0;
+                const achieved = Number(data.achieved_goals) || 0;
+                const rate = total === 0 ? 0 : Math.floor(achieved * 100 / total);
+                
+               
+                $('#text-monthly').text(rate + '% (' + achieved + '/' + total + ')');
+                $('#pct-monthly').text(rate + '%');
+            }
+        });
+        
+        // 주간 목표 진행률 (이번 주 시작일 계산)
+        const weekStart = new Date(today);
+        weekStart.setDate(today.getDate() - today.getDay());
+        const weekStartStr = weekStart.toISOString().split('T')[0];
+        
+        $.get(goalProgressWeeklyUrl, { weekStart: weekStartStr }, function(response) {
+            if (response.success && response.data) {
+                const data = response.data;
+                const total = Number(data.total_goals) || 0;
+                const achieved = Number(data.achieved_goals) || 0;
+                const rate = total === 0 ? 0 : Math.floor(achieved * 100 / total);
+                
+                
+                $('#text-weekly').text(rate + '% (' + achieved + '/' + total + ')');
+                $('#pct-weekly').text(rate + '%');
+            }
+        });
+    }
+    
+    
     /* -----------------------------
        초기 로딩
     ------------------------------*/
     $(function () {
         loadTodayProgressByType(); // 오늘 달성률 도넛
+        loadGoalProgress();        // 목표 진행률
         applyFilters();            // 첫 목록
-        renderCalendar();          // 캘린더
+        renderCalendar();          // 캘린더     
     });
 </script>
 

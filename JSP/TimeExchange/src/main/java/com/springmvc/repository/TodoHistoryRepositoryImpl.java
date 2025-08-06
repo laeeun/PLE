@@ -41,6 +41,20 @@ public class TodoHistoryRepositoryImpl implements TodoHistoryRepository {
                      "FROM todo WHERE deadline < CURDATE()";
         return template.update(sql);
     }
+    
+    @Override
+    public void backupSingleTodo(Long todoId) {
+        String sql = """
+            INSERT INTO todo_history (todo_id, writer_id, receiver_id, title, completed, deadline, recorded_at)
+            SELECT todo_id, writer_id, receiver_id, title, completed, deadline, NOW()
+            FROM todo 
+            WHERE todo_id = ? AND deadline < CURDATE()
+            ON DUPLICATE KEY UPDATE 
+                completed = VALUES(completed),
+                recorded_at = NOW()
+        """;
+        template.update(sql, todoId);
+    }
 	@Override
 	public List<Map<String, Object>> findStatsByDateRange(String receiverId, LocalDate start, LocalDate end) {
 		final String sql =

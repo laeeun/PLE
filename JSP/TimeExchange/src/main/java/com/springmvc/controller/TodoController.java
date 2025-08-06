@@ -3,6 +3,7 @@ package com.springmvc.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.springmvc.domain.CalendarEvent;
 import com.springmvc.domain.Member;
 import com.springmvc.domain.TodoDTO;
+import com.springmvc.enums.RecurrenceFreq;
+import com.springmvc.service.TodoOccurrenceService;
 import com.springmvc.service.TodoService;
+import com.springmvc.service.NotificationService;
 
 @Controller
 @RequestMapping("/todo")
@@ -30,16 +35,28 @@ public class TodoController {
 
     @Autowired
     TodoService todoService;
-
+    @Autowired
+    TodoOccurrenceService todoOccurrenceService;
+    @Autowired
+    NotificationService notificationService;
     // ✅ [개인용] 할일 추가
     @PostMapping("/add")
     @ResponseBody
-    public Map<String, Object> addTodo(@RequestBody Map<String, String> body,
-                                       HttpSession session) {
+    public Map<String, Object> addTodo(@RequestBody Map<String, String> body, HttpSession session) {
         Member user = (Member) session.getAttribute("loggedInUser");
-        String memberId = user.getMember_id();
+        Map<String, Object> result = new HashMap<>();
 
+        // ✅ 로그인 여부 확인
+        if (user == null) {
+            result.put("success", false);
+            result.put("error", "로그인이 필요합니다.");
+            return result;
+        }
+
+        String memberId = user.getMember_id();
         TodoDTO todo = new TodoDTO();
+
+        // ✅ 기본 정보 세팅
         todo.setWriterId(memberId);
         todo.setReceiverId(memberId);
         todo.setPersonal(true);
@@ -50,12 +67,52 @@ public class TodoController {
         todo.setCreated_at(LocalDateTime.now());
         todo.setUpdated_at(LocalDateTime.now());
 
-        todoService.createTODO(todo);
+        // ✅ 날짜 파싱 (빈 문자열, null 대비)
+        String startStr = body.get("startDate");
+        String endStr   = body.get("endDate");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
-        return response;
+        LocalDate startDate;
+        LocalDate endDate;
+
+        try {
+            startDate = (startStr != null && !startStr.isBlank()) ? LocalDate.parse(startStr, formatter) : LocalDate.now();
+        } catch (Exception e) {
+            startDate = LocalDate.now();
+        }
+
+        try {
+            endDate = (endStr != null && !endStr.isBlank()) ? LocalDate.parse(endStr, formatter) : startDate;
+        } catch (Exception e) {
+            endDate = startDate;
+        }
+
+        todo.setStartDate(startDate);
+        todo.setEndDate(endDate);
+        todo.setStartDateStr(startStr);
+        todo.setEndDateStr(endStr);
+        String freqStr = body.get("freq");
+        RecurrenceFreq freq;
+        try {
+            freq = RecurrenceFreq.valueOf(freqStr != null ? freqStr : "NONE");
+        } catch (IllegalArgumentException e) {
+            freq = RecurrenceFreq.NONE;
+        }
+        todo.setFreq(freq);
+        todo.setAllDay(true); // 기본값
+
+        // ✅ DB 저장
+        try {
+            todoService.createTODO(todo);
+            result.put("success", true);
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("error", "TODO 저장 중 오류: " + e.getMessage());
+        }
+
+        return result;
     }
+
 
     // ✅ [숙제용] 다른 사람에게 숙제 할당
     @PostMapping("/assign")
@@ -72,6 +129,20 @@ public class TodoController {
         todo.setUpdated_at(LocalDateTime.now());
 
         todoService.createTODO(todo);
+
+        // ✅ 알림 생성
+        String senderUsername = user.getUserName();
+        String receiverUsername = todo.getReceiverId(); // receiverId가 username이라고 가정
+        String content = String.format("새로운 숙제가 할당되었습니다: %s", todo.getTitle());
+        
+        notificationService.createSimpleNotification(
+            senderUsername, 
+            receiverUsername, 
+            "숙제", 
+            content, 
+            todo.getTodoId(), 
+            "todo"
+        );
 
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
@@ -111,11 +182,12 @@ public class TodoController {
         return "myTodo";
     }
 
-    // ✅ 필터 (AJAX) - 타입 + 완료 여부 동시 필터
+    // ✅ 필터 (AJAX) - 타입 + 완료 여부 + 반복 주기 동시 필터
     @GetMapping("/filter")
     @ResponseBody
     public List<TodoDTO> filterTodos(@RequestParam(required = false) String type,
                                      @RequestParam(required = false) String completed,
+                                     @RequestParam(required = false) String freq,
                                      @RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                      HttpSession session) {
         Member user = (Member) session.getAttribute("loggedInUser");
@@ -126,28 +198,44 @@ public class TodoController {
         LocalDate target = (date != null) ? date : LocalDate.now(ZoneId.of("Asia/Seoul"));
 
         if ("created".equals(type)) {
-            return todoService.findByWriterId(memberId, isCompleted); // 내가 만든 할일
+            return todoService.findByWriterId(memberId, isCompleted, freq); // 내가 만든 할일
         } else if ("received".equals(type)) {
-            return todoService.findAssignedTodos(memberId, isCompleted); // 받은 숙제
+            return todoService.findAssignedTodos(memberId, isCompleted, freq); // 받은 숙제
         } else {
-            return todoService.findAllTodos(memberId, isCompleted); // 전체
+            return todoService.findAllTodos(memberId, isCompleted, freq); // 전체
         }
     }
 
     // ✅ 완료 상태 토글
     @PostMapping("/complete")
     @ResponseBody
-    public Map<String, Object> updateTodo(@RequestParam("todoId") long todoId) {
-        TodoDTO todo = todoService.findById(todoId);
-        boolean newCompleted = !todo.isCompleted();
-        todoService.updateCompleted(todoId, newCompleted);
+    public Map<String, Object> updateTodo(
+            @RequestParam("todoId") long todoId,
+            @RequestParam(value = "isOccurrence", defaultValue = "false") boolean isOccurrence) {
 
         Map<String, Object> result = new HashMap<>();
-        result.put("success", true);
-        result.put("completed", newCompleted);
+
+        try {
+            if (isOccurrence) {
+                // 반복 일정 처리
+                boolean completed = todoOccurrenceService.toggleOccurrenceCompleted(todoId); // ✅ toggle 기능 추가
+                result.put("completed", completed);
+            } else {
+                // 일반 todo 처리
+                TodoDTO todo = todoService.findById(todoId);
+                boolean newCompleted = !todo.isCompleted();
+                todoService.updateCompleted(todoId, newCompleted);
+                result.put("completed", newCompleted);
+            }
+
+            result.put("success", true);
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("error", e.getMessage());
+        }
+
         return result;
     }
-
     // ✅ 할일 삭제
     @PostMapping("/delete")
     @ResponseBody
@@ -210,14 +298,71 @@ public class TodoController {
         result.put("success", true);
         return result;
     }
-
-
-
-
+    
     // ✅ 특정 거래(trade_id) 관련 숙제 목록 조회
     @GetMapping("/trade")
     @ResponseBody
     public List<TodoDTO> getTodosByTradeId(@RequestParam("tradeId") Long tradeId) {
         return todoService.findByTradeId(tradeId);
     }
+    
+    @PostMapping("/recurring")
+    @ResponseBody
+    public Map<String, Object> createRecurringTodo(@RequestBody TodoDTO dto, HttpSession session) {
+        Member user = (Member) session.getAttribute("loggedInUser");
+        Map<String, Object> result = new HashMap<>();
+
+        if (user == null) {
+            result.put("success", false);
+            result.put("error", "로그인이 필요합니다.");
+            return result;
+        }
+
+        dto.setWriterId(user.getMember_id());
+        dto.setReceiverId(user.getMember_id()); // 개인용으로 가정
+        dto.setPersonal(true);
+        dto.setCompleted(false);
+
+        try {
+            todoOccurrenceService.createTodoWithOccurrences(dto);
+            result.put("success", true);
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("error", e.getMessage());
+        }
+
+        return result;
+    }
+    
+
+    @GetMapping("/events")
+    @ResponseBody
+    public List<CalendarEvent> getCalendarEvents(
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+            HttpSession session) {
+
+        Member user = (Member) session.getAttribute("loggedInUser");
+        if (user == null) return List.of();
+
+        return todoOccurrenceService.getCalendarEvents(user.getMember_id(), start, end, true);
+    }
+    
+    
+    
+    @PostMapping("/occurrence/complete")
+    @ResponseBody
+    public Map<String, Object> completeOccurrence(@RequestParam("occurrenceId") Long id) {
+        todoOccurrenceService.setOccurrenceCompleted(id, true);
+        return Map.of("success", true);
+    }
+
+    @PostMapping("/occurrence/hide")
+    @ResponseBody
+    public Map<String, Object> hideOccurrence(@RequestParam("occurrenceId") Long id) {
+        todoOccurrenceService.setOccurrenceHidden(id, true);
+        return Map.of("success", true);
+    }
+    
+    
 }

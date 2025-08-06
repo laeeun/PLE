@@ -30,10 +30,15 @@ public class TodoHistoryServiceImpl implements TodoHistoryService {
         return todoHistoryRepository.findStatsByReceiverId(receiverId);
     }
 
-    @Override
-    public int backupFromTodoTable() {
-        return todoHistoryRepository.backupFromTodoTable();
-    }
+    	@Override
+	public int backupFromTodoTable() {
+		return todoHistoryRepository.backupFromTodoTable();
+	}
+	
+	@Override
+	public void backupSingleTodo(Long todoId) {
+		todoHistoryRepository.backupSingleTodo(todoId);
+	}
 
 	@Override
 	public List<Map<String, Object>> findStatsByDateRange(String receiverId, LocalDate start, LocalDate end) {

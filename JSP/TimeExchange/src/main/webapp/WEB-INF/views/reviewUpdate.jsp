@@ -95,8 +95,8 @@
 
         <!-- 숨겨진 필드들 (수정 시 필수) -->
         <input type="hidden" name="reviewId" value="${review.reviewId}">
-        <input type="hidden" name="writerId" value="${review.writerId}">
-        <input type="hidden" name="targetId" value="${review.targetId}">
+        <input type="hidden" name="writerName" value="${review.writerName}">
+        <input type="hidden" name="targetName" value="${review.targetName}">
         <input type="hidden" name="talentId" value="${review.talentId}">
         <input type="hidden" name="historyId" value="${review.historyId}">
 

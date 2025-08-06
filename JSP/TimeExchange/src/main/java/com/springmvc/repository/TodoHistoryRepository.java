@@ -16,5 +16,8 @@ public interface TodoHistoryRepository {
     // 자정에 todo → todo_history 백업
     int backupFromTodoTable();
     
+    // 단일 할일 백업
+    void backupSingleTodo(Long todoId);
+    
     List<Map<String, Object>> findStatsByDateRange(String receiverId, LocalDate start, LocalDate end);
 }

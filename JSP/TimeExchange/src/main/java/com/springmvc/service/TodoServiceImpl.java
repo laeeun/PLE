@@ -1,5 +1,7 @@
 package com.springmvc.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.springmvc.domain.TodoDTO;
 import com.springmvc.repository.TodoRepository;
-
 // ✅ 할일 서비스 구현체 - 비즈니스 로직을 처리하고 Repository와 Controller를 연결하는 중간 계층
 @Service
 public class TodoServiceImpl implements TodoService {
@@ -16,7 +17,9 @@ public class TodoServiceImpl implements TodoService {
     // ✅ TodoRepository 의존성 주입
     @Autowired
     TodoRepository todoRepository;
-
+    
+    @Autowired
+    TodoHistoryService todoHistoryService;
     // ✅ 할일 생성
     @Override
     public void createTODO(TodoDTO todo) {
@@ -26,7 +29,33 @@ public class TodoServiceImpl implements TodoService {
     // ✅ 특정 사용자가 받은 모든 할일 목록 조회 (개인 + 숙제 포함)
     @Override
     public List<TodoDTO> findByReceiverId(String receiverId) {
-        return todoRepository.findByReceiverId(receiverId);
+        List<TodoDTO> todos = todoRepository.findByReceiverId(receiverId);         // 비반복 TODO
+        List<TodoDTO> recurring = todoRepository.findOccurrencesByReceiverId(receiverId); // 반복 TODO
+
+        // ✅ 날짜 포맷터 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
+        // ✅ 포맷된 문자열 추가
+        todos.forEach(todo -> {
+        	System.out.println(todo.getStartDate());
+        	System.out.println(todo.getEndDate());
+            if (todo.getStartDate() != null)
+                todo.setStartDateStr(todo.getStartDate().format(formatter));
+            if (todo.getEndDate() != null)
+                todo.setEndDateStr(todo.getEndDate().format(formatter));
+        });
+
+        recurring.forEach(todo -> {
+        	System.out.println("recurring"+todo.getStartDate());
+        	System.out.println("recurring"+todo.getEndDate());
+            if (todo.getStartDate() != null)
+                todo.setStartDateStr(todo.getStartDate().format(formatter));
+            if (todo.getEndDate() != null)
+                todo.setEndDateStr(todo.getEndDate().format(formatter));
+        });
+
+        todos.addAll(recurring);
+        return todos;
     }
 
     // ✅ 특정 할일 상세 조회 (todo_id 기준)
@@ -57,6 +86,16 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public void updateCompleted(long todoId, boolean completed) {
         todoRepository.updateCompleted(todoId, completed);
+        
+        // ✅ 실시간 백업: 완료 상태 변경 시 히스토리에 기록
+        if (completed) {
+            TodoDTO todo = todoRepository.findById(todoId);
+            if (todo != null && todo.getDeadline() != null && 
+                todo.getDeadline().isBefore(LocalDate.now())) {
+                // 데드라인이 지난 할일이 완료되면 히스토리에 백업
+                todoHistoryService.backupSingleTodo(todoId);
+            }
+        }
     }
 
     // ✅ 내가 만든 개인 할일 목록만 조회
@@ -125,9 +164,25 @@ public class TodoServiceImpl implements TodoService {
 		return todoRepository.getTodayStatsCreated(writerId);
 	}
 	
-	@Override
+	    @Override
     public int updateTitleContent(long todoId, String title, String content, String ownerId) {
         return todoRepository.updateTitleContent(todoId, title, content, ownerId);
+    }
+    
+    // 반복 주기 필터링 메서드들
+    @Override
+    public List<TodoDTO> findByWriterId(String writerId, Boolean completed, String freq) {
+        return todoRepository.findByWriterId(writerId, completed, freq);
+    }
+
+    @Override
+    public List<TodoDTO> findAssignedTodos(String receiverId, Boolean completed, String freq) {
+        return todoRepository.findAssignedTodos(receiverId, completed, freq);
+    }
+
+    @Override
+    public List<TodoDTO> findAllTodos(String receiverId, Boolean completed, String freq) {
+        return todoRepository.findAllTodos(receiverId, completed, freq);
     }
 	
 }

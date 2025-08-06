@@ -1,9 +1,13 @@
 package com.springmvc.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import com.springmvc.domain.TodoCreateRequest;
 import com.springmvc.domain.TodoDTO;
+import com.springmvc.enums.RecurrenceFreq;
 
 public interface TodoRepository {
 
@@ -58,4 +62,29 @@ public interface TodoRepository {
     Map<String, Object> getTodayStatsCreated(String writerId);     // 내가 생성한 할일(= writer 기준)
     
     int updateTitleContent(long todoId, String title, String content, String ownerId);
+    
+    // 데드라인 알림용 메서드
+    List<TodoDTO> findByDeadline(LocalDate deadline);
+    
+    // 누락된 백업 확인용 메서드
+    int countMissedBackups(LocalDate date);
+    
+    // 세분화된 통계 메서드들
+    Map<String, Object> getTodayStatsByPriority(String receiverId);
+    Map<String, Object> getTodayStatsByTimeframe(String receiverId);
+    
+    // 반복 주기 필터링 메서드들
+    List<TodoDTO> findByWriterId(String writerId, Boolean completed, String freq);
+    List<TodoDTO> findAssignedTodos(String receiverId, Boolean completed, String freq);
+    List<TodoDTO> findAllTodos(String receiverId, Boolean completed, String freq);
+    
+    /** 새로운 Todo를 저장하고 생성된 PK(todo_id)를 반환 */
+    Long insertTodo(TodoCreateRequest req);
+
+    /** PK로 TodoDTO를 Optional로 조회 */
+    Optional<TodoDTO> findByIdAsDto(Long todoId);
+    
+    int updateBasic(Long todoId, String title, String content, Integer priority, LocalDate deadline,
+            RecurrenceFreq freq, LocalDate startDate, LocalDate endDate, Boolean allDay);
+    public List<TodoDTO> findOccurrencesByReceiverId(String receiverId);
 }
