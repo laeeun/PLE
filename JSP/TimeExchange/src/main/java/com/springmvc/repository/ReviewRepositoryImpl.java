@@ -73,9 +73,9 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     public ReviewDTO findById(Long id) {
     	String sql = "SELECT r.*, " +
                 "rr.reply_id, rr.seller_id AS seller_id, " +
-                "rr.reply_content AS content, " +
+                "rr.content AS content, " +
                 "r.created_at AS created_at, " +
-                "rr.reply_created_at AS reply_created_at " +
+                "rr.created_at AS reply_created_at " +
                 "FROM review r " +
                 "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
                 "WHERE r.review_id = ?";
@@ -133,11 +133,10 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 		String sql = "SELECT r.review_id, r.writer_name, r.target_name, r.talent_id, " +
 	             "r.rating, r.comment, r.created_at AS created_at, r.history_id, r.category, " +
 	             "rr.reply_id, rr.seller_id AS seller_id, " +
-	             "rr.reply_content AS content, rr.reply_created_at AS reply_created_at " +
+	             "rr.content AS content, rr.created_at AS reply_created_at " +
 	             "FROM review r " +
 	             "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
 	             "WHERE r.writer_name = ?";
-
 
 	    List<ReviewDTO> list = template.query(sql, new ReviewRowMapper(), writerName);
 
@@ -156,7 +155,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 		String sql = "SELECT r.review_id, r.writer_name, r.target_name, r.talent_id, " +
 	             "r.rating, r.comment, r.created_at AS created_at, r.history_id, r.category, " +
 	             "rr.reply_id, rr.seller_id AS seller_id, " +
-	             "rr.reply_content AS content, rr.reply_created_at AS reply_created_at " +
+	             "rr.content AS content, rr.created_at AS reply_created_at " +
 	             "FROM review r " +
 	             "LEFT JOIN review_reply rr ON r.review_id = rr.review_id " +
 	             "WHERE r.target_name = ?";
@@ -175,13 +174,13 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 
 	@Override
 	public void saveReply(ReviewReplyDTO reply) {
-		String sql = "INSERT INTO review_reply (review_id, seller_id, reply_content) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO review_reply (review_id, seller_id, content) VALUES (?, ?, ?)";
 		template.update(sql, reply.getReviewId(), reply.getSellerId(), reply.getReplyContent());
 	}
 
 	@Override
 	public void updateReply(ReviewReplyDTO reply) {
-		String sql = "UPDATE review_reply SET reply_content = ? WHERE reply_id = ?";
+		String sql = "UPDATE review_reply SET content = ? WHERE reply_id = ?";
 		template.update(sql, reply.getReplyContent(), reply.getReplyId());
 	}
 
@@ -280,8 +279,8 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 				       r.rating, r.comment, r.created_at AS created_at,
 				       r.history_id, r.category,
 				       rr.reply_id, rr.seller_id,
-				       rr.reply_content AS content,
-				       rr.reply_created_at AS reply_created_at
+				       rr.content AS content,
+				       rr.created_at AS reply_created_at
 				FROM review r
 				LEFT JOIN review_reply rr ON r.review_id = rr.review_id
 				WHERE r.talent_id = ?

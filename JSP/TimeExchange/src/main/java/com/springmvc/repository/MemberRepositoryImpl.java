@@ -135,9 +135,9 @@ public class MemberRepositoryImpl implements MemberRepository {
     // ✅ 이름 + 전화번호로 회원의 member_id를 조회 (created_at까지 포함하려면 RowMapper 수정 필요)
     @Override
     public Member findIdWithCreatedAt(String name, String phone) {
-        String sql = "SELECT member_id FROM member WHERE name = ? AND phone = ?";
+    	 String sql = "SELECT * FROM member WHERE name = ? AND phone = ?";
         try {
-            return template.queryForObject(sql, new Object[]{name, phone}, new MemberRowMapper());
+        	  return template.queryForObject(sql, new MemberRowMapper(), name, phone);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

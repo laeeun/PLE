@@ -8,61 +8,82 @@
   <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
 
   <style>
+    :root {
+      --accent: #FF6B35;
+      --accent-light: #FFEDE4;
+      --surface: #ffffff;
+      --surface-alt: #f9f9f9;
+      --text-main: #1F2C40;
+      --text-sub: #6B7280;
+    }
+
     body {
       margin: 0;
-      padding: 0;
       font-family: 'Pretendard', sans-serif;
-      background: linear-gradient(to right, #ffe6f0, #fff0f5);
+      background-color: var(--surface-alt);
+    }
+
+    section {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 80px); /* nav 높이 고려 */
+      padding-top: 40px;
     }
 
     .result-box {
-      margin-top: 30px;
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      background: var(--surface);
+      padding: 32px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
       text-align: center;
-      width: 340px;
+      width: 100%;
+      max-width: 400px;
     }
 
     .result-box h2 {
-      font-size: 28px;
-      color: #ff69b4;
-      margin-bottom: 20px;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .result-box p {
+      margin: 10px 0;
+      font-size: 16px;
+      color: var(--text-sub);
     }
 
     .found-id {
       font-size: 22px;
       font-weight: bold;
-      color: #333;
+      color: var(--text-main);
+      margin-top: 12px;
     }
 
     .join-date {
-      font-size: 15px;
-      color: #888;
-      margin-top: 5px;
+      font-size: 14px;
+      color: #999;
     }
 
     .btn-wrap {
-      margin-top: 25px;
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
     }
 
     .btn-wrap a {
-      display: inline-block;
-      padding: 10px 20px;
+      padding: 12px 20px;
       border-radius: 8px;
       text-decoration: none;
       font-size: 15px;
-      margin: 0 5px;
+      font-weight: bold;
     }
 
     .btn-login {
-      background: #ff99cc; 
+      background: var(--accent);
       color: white;
     }
 
@@ -73,19 +94,24 @@
   </style>
 </head>
 <body>
+
+  <!-- ✅ 네비게이션 최상단 고정 -->
   <jsp:include page="/WEB-INF/views/nav.jsp" />
 
-  <div class="result-box">
-    <h2>아이디 찾기 결과</h2>
-    <p>입력하신 정보와 일치하는 계정이 확인되었습니다.</p>
-    <p class="found-id">${foundId}</p>
-    <p class="join-date">가입일: ${joinDate}</p>
+  <!-- ✅ 중앙 컨텐츠 -->
+  <section>
+    <div class="result-box">
+      <h2>아이디 찾기 결과</h2>
+      <p>입력하신 정보와 일치하는 계정이 확인되었습니다.</p>
+      <p class="found-id">${foundId}</p>
+      <p class="join-date">가입일: ${joinDate}</p>
 
-    <div class="btn-wrap">
-      <a href="${pageContext.request.contextPath}/login" class="btn-login">로그인하러 가기</a>
-      <a href="${pageContext.request.contextPath}/findPw" class="btn-pw">비밀번호 찾기</a>
+      <div class="btn-wrap">
+        <a href="${pageContext.request.contextPath}/login" class="btn-login">로그인하러 가기</a>
+        <a href="${pageContext.request.contextPath}/findPw" class="btn-pw">비밀번호 찾기</a>
+      </div>
     </div>
-  </div>
+  </section>
 
 </body>
 </html>

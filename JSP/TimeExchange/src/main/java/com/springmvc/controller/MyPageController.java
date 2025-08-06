@@ -363,7 +363,7 @@ public class MyPageController  {
 	    model.addAttribute("mode", "edit");               // edit 모드로 진입
 	    model.addAttribute("memberId", memberId);         // 히든 input 용도
 
-	    return "expertForm";  // 전문가 정보 입력/수정 폼 JSP
+	    return "expertEdit";  // 전문가 정보 입력/수정 폼 JSP
 	}
 
 

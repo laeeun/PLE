@@ -171,7 +171,7 @@
     <div class="links">
       <a href="${pageContext.request.contextPath}/findId">아이디 찾기</a> |
       <a href="${pageContext.request.contextPath}/findPw">비밀번호 찾기</a> |
-      <a href="${pageContext.request.contextPath}/signUp/signUp">회원가입</a> |
+      <a href="${pageContext.request.contextPath}/signUp">회원가입</a> |
       <a href="${pageContext.request.contextPath}/">홈</a>
     </div>
   </div>

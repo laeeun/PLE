@@ -1,89 +1,135 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>이메일 인증 필요</title>
-    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
-    <link href="<c:url value='/resources/css/bootstrap.min.css' />" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Pretendard', sans-serif;
-            background: linear-gradient(-45deg, #fbcfe8, #e0e7ff, #f3e8ff, #fce7f3);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  <meta charset="UTF-8" />
+  <title>이메일 인증 필요</title>
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  <!-- 기본 폰트 및 아이콘 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
-        .error-box {
-            max-width: 450px;
-            width: 90%;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            padding: 40px 30px;
-            text-align: center;
-        }
+  <style>
+    :root {
+      --primary:      #1F2C40;
+      --accent:       #FF6B35;
+      --accent-100:   #FFEEEA;
+      --surface:      #F9F9F9;
+      --surface-alt:  #FFFFFF;
+      --border:       #E8E8E8;
+      --text-main:    #1F2C40;
+      --text-sub:     #6A737D;
+      --danger:       #ef4444;
+      --success:      #10b981;
+    }
 
-        .error-box h2 {
-            font-size: 24px;
-            color: #dc2626;
-            margin-bottom: 20px;
-        }
+    body {
+      margin: 0;
+      font-family: 'Pretendard', sans-serif;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
 
-        .error-box p {
-            color: #4b5563;
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
+    .card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      max-width: 500px;
+      width: 100%;
+      padding: 40px 35px;
+      text-align: center;
+    }
 
-        .btn-home {
-            padding: 10px 20px;
-            background: linear-gradient(to right, #f87171, #fbbf24);
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
+    .card h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
 
-        .btn-home:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        }
-    </style>
+    .card p {
+      font-size: 15px;
+      color: var(--text-sub);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .btn-orange {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 14px;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 22px rgba(255, 107, 53, 0.15);
+    }
+
+    .btn-orange:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+    }
+
+    .btn-home {
+      display: block;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--primary);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      background: var(--surface);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-home:hover {
+      background: var(--accent-100);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .icon {
+      font-size: 48px;
+      color: var(--danger);
+      margin-bottom: 15px;
+    }
+
+  </style>
 </head>
 <body>
 
-<div class="error-box">
-    <h2>⛔ 이메일 인증이 필요합니다</h2>
-    <p>로그인을 완료하려면 이메일 인증을 먼저 진행해주세요.</p>
-    
-    <!-- 인증 메일 재전송 폼 -->
-    <form action="<c:url value='/mail/resend' />" method="post" style="margin-bottom: 15px;">
-        <input type="hidden" name="member_id" value="${member.member_id}" />
-        <button type="submit" class="btn-home">인증 메일 다시 보내기</button>
-    </form>
-    
-    <a href="<c:url value='/' />" class="btn-home">홈으로 가기</a>
+<div class="card">
+  <div class="icon">🚫</div>
+  <h2>이메일 인증이 필요해요</h2>
+  <p>로그인을 완료하려면<br>이메일 인증을 먼저 진행해 주세요.</p>
+
+  <!-- 인증 메일 재전송 폼 -->
+  <form action="<c:url value='/mail/resend' />" method="post">
+    <input type="hidden" name="member_id" value="${member.member_id}" />
+    <button type="submit" class="btn-orange">인증 메일 다시 보내기</button>
+  </form>
+
+  <!-- 홈으로 이동 버튼 -->
+  <a href="<c:url value='/' />" class="btn-home">🏠 홈으로 돌아가기</a>
 </div>
 
 <jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
-
 
 </body>
 </html>

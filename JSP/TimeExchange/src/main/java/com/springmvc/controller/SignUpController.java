@@ -28,7 +28,7 @@ import com.springmvc.service.ExpertProfileService;
 import com.springmvc.service.MailService;
 import com.springmvc.service.MemberService;
 
-@RequestMapping("/signUp")
+
 @Controller
 public class SignUpController {
 
@@ -148,7 +148,7 @@ public class SignUpController {
         if (member.getExpert()) {
             // expertForm에서 사용할 memberId를 세션에 저장
             session.setAttribute("expertMemberId", member.getMember_id());
-            return "redirect:/signUp/expertForm";  // 전문가 추가 정보 입력 폼으로 이동
+            return "redirect:/expertForm";  // 전문가 추가 정보 입력 폼으로 이동
         }
 
         return "successSignUp";

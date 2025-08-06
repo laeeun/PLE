@@ -41,10 +41,9 @@ public class ForgotController {
 	
 	@PostMapping("/findId")
 	public String forgotId(@RequestParam String name, @RequestParam String phone, Model model) {
-		System.out.println("아이디 찾기 들어옴");
-		String findId = memberService.findId(name, phone);
+        System.out.println("아이디 찾기 들어옴");
+        Member member = memberService.findIdWithCreatedAt(name, phone);
 		
-		Member member = memberService.findIdWithCreatedAt(name, phone);
 		
 		if(member != null) {
 			model.addAttribute("foundId", member.getMember_id());

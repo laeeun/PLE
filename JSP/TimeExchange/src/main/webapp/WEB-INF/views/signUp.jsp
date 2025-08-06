@@ -157,7 +157,7 @@
 <div class="signup-box">
     <h2>회원가입</h2>
 
-    <form:form modelAttribute="signUp" action="${pageContext.request.contextPath}/signUp/signUp" method="post" enctype="multipart/form-data">
+    <form:form modelAttribute="signUp" action="${pageContext.request.contextPath}/signUp" method="post" enctype="multipart/form-data">
 
         <div class="form-group">
             <label for="profileImageFile">프로필 이미지</label>
