@@ -190,6 +190,9 @@
                     <input type="hidden" name="member_id" value="${member.member_id}" />
                     <button type="submit" class="custom-btn btn-delete">회원 탈퇴</button>
                 </form>
+                <form action="<c:url value='/mypage/restore'/>" method="post" style="display:inline;">
+                    <button type="submit" class="custom-btn btn-outline">회원 탈퇴 취소</button>
+                </form>
                 <a href="<c:url value='/mypage/changePw' />" class="custom-btn btn-outline">비밀번호 변경</a>
                 <a href="<c:url value='/purchase/received' />" class="custom-btn btn-outline">받은 구매 요청</a>
                 <a href="<c:url value='/mypage/history' />" class="custom-btn btn-outline">거래 내역</a>

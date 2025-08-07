@@ -242,13 +242,21 @@ public class MyPageController  {
 
 	
 	@PostMapping("/delete")
-	public String delete(HttpSession session) {
-		Member loggedInUser = (Member) session.getAttribute("loggedInUser");
-		String member_id = loggedInUser.getMember_id();
-		memberService.delete(member_id);
-		session.invalidate();
-		return "redirect:/";
-	}
+    public String delete(HttpSession session) {
+            Member loggedInUser = (Member) session.getAttribute("loggedInUser");
+            String member_id = loggedInUser.getMember_id();
+            memberService.delete(member_id);
+            session.invalidate();
+            return "redirect:/";
+    }
+
+    @PostMapping("/restore")
+    public String restore(HttpSession session) {
+            Member loggedInUser = (Member) session.getAttribute("loggedInUser");
+            String member_id = loggedInUser.getMember_id();
+            memberService.restore(member_id);
+            return "redirect:/mypage";
+    }
 	
 	
 

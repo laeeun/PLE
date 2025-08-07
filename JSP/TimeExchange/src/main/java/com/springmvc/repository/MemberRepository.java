@@ -82,4 +82,6 @@ public interface MemberRepository {
     boolean isDuplicateId(String member_id); 
     
     boolean existsByUsernameExceptMe(String username, String myId);
+    
+    void restore(String member_id);
 }

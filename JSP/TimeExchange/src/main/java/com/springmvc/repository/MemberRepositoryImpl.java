@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.springmvc.domain.Member;
 import com.springmvc.domain.PasswordHistoryDTO;
+import com.springmvc.enums.MemberStatus;
 
 @Repository // 이 클래스가 Spring에서 사용할 Repository(DAO) 클래스라는 표시
 public class MemberRepositoryImpl implements MemberRepository {
@@ -93,14 +94,20 @@ public class MemberRepositoryImpl implements MemberRepository {
     // ✅ 회원 삭제
     @Override
     public void delete(String member_id) {
-        String sql = "UPDATE member SET status = 'INACTIVE' WHERE member_id = ?";
+    	String sql = "UPDATE member SET status = 'INACTIVE' WHERE member_id = ?"; 
         template.update(sql, member_id);
+    }
+
+    // ✅ 회원 복구
+    @Override
+    public void restore(String member_id) {
+        String sql = "UPDATE member SET status = 'ACTIVE' WHERE member_id = ?";
     }
 
     // ✅ 로그인용: member_id로 회원 1명 조회
     @Override
     public Member login(String memberId) {
-        String sql = "SELECT * FROM member WHERE member_id = ?";
+    	String sql = "SELECT * FROM member WHERE member_id = ? AND status = 'ACTIVE'";
         List<Member> members = template.query(sql, new Object[]{memberId}, new MemberRowMapper());
 
         return members.isEmpty() ? null : members.get(0);

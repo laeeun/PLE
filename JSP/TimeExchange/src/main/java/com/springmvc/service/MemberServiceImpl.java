@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springmvc.domain.Member;
+import com.springmvc.enums.MemberStatus;
 import com.springmvc.repository.MemberRepository;
 import com.springmvc.repository.purchaseRepository;
 
@@ -58,7 +59,14 @@ public class MemberServiceImpl implements MemberService {
     // ✅ 로그인 처리: member_id로 회원 조회 후 비밀번호는 Security 또는 Controller에서 확인
     @Override
     public Member login(String member_id) {
-        return memberRepository.login(member_id);
+    	 Member member = memberRepository.login(member_id);
+         if (member == null) {
+             Member existing = memberRepository.findById(member_id);
+             if (existing != null && existing.getStatus() != MemberStatus.ACTIVE) {
+                 throw new IllegalStateException("탈퇴한 회원입니다");
+             }
+         }
+         return member;
     }
 
 
@@ -175,5 +183,11 @@ public class MemberServiceImpl implements MemberService {
 	public boolean existsByUsernameExceptMe(String username, String myId) {
 	    return memberRepository.existsByUsernameExceptMe(username, myId);
 	}
+	
+	// ✅ 회원 복구 (탈퇴 취소)
+    @Override
+    public void restore(String member_id) {
+        memberRepository.restore(member_id);
+    }
 
 }
