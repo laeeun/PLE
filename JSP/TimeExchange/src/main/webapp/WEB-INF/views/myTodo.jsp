@@ -8,7 +8,11 @@
     <meta charset="UTF-8" />
     <title>My TODO List</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;900&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
     <style>
         /* 기존 스타일 유지 + 필요한 부분만 추가/수정 */
         /* ✅ 탭 버튼 */
@@ -112,30 +116,7 @@
 		.title.completed {
 		  text-decoration: line-through;
 		  color: #94a3b8;
-		}
-		
-		/* ✅ 네비 링크 버튼 스타일 */
-		.nav-links {
-		  display: flex;
-		  gap: 10px;
-		  margin-top: 20px;
-		}
-		.nav-links a {
-		  display: inline-block;
-		  padding: 8px 16px;
-		  background-color: #e0f2fe;
-		  color: #0369a1;
-		  text-decoration: none;
-		  border-radius: 6px;
-		  font-weight: 500;
-		  border: 1px solid #bae6fd;
-		  transition: background-color 0.2s ease;
-		}
-		.nav-links a:hover {
-		  background-color: #bae6fd;
-		}
-
-		
+		}		
         /* 캘린더 */
         #todo-calendar { margin:16px 0; border:1px solid #eee; border-radius:10px; overflow:hidden; background:#fff; }
         #cal-header { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#f8fafc; border-bottom:1px solid #eee; }
@@ -171,15 +152,7 @@
         .title.completed { text-decoration: line-through; color:#94a3b8; }
         .todo-status.completed { color:#16a34a; font-weight:600; }
         .todo-status.not-completed { color:#ef4444; font-weight:600; }
-
-        /* 네비 */
-        .nav-links { display:flex; gap:10px; margin:12px 0; }
-        .nav-links a { padding:6px 10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; text-decoration:none; color:#111827; }
-    	td[data-date] {
-		  padding: 0;
-		  position: relative;
-		}
-		
+	
 		/* 달력에서 일정 div가 더 자연스럽게 보이도록 */
 		.todo-tag {
 		  display: block;
@@ -195,8 +168,6 @@
 		  padding: 0 6px;
 		  width: 100%;
 		  border-radius: 0; /* 기본: 사각형 */
-		
-		  /* transition 제거해도 됨 */
 		}
 		.todo-tag.start {
 		  border-top-left-radius: 12px;
@@ -206,7 +177,239 @@
 		  border-top-right-radius: 12px;
 		  border-bottom-right-radius: 12px;
 		}
-    
+    	:root {
+            --primary: #1F2C40;
+            --accent: #FF6B35;
+            --accent-100: #FFEEEA;
+            --surface: #F9F9F9;
+            --surface-alt: #FFFFFF;
+            --border: #E8E8E8;
+            --text-main: #1F2C40;
+            --text-sub: #6A737D;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            color: var(--text-main);
+            background: var(--surface);
+            padding: 0px 20px;
+        }
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            margin-top: 20px;
+            background: var(--surface-alt);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            background-color: var(--surface);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+        .tab-btn:hover {
+            background-color: var(--accent-100);
+            color: var(--primary);
+            border-color: var(--accent);
+        }
+        .tab-btn.active {
+            background-color: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .inline-input input,
+        .inline-input select {
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #fff;
+        }
+        .inline-input button {
+            background-color: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .inline-input button:hover {
+            background-color: #e85c26;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            background-color: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        thead th {
+            background-color: var(--surface);
+            color: var(--text-main);
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        tbody td {
+            padding: 12px;
+            font-size: 14px;
+            color: var(--text-sub);
+            border-bottom: 1px solid var(--surface);
+        }
+        .todo-status.completed { color: #22c55e; font-weight: bold; }
+        .todo-status.not-completed { color: #ef4444; font-weight: bold; }
+        .title.completed { text-decoration: line-through; color: #9ca3af; }
+       
+        .cal-cell .todo-tag {
+            display: block;
+            height: 16px;
+            background-color: #c7d2fe;
+            color: #1e293b;
+            font-size: 11px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            box-sizing: border-box;
+            margin: 2px 0;
+            padding: 0 6px;
+            width: 100%;
+            border-radius: 0;
+        }
+          .cal-cell .todo-tag.start {
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+        .cal-cell .todo-tag.end {
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+      /* ✅ 수정/삭제 버튼 */
+  		.edit-btn, .delete-btn {
+		    padding: 6px 12px;
+		    font-size: 13px;
+		    font-weight: 500;
+		    border: 1px solid var(--border);
+		    border-radius: 8px;
+		    background: #fff;
+		    cursor: pointer;
+		    transition: all 0.2s ease;
+		    margin-right: 4px;
+		  }
+		  .edit-btn:hover {
+		    background: var(--accent-100);
+		    border-color: var(--accent);
+		    color: var(--primary);
+		  }
+		  .delete-btn {
+		    border-color: #ef4444;
+		    color: #ef4444;
+		  }
+		  .delete-btn:hover {
+		    background: #fee2e2;
+		    color: #991b1b;
+		    border-color: #991b1b;
+		  }
+		  .filter-container {
+			  display: flex;
+			  flex-direction: column;
+			  gap: 20px;
+			  margin-bottom: 30px;
+			}
+			
+			.filter-row {
+			  display: flex;
+			  justify-content: space-between;
+			  flex-wrap: wrap;
+			  gap: 16px;
+			}
+			
+			.filter-group {
+			  display: flex;
+			  align-items: center;
+			  gap: 12px;
+			  font-size: 14px;
+			  color: var(--text-main);
+			}
+			
+			.filter-group label {
+			  display: flex;
+			  align-items: center;
+			  gap: 6px;
+			  font-weight: 500;
+			  color: var(--text-sub);
+			}
+			
+			.filter-group input[type="radio"] {
+			  accent-color: var(--accent);
+			  width: 16px;
+			  height: 16px;
+			  cursor: pointer;
+			}
+			
+			.filter-group select {
+			  padding: 6px 12px;
+			  font-size: 14px;
+			  border-radius: 8px;
+			  border: 1px solid var(--border);
+			  background: white;
+			  cursor: pointer;
+			}
+			
+			.inline-input {
+			  display: flex;
+			  flex-wrap: wrap;
+			  gap: 12px;
+			  align-items: center;
+			}
+			
+			.inline-input input,
+			.inline-input select {
+			  padding: 10px;
+			  font-size: 14px;
+			  border-radius: 10px;
+			  border: 1px solid var(--border);
+			  background: #fff;
+			  flex: 1 1 160px;
+			  min-width: 140px;
+			}
+			
+			.inline-input button {
+			  background-color: var(--accent);
+			  color: #fff;
+			  border: none;
+			  padding: 10px 20px;
+			  border-radius: 10px;
+			  font-weight: 600;
+			  cursor: pointer;
+			  transition: background-color 0.2s ease;
+			}
+			
+			.inline-input button:hover {
+			  background-color: #e85c26;
+			}
+			
     </style>
 
     <!-- URL 매핑 -->
@@ -224,6 +427,7 @@
 <body>
 <jsp:include page="/WEB-INF/views/nav.jsp" />
 <div class="container">
+
     <!-- ✅ 탭 버튼 -->
     <div style="margin-bottom: 20px;">
         <button class="tab-btn active" data-type="all">전체</button>
@@ -233,46 +437,48 @@
     </div>
 
     <!-- ✅ 완료 여부 라디오 -->
-    <div>
-        <label><input type="radio" name="completed" value="" checked> 전체</label>
-        <label><input type="radio" name="completed" value="false"> 미완료</label>
-        <label><input type="radio" name="completed" value="true"> 완료</label>
+    <div class="filter-container">
+  <div class="filter-row">
+    <div class="filter-group">
+      <label><input type="radio" name="completed" value="" checked> 전체</label>
+      <label><input type="radio" name="completed" value="false"> 미완료</label>
+      <label><input type="radio" name="completed" value="true"> 완료</label>
     </div>
+
+    <div class="filter-group">
+      <label for="freqFilter">반복 주기: </label>
+      <select id="freqFilter">
+          <option value="">전체</option>
+          <option value="NONE">반복 없음</option>
+          <option value="DAILY">매일</option>
+          <option value="WEEKLY">매주</option>
+          <option value="MONTHLY">매월</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="inline-input">
+    <input type="text" id="newTodoTitle" placeholder="할 일을 입력하세요" required />
+    <input type="text" id="newTodoContent" placeholder="상세 내용을 입력하세요" />
     
-    <!-- ✅ 반복 주기 필터 -->
-    <div style="margin-bottom: 10px;">
-        <label>반복 주기: </label>
-        <select id="freqFilter">
-            <option value="">전체</option>
-            <option value="NONE">반복 없음</option>
-            <option value="DAILY">매일</option>
-            <option value="WEEKLY">매주</option>
-            <option value="MONTHLY">매월</option>
-        </select>
-    </div>
-	<div class="inline-input">
-	    <input type="text" id="newTodoTitle" placeholder="할 일을 입력하세요" required />
-	    <input type="text" id="newTodoContent" placeholder="상세 내용을 입력하세요" />
-	    
-	    <select id="newTodoFreq">
-	        <option value="NONE">반복 없음</option>
-	        <option value="DAILY">매일</option>
-	        <option value="WEEKLY">매주</option>
-	        <option value="MONTHLY">매월</option>
-	    </select>
-	
-	    <input type="date" id="newStartDate" />
-	    <input type="date" id="newEndDate" />
-	    
-	    
-	    
-	    <button onclick="addTodo()">추가</button>
-	</div>
+    <select id="newTodoFreq">
+        <option value="NONE">반복 없음</option>
+        <option value="DAILY">매일</option>
+        <option value="WEEKLY">매주</option>
+        <option value="MONTHLY">매월</option>
+    </select>
+
+    <input type="date" id="newStartDate" />
+    <input type="date" id="newEndDate" />
+    
+    <button onclick="addTodo()">추가</button>
+  </div>
+</div>
 
     <!-- ✅ 목록 테이블 -->
     <table id="todoListContainer">
         <!-- ✅ 비반복 할일 목록 -->
-<h3 style="margin-top:20px;">📌 비반복 할일</h3>
+<h3 style="margin-top:20px;">비반복 할일</h3>
 <table id="nonRecurringTable">
     <thead>
         <tr>
@@ -311,7 +517,7 @@
                                 data-content="${fn:escapeXml(todo.content)}">
                             수정
                         </button>
-                        <button onclick="deleteTodo(${todo.todoId})">삭제</button>
+                        <button class="delete-btn" onclick="deleteTodo(${todo.todoId})">삭제</button>
                     </td>
                 </tr>
             </c:if>
@@ -320,7 +526,7 @@
 </table>
 
 <!-- ✅ 반복 할일 목록 -->
-<h3 style="margin-top:30px;">🔁 반복 할일</h3>
+<h3 style="margin-top:30px;"> 반복 할일</h3>
 <table id="recurringTable">
     <thead>
         <tr>
@@ -376,7 +582,6 @@
     </tbody>
 </table>
     </table>
-
     <!-- ✅ 달력 -->
     <div id="todo-calendar">
         <div id="cal-header">
@@ -390,10 +595,10 @@
     <div class="nav-links">
         <a href="<c:url value='/mypage' />">마이페이지로</a>
         <a href="<c:url value='/' />">홈으로</a>
-    </div>
+    </div>    
 </div>
-<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 <jsp:include page="/WEB-INF/views/footer.jsp" />
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 <!-- ✅ 스크립트 -->
 <script>
     /* -----------------------------
@@ -663,11 +868,19 @@
         const $tr = $(`
             <tr id="todo-\${todoId}">
                 <td colspan="5">
-                    <input type="text" id="edit-title-\${todoId}" value="\${title}" placeholder="제목" />
-                    <input type="text" id="edit-content-\${todoId}" value="\${content}" placeholder="내용" />
-                    <button onclick="submitEdit(\${todoId})">저장</button>
+                    <div style="display: flex; flex-direction: column; gap: 8px; padding: 10px;">
+                        <input type="text" id="edit-title-\${todoId}" value="\${title}" placeholder="제목"
+                            style="padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; width: 100%;" />
+                        <input type="text" id="edit-content-\${todoId}" value="\${content}" placeholder="내용"
+                            style="padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; width: 100%;" />
+                        <button onclick="submitEdit(\${todoId})"
+                            style="align-self: flex-end; background-color: #FF6B35; color: white; border: none; border-radius: 6px; padding: 6px 14px; font-size: 14px; cursor: pointer;">
+                            저장
+                        </button>
+                    </div>
                 </td>
-            </tr>`);
+            </tr>
+        `);
         $(`#todo-\${todoId}`).replaceWith($tr);
     }
 

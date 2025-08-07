@@ -175,29 +175,8 @@ nav{
 </style>
 </head>
 <body>
-<nav>
-  <div class="nav-inner">
-    <span class="brand">TimeFair</span>
-    <div class="nav-menu">
-      <a class="nav-link" href="<c:url value='/' />">홈</a>
-      <a class="nav-link" href="<c:url value='/talent' />">시간 거래소</a>
-      <c:if test="${not empty sessionScope.loggedInUser}">
-        <a class="nav-link" href="<c:url value='/charge' />">시간 충전소</a>
-      </c:if>
-      <div class="dropdown">
-        <p class="nav-link" style="cursor:pointer;">랭킹 ▾</p>
-        <div class="dropdown-box">
-          <c:forEach var="entry" items="${top5CategoryRanking}" varStatus="status">
-            <a href="<c:url value='/talent/${entry.key}' />">
-              ${status.index + 1}위 - ${entry.key} (${entry.value}건)
-            </a>
-          </c:forEach>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
 
+<jsp:include page="/WEB-INF/views/nav.jsp" />
 <section class="hero">
   <div class="container hero-inner">
     <h1>우리의 시간을<br />가치있게 Change해요.</h1>

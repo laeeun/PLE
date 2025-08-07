@@ -181,7 +181,11 @@
 		              <span style="margin-left:6px; color:#FF6B35; font-weight:bold;">(${unreadCount})</span>
 		            </c:if>
 		          </button>
-		          <a href="<c:url value='/logout' />" class="btn btn-logout">로그아웃</a>
+		          <form id="logoutForm" action="<c:url value='/logout' />" method="post" style="display: none;">
+					  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				  </form>
+					
+				  <a href="#" onclick="document.getElementById('logoutForm').submit();" class="btn btn-logout">로그아웃</a>
 		        </c:when>
 		        <c:otherwise>
 		          <a href="<c:url value='/login' />" class="btn" style="background:#EEE; color:var(--primary);">로그인</a>

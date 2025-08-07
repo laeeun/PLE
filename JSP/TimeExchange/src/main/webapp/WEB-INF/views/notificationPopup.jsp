@@ -6,54 +6,135 @@
     <meta charset="UTF-8">
     <title>📬 알림 목록</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Pretendard', sans-serif;
-            background: #fff0f5;
-            padding: 20px;
-        }
-        table.noti-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        table.noti-table th, table.noti-table td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            text-align: left;
-        }
-        table.noti-table tr.unread {
-            background-color: #fef4f8;
-        }
-        .type {
-            font-weight: bold;
-            color: #e91e63;
-        }
-        .pagination a {
-            margin-right: 5px;
-            text-decoration: none;
-            color: #333;
-        }
-        .delete-btn {
-            margin-top: 10px;
-            padding: 8px 14px;
-            border: none;
-            background-color: #ff6b81;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .delete-btn:hover {
-            background-color: #e94163;
-        }
+        :root {
+		    --primary: #1F2C40;
+		    --accent: #FF6B35;
+		    --accent-100: #FFEEEA;
+		    --surface: #F9F9F9;
+		    --surface-alt: #FFFFFF;
+		    --border: #E8E8E8;
+		    --text-main: #1F2C40;
+		    --text-sub: #6A737D;
+		}
+		
+		body {
+		    font-family: 'Pretendard', sans-serif;
+		    background: var(--surface);
+		    padding: 40px 20px;
+		    color: var(--text-main);
+		}
+		
+		.page-title {
+		    text-align: center;
+		    font-size: 24px;
+		    font-weight: 700;
+		    color: var(--primary);
+		    margin-bottom: 40px;
+		    position: relative;
+		}
+		.page-title::after {
+		    content: '';
+		    display: block;
+		    width: 60px;
+		    height: 3px;
+		    background-color: var(--accent);
+		    margin: 12px auto 0;
+		    border-radius: 2px;
+		}
+		
+		.noti-table {
+		    width: 100%;
+		    border-collapse: collapse;
+		    background: var(--surface-alt);
+		    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+		    border-radius: 12px;
+		    overflow: hidden;
+		}
+		
+		.noti-table th, .noti-table td {
+		    padding: 14px 12px;
+		    border-bottom: 1px solid var(--border);
+		    text-align: left;
+		    font-size: 14px;
+		    color: var(--text-main);
+		}
+		.noti-table th {
+		    background-color: #f8f8f8;
+		    font-weight: 600;
+		}
+		
+		.noti-table tr.unread {
+		    background-color: var(--accent-100);
+		}
+		
+		.type {
+		    font-weight: bold;
+		    color: var(--accent);
+		}
+		
+		.pagination {
+		    text-align: center;
+		    margin-top: 30px;
+		}
+		.pagination a {
+		    margin: 0 6px;
+		    text-decoration: none;
+		    color: var(--text-sub);
+		}
+		.pagination a[style*="bold"] {
+		    color: var(--accent);
+		    font-weight: 700;
+		    text-decoration: underline;
+		}
+		
+		.delete-btn {
+		    margin-top: 20px;
+		    padding: 10px 20px;
+		    background-color: var(--accent);
+		    color: white;
+		    border: none;
+		    border-radius: 8px;
+		    cursor: pointer;
+		    font-size: 14px;
+		    transition: background-color 0.2s ease;
+		}
+		.delete-btn:hover {
+		    background-color: #e85c26;
+		}
+		
+		form select {
+		    padding: 6px 12px;
+		    font-size: 14px;
+		    border-radius: 6px;
+		    border: 1px solid var(--border);
+		    background-color: white;
+		    color: var(--text-main);
+		}
+		.page-title i {
+		    margin-right: 8px;
+		    color: var(--accent);
+		}
+		a {
+		  text-decoration: none;
+		  color: inherit; /* 기본 텍스트 색상 유지 */
+		}
+		a:hover {
+		    color: var(--accent); /* 강조 색상으로 변경 */
+		    font-weight: 600;
+		}
     </style>
 </head>
 <body>
-    <h2>📬 내 알림</h2>
+    <h2 class="page-title">
+	    <i class="fas fa-envelope-open-text"></i> 내 알림
+	</h2>
 	<div style="margin-bottom: 20px;">
 	    <form method="get" action="<c:url value='/notification/popup' />">
-	        <label for="typeSelect">🔍 유형 필터:</label>
+	        <label for="typeSelect">
+		        <i class="fas fa-filter"></i> 유형 필터:
+		    </label>
 	        <select name="type" id="typeSelect" onchange="this.form.submit()">
 	            <option value="">전체 보기</option>
 	            <option value="재능구매" ${type == '재능구매' ? 'selected' : ''}>재능구매</option>

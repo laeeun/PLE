@@ -21,7 +21,14 @@ public class PurchaseRequestDTO {
 		this.requested_at = requested_at;
 		this.approved_at = approved_at;
 	  }
-	  public PurchaseRequestDTO() {}
+	  
+	public String getFormattedRequestedAt() {
+        return com.springmvc.util.DateTimeUtils.format(this.requested_at);
+    }
+	public String getFormattedApprovedAt() {
+        return com.springmvc.util.DateTimeUtils.format(this.approved_at);
+    }
+	public PurchaseRequestDTO() {}
 	public Long getRequest_id() {
 		return request_id;
 	}

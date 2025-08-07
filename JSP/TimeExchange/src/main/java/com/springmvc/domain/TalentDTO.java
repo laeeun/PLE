@@ -22,6 +22,7 @@ public class TalentDTO {
 	private int reviewCount;
 	private MultipartFile uploadFile;
 	private String filename;
+	private String createdAtDisplay; // 표시용 필드
 	public TalentDTO() {}
 	public TalentDTO(int talent_id, String member_id, String title, String description, String category,
 			LocalDateTime created_at, int timeSlot) {
@@ -39,6 +40,12 @@ public class TalentDTO {
 	    return created_at.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 	}
 		
+	public String getCreatedAtDisplay() {
+		return createdAtDisplay;
+	}
+	public void setCreatedAtDisplay(String createdAtDisplay) {
+		this.createdAtDisplay = createdAtDisplay;
+	}
 	public MultipartFile getUploadFile() {
 		return uploadFile;
 	}

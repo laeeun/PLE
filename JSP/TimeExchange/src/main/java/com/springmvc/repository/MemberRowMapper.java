@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.springmvc.domain.Member;
+import com.springmvc.domain.MemberStatus;
 
 public class MemberRowMapper implements RowMapper<Member> {
 
@@ -71,6 +72,18 @@ public class MemberRowMapper implements RowMapper<Member> {
         Timestamp tempPwTime = rs.getTimestamp("temp_pw_created_at");
         if (tempPwTime != null) {
             member.setTempPwCreatedAt(tempPwTime.toLocalDateTime());
+        }
+        member.setRole(rs.getString("role"));
+
+        // status가 Enum인 경우 Enum.valueOf()로 변환
+        String statusStr = rs.getString("status");
+        if (statusStr != null) {
+            try {
+                member.setStatus(MemberStatus.valueOf(statusStr));
+            } catch (IllegalArgumentException e) {
+                System.err.println("[WARN] 잘못된 상태 값: " + statusStr + " → 기본값 ACTIVE 사용");
+                member.setStatus(MemberStatus.ACTIVE); // 또는 null 허용
+            }
         }
 
         return member;

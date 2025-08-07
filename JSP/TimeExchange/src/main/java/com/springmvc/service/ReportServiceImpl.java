@@ -49,5 +49,4 @@ public class ReportServiceImpl implements ReportService{
 		return reportRepository.countByTargetId(targetId);
 	}
 	
-	
 }

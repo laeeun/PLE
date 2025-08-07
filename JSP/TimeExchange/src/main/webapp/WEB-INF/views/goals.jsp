@@ -4,212 +4,176 @@
 <html>
 <head>
     <title>목표 관리</title>
+    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="<c:url value='/resources/css/bootstrap.min.css' />" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-    body {
-        font-family: 'Pretendard', sans-serif;
-        background-color: #f8fafc;
-        margin: 20px;
-        color: #1e293b;
-    }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background: linear-gradient(-45deg, #fce7f3, #f3e8ff, #e0e7ff, #fbcfe8);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            margin: 0;
+            padding: 0;
+            color: #1e293b;
+        }
 
-    h2, h3 {
-        margin-top: 30px;
-        color: #0f172a;
-    }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-    form label {
-        display: block;
-        margin: 8px 0;
-    }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            padding: 40px;
+        }
 
-    input[type="text"], select {
-        padding: 6px 12px;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        font-size: 14px;
-        width: 300px;
-        background-color: #fff;
-    }
+        h2, h3 {
+            color: #1F2C40;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
 
-    button {
-        padding: 8px 16px;
-        margin-top: 10px;
-        margin-right: 8px;
-        border: none;
-        border-radius: 8px;
-        background-color: #3b82f6;
-        color: white;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
 
-    button:hover {
-        background-color: #2563eb;
-    }
+        table th, table td {
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            font-size: 14px;
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 12px;
-        background-color: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 0 4px rgba(0,0,0,0.05);
-    }
+        table th {
+            background-color: #F1F5F9;
+            color: #1F2C40;
+            font-weight: 600;
+        }
 
-    table th, table td {
-        border: 1px solid #e2e8f0;
-        padding: 12px;
-        text-align: center;
-    }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: #fff;
+            font-size: 14px;
+        }
 
-    table th {
-        background-color: #f1f5f9;
-        color: #1e293b;
-    }
+        button {
+            background-color: #FF6B35;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
 
-    .goal-row span {
-        font-weight: bold;
-    }
+        button:hover {
+            background-color: #e55a2e;
+        }
 
-    .goal-row span[style*="green"] {
-        color: #16a34a !important;
-    }
+        .goal-form-group {
+            margin-bottom: 15px;
+        }
 
-    .goal-row span[style*="gray"] {
-        color: #64748b !important;
-    }
+        .goal-form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
 
-    select {
-        margin-right: 10px;
-    }
+        .filter-section {
+            background-color: #f9fafb;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
 
-    #historyResult {
-        margin-top: 16px;
-        background-color: white;
-        padding: 16px;
-        border-radius: 12px;
-        box-shadow: 0 0 4px rgba(0,0,0,0.05);
-    }
+        .filter-section h4 {
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #334155;
+        }
 
-    #editModal {
-	    display: none;
-	    position: fixed;
-	    top: 100%; 
-	    left: 50%;
-	    transform: translate(-50%, -50%);
-	    background: #ffffff;
-	    padding: 20px;
-	    border: 1px solid #cbd5e1;
-	    border-radius: 12px;
-	    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-	    min-width: 400px;
-	    z-index: 9999;
-	}
+        .goal-row span {
+            font-weight: bold;
+        }
 
-    #editModal h3 {
-        margin-bottom: 10px;
-        color: #1e293b;
-    }
+        .goal-row span[style*="green"] {
+            color: #16a34a !important;
+        }
 
-    #editModal button {
-        margin-top: 14px;
-    }
+        .goal-row span[style*="gray"] {
+            color: #64748b !important;
+        }
 
-    canvas {
-        margin: 0 auto;
-        display: block;
-    }
-    /* ✅ 전체 컨테이너 가운데 정렬 및 최대 너비 지정 */
-	.container {
-	    max-width: 900px;
-	    margin: 0 auto;
-	    background-color: white;
-	    padding: 30px;
-	    border-radius: 16px;
-	    box-shadow: 0 0 8px rgba(0,0,0,0.05);
-	}
-	
-	/* ✅ 왼쪽 정렬 텍스트 및 섹션 간 여백 */
-	h2, h3 {
-	    text-align: left;
-	    margin-top: 40px;
-	    margin-bottom: 20px;
-	}
-	
-	/* ✅ 버튼 그룹 가운데 정렬 */
-	form button,
-	#editGoalForm button {
-	    display: inline-block;
-	}
-	
-	/* ✅ 도넛 차트 컨테이너 정렬 */
-	#goalProgressSection {
-	    display: flex;
-	    justify-content: center;
-	    gap: 40px;
-	    margin-top: 30px;
-	}
-	
-	/* ✅ 진행률 텍스트 */
-	#goalProgressSection p {
-	    text-align: center;
-	    margin-top: 10px;
-	    font-weight: 500;
-	    color: #334155;
-	}
-	
-	/* ✅ 히스토리 및 셀렉트 정렬 */
-	#historyResult,
-	#monthSelect,
-	#weekSelect {
-	    display: block;
-	    margin: 10px auto;
-	    text-align: center;
-	}
-	#goalForm {
-	    display: flex;
-	    flex-direction: column;
-	    gap: 12px;
-	    margin-top: 20px;
-	    align-items: flex-start; /* 왼쪽 정렬 */
-	}
-	
-	.goal-form-group {
-	    display: flex;
-	    align-items: center;
-	    gap: 10px;
-	}
-	
-	.goal-form-group label {
-	    width: 80px; /* 라벨 너비 고정 */
-	    font-weight: 500;
-	}
-	
-	.goal-form-group input,
-	.goal-form-group select {
-	    flex: 1;
-	    min-width: 200px;
-	}
-	.filter-section {
-	    margin-top: 20px;
-	    margin-bottom: 10px;
-	    padding: 12px 16px;
-	    background-color: #f1f5f9;
-	    border-radius: 8px;
-	    box-shadow: 0 0 4px rgba(0, 0, 0, 0.03);
-	    max-width: 300px;
-	}
-	
-	.filter-section h4 {
-	    margin: 0 0 8px;
-	    font-size: 15px;
-	    color: #1e293b;
-	}
-</style>
+        #goalProgressSection {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        #goalProgressSection canvas {
+            display: block;
+            margin: 0 auto;
+        }
+
+        #goalProgressSection p {
+            text-align: center;
+            font-weight: 500;
+            margin-top: 8px;
+            color: #1F2C40;
+        }
+
+        #editModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            z-index: 9999;
+            width: 400px;
+        }
+
+        #editModal h3 {
+            margin-bottom: 14px;
+            color: #1F2C40;
+        }
+
+        #editModal button {
+            margin-top: 10px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 30px 0;
+        }
+         .icon-btn i {
+            margin-right: 6px;
+        }
+    </style>
     
 </head>
 <body>
@@ -246,29 +210,29 @@
 	    </div>
 	
 	    <div style="margin-top: 10px;">
-	        <button type="submit" id="submitBtn">목표 생성</button>
+	        <button type="submit" id="submitBtn"><i class="fas fa-plus-circle"></i> 목표 생성</button>
 	        <button type="button" onclick="resetForm()">취소</button>
 	    </div>
 	</form>
 
     <hr/>
-	<h3>📆 지난 목표 조회</h3>
+	<h3>지난 목표 조회</h3>
 
 	<div class="filter-section">
-	    <h4>월별 선택</h4>
+	    <h4><i class="fas fa-calendar-alt"></i> 월별 선택</h4>
 	    <select id="monthSelect" onchange="loadHistoryGoals('MONTHLY')"></select>
 	</div>
 	
 	<!-- 📆 주차 선택 영역 -->
 	<div class="filter-section">
-	    <h4>주차 선택</h4>
+	    <h4><i class="fas fa-calendar-week"></i> 주차 선택</h4>
 	    <select id="weekSelect" onchange="loadHistoryGoals('WEEKLY')"></select>
 	</div>
 	
 	<div id="historyResult">
 	    <!-- AJAX로 목표 리스트가 이 영역에 표시됨 -->
 	</div>
-   <h3>📅 이번 주 목표</h3>
+   <h3><i class="fas fa-calendar-day"></i> 이번 주 목표</h3>
 	<c:choose>
 	    <c:when test="${not empty weeklyGoals}">
 	        <table border="1">
@@ -317,7 +281,7 @@
 	
 	<br/><hr><br/>
 	
-	<h3>🗓️ 이번 달 목표</h3>
+	<h3><i class="fas fa-calendar"></i> 이번 달 목표</h3>
 	<c:choose>
 	    <c:when test="${not empty monthlyGoals}">
 	        <table border="1">
@@ -366,7 +330,7 @@
     <hr/>
 
     <!-- ✅ 진행률 조회 -->
-    <h3>📅 목표 진행률</h3>
+    <h3><i class="fas fa-chart-pie"></i> 목표 진행률</h3>
 	<div id="goalProgressSection">
 	    <div>
 	        <canvas id="weeklyProgressChart" width="200" height="200"></canvas>
@@ -378,9 +342,11 @@
 	    </div>
 	</div>
 
-<jsp:include page="/WEB-INF/views/footer.jsp" />
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+
 </div>
-    <script>
+<jsp:include page="/WEB-INF/views/footer.jsp" />
+<script>
     const goalCreateUrl = '${goalCreateUrl}';
     const goalUpdateUrl = '${goalUpdateUrl}';
     const deleteUrl = '${goalDeleteUrl}';

@@ -8,225 +8,133 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
     <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-      :root {
-        --tf-primary: #7c6cff;
-        --tf-primary-2: #a88bff;
-        --tf-bg-1: #f7f5ff;
-        --tf-text: #231f2b;
-        --tf-border: rgba(124,108,255,.28);
-        --tf-glass: rgba(255,255,255,.66);
-        --tf-shadow: 0 14px 36px rgba(124,108,255,.16);
-        --tf-white: #ffffff;
-        --tf-success: #10b981;
-        --tf-danger: #ef4444;
-        --tf-info: #3b82f6;
-      }
-      @media (prefers-color-scheme: dark){
-        :root {
-          --tf-bg-1: #0f0e13;
-          --tf-text: #f5f4f8;
-          --tf-glass: rgba(22,20,29,.62);
-          --tf-white: #171523;
-          --tf-border: rgba(168,139,255,.24);
-          --tf-shadow: 0 16px 40px rgba(168,139,255,.14);
+       :root {
+            --primary: #1F2C40;
+            --accent: #FF6B35;
+            --surface: #F9F9F9;
+            --surface-alt: #FFFFFF;
+            --border: #E8E8E8;
+            --text-main: #1F2C40;
+            --text-sub: #6A737D;
         }
-      }
 
-      html, body { height: 100%; }
-      body {
-        font-family: 'Pretendard', sans-serif;
-        color: var(--tf-text);
-        background:
-          radial-gradient(1200px 600px at 10% -10%, #efeaff 0%, transparent 60%),
-          radial-gradient(1000px 500px at 110% 0%, #f5f0ff 0%, transparent 55%),
-          linear-gradient(180deg, var(--tf-bg-1), #ffffff);
-        background-attachment: fixed;
-      }
-
-      .container.mt-5 {
-        max-width: 960px;
-        margin-top: 64px !important;
-      }
-
-      .container.mt-5 h2.mb-4 {
-        font-weight: 800;
-        letter-spacing: -0.2px;
-        margin-bottom: 22px !important;
-        padding-bottom: 12px;
-        background: linear-gradient(90deg, var(--tf-primary), var(--tf-primary-2));
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .container.mt-5 h2.mb-4::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 3px;
-        width: 100%;
-        background: linear-gradient(90deg, rgba(124,108,255,.35), rgba(168,139,255,0) 60%);
-        border-radius: 999px;
-      }
-
-      /* ================= Alert 스타일 (아이콘 + 텍스트 분리) ================= */
-      .container.mt-5 .alert {
-        display: grid !important;
-        grid-template-columns: 22px 1fr;
-        align-items: start;
-        column-gap: 10px;
-        padding: 12px 16px !important;
-        padding-left: 16px !important;
-        line-height: 1.35;
-        border-radius: 18px;
-        border: 1px solid rgba(0,0,0,.06);
-        background: linear-gradient(180deg, #eef3ff, #ffffff);
-        box-shadow: var(--tf-shadow);
-        color: #1e3a8a;
-        z-index: 1;
-        position: relative;
-      }
-
-      .container.mt-5 .alert::before {
-        content: "i";
-        position: static !important;
-        grid-column: 1;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: #fff;
-        box-shadow: 0 4px 10px rgba(0,0,0,.07);
-        font-weight: 900;
-        color: var(--tf-info);
-        flex: none;
-      }
-
-      .container.mt-5 .alert-success::before { content: "✓"; color: var(--tf-success); }
-      .container.mt-5 .alert-danger::before  { content: "!"; color: var(--tf-danger); }
-
-      .table {
-        overflow: hidden;
-        border-radius: 18px;
-        background:
-          linear-gradient(180deg, var(--tf-glass), var(--tf-glass)) padding-box,
-          linear-gradient(135deg, rgba(124,108,255,.38), rgba(168,139,255,.26)) border-box;
-        border: 1px solid transparent;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        box-shadow: var(--tf-shadow);
-      }
-
-      .table thead.table-light th {
-        border-bottom: 0;
-        background: linear-gradient(180deg, #faf9ff, #f2f0ff) !important;
-        color: #4b3f8f;
-        font-weight: 800;
-      }
-
-      .table tbody tr {
-        transition: background .15s ease;
-      }
-
-      .table tbody tr:hover {
-        background: rgba(168,139,255,.06);
-      }
-
-      .table td, .table th {
-        vertical-align: middle;
-      }
-
-      .status-text {
-        font-weight: 700;
-        letter-spacing: .2px;
-      }
-
-      .btn {
-        border-radius: 12px !important;
-        font-weight: 700;
-        padding: 8px 12px;
-        transition: transform .12s ease, box-shadow .12s ease;
-      }
-
-      .btn:hover, .btn:focus {
-        transform: translateY(-1px);
-      }
-
-      .btn-success {
-        background-image: linear-gradient(135deg, #16c08d, #10b981);
-        border: 0;
-        box-shadow: 0 10px 24px rgba(16,185,129,.22);
-      }
-
-      .btn-danger {
-        background-image: linear-gradient(135deg, #ff6b6b, #ef4444);
-        border: 0;
-        box-shadow: 0 10px 24px rgba(239,68,68,.22);
-      }
-
-      .btn-primary {
-        background-image: linear-gradient(135deg, var(--tf-primary), var(--tf-primary-2));
-        border: 0;
-        box-shadow: 0 10px 24px rgba(124,108,255,.24);
-      }
-
-      .btn-secondary {
-        background: #fff !important;
-        color: var(--tf-primary) !important;
-        border: 1px solid var(--tf-border) !important;
-        box-shadow: 0 10px 22px rgba(0,0,0,.06);
-      }
-
-      form.d-inline button[type="submit"] {
-        margin-left: 6px;
-      }
-
-      ::selection {
-        background: var(--tf-primary);
-        color: #fff;
-      }
-
-      :focus-visible {
-        outline: 3px solid rgba(124,108,255,.32);
-        outline-offset: 3px;
-        border-radius: 10px;
-      }
-
-      @media (max-width: 768px) {
-        .container.mt-5 {
-          padding: 0 14px;
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background: var(--surface);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
         }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            background: var(--surface-alt);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
         .table {
-          font-size: .95rem;
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
         }
-      }
+
+        .table th {
+            background: #f5f5f5;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .btn {
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-weight: 600;
+        }
+
+        .btn-success {
+            background-color: var(--accent);
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #e85c26;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #374151;
+            margin-bottom: 20px;
+        }
+
+        .text-muted {
+            color: var(--text-sub) !important;
+        }
+
+        .status-text {
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .table {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/nav.jsp" />
 
-<div class="container mt-5">
-    <h2 class="mb-4">📥 받은 구매 요청 목록</h2>
+<div class="container">
+    <h2><i class="fas fa-inbox"></i> 받은 구매 요청 목록</h2>
 
     <c:if test="${empty receivedRequests}">
-        <div class="alert alert-info">아직 받은 구매 요청이 없습니다.</div>
+       <div class="alert">
+		    <i class="fas fa-bell-slash"></i> 아직 받은 구매 요청이 없습니다.
+		</div>
     </c:if>
 
     <c:if test="${not empty receivedRequests}">
-        <table class="table table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>요청 ID</th>
-                    <th>재능 ID</th>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>           
                     <th>구매자 ID</th>
                     <th>요청 시간</th>
                     <th>상태</th>
@@ -235,23 +143,17 @@
             </thead>
             <tbody>
                 <c:forEach var="req" items="${receivedRequests}">
-                    <tr id="row-${req.request_id}">
-                        <td>${req.request_id}</td>
-                        <td>${req.talent_id}</td>
+                    <tr id="row-${req.request_id}">           
                         <td>${req.buyer_id}</td>
                         <td>${req.requested_at}</td>
                         <td class="status-text">${req.status}</td>
                         <td>
                             <c:if test="${req.status == 'PENDING'}">
-                                <button class="btn btn-success btn-sm approve-btn"
-                                        data-id="${req.request_id}">수락</button>
+                                <button class="btn btn-success btn-sm approve-btn" data-id="${req.request_id}">수락</button>
                                 <form action="<c:url value='/purchase/reject' />" method="post" class="d-inline">
                                     <input type="hidden" name="request_id" value="${req.request_id}" />
                                     <button type="submit" class="btn btn-danger btn-sm">거절</button>
                                 </form>
-                            </c:if>
-                            <c:if test="${req.status != 'PENDING'}">
-                                <span class="text-muted">${req.status}</span>
                             </c:if>
                             <c:if test="${req.status == 'APPROVED'}">
                                 <button class="btn btn-primary btn-sm assign-btn"
@@ -260,6 +162,9 @@
                                     숙제 보내기
                                 </button>
                             </c:if>
+                            <c:if test="${req.status != 'PENDING' && req.status != 'APPROVED'}">
+                                <span class="text-muted">${req.status}</span>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>
@@ -267,8 +172,13 @@
         </table>
     </c:if>
 
-    <a href="<c:url value='/mypage' />" class="btn btn-secondary mt-3">🔙 마이페이지로 돌아가기</a>
+    <div class="text-center mt-4">
+        <a href="<c:url value='/mypage' />" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> 마이페이지로 돌아가기
+        </a>
+    </div>
 </div>
+
 
 <jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 <jsp:include page="/WEB-INF/views/footer.jsp" />
@@ -326,7 +236,5 @@ $(document).on('click', '.assign-btn', function () {
     window.open(url, "assignTodo", "width=640,height=720,scrollbars=yes,resizable=yes");
 });
 </script>
-<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
-
 </body>
 </html>

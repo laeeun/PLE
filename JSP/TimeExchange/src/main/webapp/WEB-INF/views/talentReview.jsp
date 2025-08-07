@@ -15,9 +15,18 @@
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             min-height: 100vh;
-            padding: 60px;
+            
         }
-
+		:root {
+            --primary:      #1F2C40;
+            --accent:       #FF6B35;
+            --accent-100:   #FFEEEA;
+            --surface:      #F9F9F9;
+            --surface-alt:  #FFFFFF;
+            --border:       #E8E8E8;
+            --text-main:    #1F2C40;
+            --text-sub:     #6A737D;
+        }
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -31,7 +40,7 @@
             padding: 30px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
             max-width: 800px;
-            margin: 0 auto 40px;
+             margin: 40px auto;  /* 상단 여백 추가 */
         }
 
         .review-item {
@@ -49,19 +58,21 @@
         }
 
         .btn-back {
-            background: linear-gradient(to right, #a855f7, #ec4899);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-            transition: box-shadow 0.3s ease;
+            background-color: var(--accent);
+		    color: var(--surface-alt);
+		    border: none;
+		    border-radius: 8px;
+		    padding: 8px 16px;
+		    text-decoration: none;
+		    display: inline-block;
+		    margin-top: 20px;
+		    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+		    font-weight: 600;
         }
 
         .btn-back:hover {
-            box-shadow: 0 0 12px #ec4899;
+            text-decoration: none;
+            color: var(--primary);
         }
 
         .top-bar {
@@ -80,11 +91,13 @@
 
         /* 🎨 페이징 스타일 */
         .pagination .page-link {
-            color: #7c3aed;
-            border: none;
-            margin: 0 4px;
-            font-weight: bold;
-            border-radius: 8px;
+            color: var(--primary);
+		    background-color: var(--surface-alt);
+		    border: 1px solid var(--border);
+		    margin: 0 4px;
+		    font-weight: bold;
+		    border-radius: 8px;
+		    transition: background-color 0.2s ease;
         }
 
         .pagination .page-item.active .page-link {
@@ -96,6 +109,12 @@
         .pagination .page-link:hover {
             background-color: #f3e8ff;
         }
+        .empty-message {
+		    color: var(--text-sub);
+		    font-style: italic;
+		    text-align: center;
+		    padding: 20px 0;
+		}
     </style>
 </head>
 <body>
@@ -117,7 +136,7 @@
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <div><strong>${review.writerName}</strong> → ${review.targetName}</div>
                 <small class="text-muted">
-                    <div><strong>${review.createdAt}</strong></div>
+                    <div><strong>${review.formattedCreatedAt}</strong></div>
                 </small>
             </div>
             <div>

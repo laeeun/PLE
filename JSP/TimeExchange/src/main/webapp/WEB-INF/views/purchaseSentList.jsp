@@ -6,160 +6,188 @@
   <meta charset="UTF-8">
   <title>내 구매 요청 목록</title>
 
-  <!-- Bootstrap (프로젝트에 이미 있으면 기존 경로 사용 가능) -->
-  <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
-  <!-- Pretendard 폰트 -->
+  <!-- Pretendard 폰트 & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
 
   <style>
-    /* ===== TimeFair Theme Tokens ===== */
-    :root{
-      --tf-primary:#7c6cff;
-      --tf-primary-2:#a88bff;
-      --tf-bg-1:#f7f5ff;
-      --tf-text:#231f2b;
-      --tf-border:rgba(124,108,255,.28);
-      --tf-glass:rgba(255,255,255,.66);
-      --tf-shadow:0 14px 36px rgba(124,108,255,.16);
-      --tf-white:#ffffff;
-      --tf-success:#10b981;
-      --tf-danger:#ef4444;
-      --tf-info:#3b82f6;
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --tf-bg-1:#0f0e13;
-        --tf-text:#f5f4f8;
-        --tf-glass:rgba(22,20,29,.62);
-        --tf-white:#171523;
-        --tf-border:rgba(168,139,255,.24);
-        --tf-shadow:0 16px 40px rgba(168,139,255,.14);
-      }
+    :root {
+      --primary: #1F2C40;
+      --accent: #FF6B35;
+      --surface: #F9F9F9;
+      --surface-alt: #FFFFFF;
+      --border: #E8E8E8;
+      --text-main: #1F2C40;
+      --text-sub: #6A737D;
     }
 
-    html,body{height:100%;}
-    body{
-      font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
-      color:var(--tf-text);
-      background:
-        radial-gradient(1200px 600px at 10% -10%, #efeaff 0%, transparent 60%),
-        radial-gradient(1000px 500px at 110% 0%, #f5f0ff 0%, transparent 55%),
-        linear-gradient(180deg, var(--tf-bg-1), #ffffff);
-      background-attachment:fixed;
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: var(--surface);
+      color: var(--text-main);
+      margin: 0;
+      padding: 0;
     }
 
-    .container.mt-5{max-width:960px; margin-top:64px !important;}
-
-    /* Title with inner underline */
-    .container.mt-5 h2{
-      font-weight:800; letter-spacing:-.2px;
-      margin-bottom:22px; padding-bottom:12px;
-      background:linear-gradient(90deg,var(--tf-primary),var(--tf-primary-2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      position:relative; display:inline-flex; align-items:center; gap:8px;
-    }
-    .container.mt-5 h2::after{
-      content:""; position:absolute; left:0; bottom:0; height:3px; width:100%;
-      background:linear-gradient(90deg,rgba(124,108,255,.35),rgba(168,139,255,0) 60%);
-      border-radius:999px;
+    .container {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 30px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
     }
 
-    /* ===== Empty state as alert (icon + text, grid layout) ===== */
-    .container.mt-5 .alert{
-      display:grid !important;
-      grid-template-columns:22px 1fr;
-      align-items:start;
-      column-gap:10px;
-      padding:12px 16px !important;
-      border-radius:18px;
-      border:1px solid rgba(0,0,0,.06);
-      background:linear-gradient(180deg,#eef3ff,#ffffff);
-      box-shadow:var(--tf-shadow);
-      color:#1e3a8a;
-      line-height:1.35;
-    }
-    .container.mt-5 .alert::before{
-      content:"i";
-      grid-column:1; width:22px; height:22px; border-radius:50%;
-      display:inline-flex; align-items:center; justify-content:center;
-      background:#fff; box-shadow:0 4px 10px rgba(0,0,0,.07);
-      font-weight:900; color:var(--tf-info);
+    h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    /* ===== Table (glass card) ===== */
-    table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      overflow:hidden; border-radius:18px;
-      background:
-        linear-gradient(180deg, var(--tf-glass), var(--tf-glass)) padding-box,
-        linear-gradient(135deg, rgba(124,108,255,.38), rgba(168,139,255,.26)) border-box;
-      border:1px solid transparent;
-      backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-      box-shadow:var(--tf-shadow);
-      font-size:0.98rem;
-    }
-    table thead th{
-      background:linear-gradient(180deg,#faf9ff,#f2f0ff);
-      color:#4b3f8f; font-weight:800; border-bottom:0;
-      padding:12px 14px;
-    }
-    @media (prefers-color-scheme: dark){
-      table thead th{ background:linear-gradient(180deg,#1f1b2f,#1a1826); color:#cfc9ff; }
-    }
-    table th, table td{
-      padding:12px 14px; vertical-align:middle;
-      border-bottom:1px solid rgba(0,0,0,.06);
-    }
-    table tr:hover{ background:rgba(168,139,255,.06); }
-
-    /* Remove the legacy border="1" look by overriding */
-    table[border]{
-      border:0 !important;
+    h2 i {
+      color: var(--accent);
     }
 
-    /* Selection & focus */
-    ::selection{background:var(--tf-primary); color:#fff;}
-    :focus-visible{outline:3px solid rgba(124,108,255,.32); outline-offset:3px; border-radius:10px;}
-
-    /* Responsive */
-    @media (max-width: 768px){
-      .container.mt-5{padding:0 14px;}
-      table{font-size:.95rem;}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    thead {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+
+    tbody tr:hover {
+      background: #f9fafb;
+    }
+
+    .alert {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(180deg, #eef3ff, #ffffff);
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      color: var(--text-sub);
+      font-size: 15px;
+      margin-top: 20px;
+    }
+
+    .alert i {
+      color: var(--accent);
+      font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 20px; }
+      table { font-size: 14px; }
+      h2 { font-size: 20px; }
+    }
+    .status-icon {
+	  margin-right: 6px;
+	  font-size: 14px;
+	  vertical-align: middle;
+	}
+	
+	.status-approved {
+	  color: #10b981; /* 녹색 */
+	}
+	
+	.status-pending {
+	  color: #f59e0b; /* 주황 */
+	}
+	
+	.status-rejected {
+	  color: #ef4444; /* 빨강 */
+	}
+	tbody tr {
+	  transition: background 0.2s ease;
+	}
+	tbody tr:hover {
+	  background: rgba(255, 107, 53, 0.08);
+	  transform: scale(1.005);
+	}
   </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/nav.jsp" />
 
-<div class="container mt-5">
-  <h2>내가 구매 요청한 재능 목록</h2>
+<div class="container">
+  <h2><i class="fas fa-list-check"></i> 내가 구매 요청한 재능 목록</h2>
 
   <c:choose>
     <c:when test="${not empty sentRequests}">
-      <!-- 기존 table 구조 유지 (thead/tbody 없이도 스타일 적용) -->
-      <table border="1">
-        <tr>
-          <th>재능 ID</th>
-          <th>판매자</th>
-          <th>요청 상태</th>
-          <th>요청 시간</th>
-        </tr>
-        <c:forEach var="req" items="${sentRequests}">
+      <table>
+        <thead>
           <tr>
-            <td>${req.talent_id}</td>
-            <td>${req.seller_id}</td>
-            <td>${req.status}</td>
-            <td>${req.requested_at}</td>
+            
+            <th>판매자</th>
+            <th>요청 상태</th>
+            <th>요청 시간</th>
+            <th>요청 처리완료 시간</th>
           </tr>
-        </c:forEach>
+        </thead>
+        <tbody>
+          <c:forEach var="req" items="${sentRequests}">
+            <tr>
+              
+              <td>${req.seller_id}</td>
+              <td>
+				  <c:choose>
+				    <c:when test="${req.status == 'APPROVED'}">
+				      <i class="fa-solid fa-circle-check status-icon status-approved"></i> 승인됨
+				    </c:when>
+				    <c:when test="${req.status == 'PENDING'}">
+				      <i class="fa-solid fa-clock status-icon status-pending"></i> 대기중
+				    </c:when>
+				    <c:when test="${req.status == 'REJECTED'}">
+				      <i class="fa-solid fa-circle-xmark status-icon status-rejected"></i> 거절됨
+				    </c:when>
+				    <c:otherwise>
+				      <i class="fa-regular fa-circle-question"></i> 알 수 없음
+				    </c:otherwise>
+				  </c:choose>
+				</td>
+               <td>${req.formattedRequestedAt}</td>
+
+			  <!-- (선택) 포맷된 승인 시간 -->
+			  <td>
+			    <c:if test="${not empty req.approved_at}">
+			      ${req.formattedApprovedAt}
+			    </c:if>
+			  </td>
+            </tr>
+          </c:forEach>
+        </tbody>
       </table>
     </c:when>
     <c:otherwise>
-      <!-- p 그대로 두되, CSS에서 alert처럼 보이도록 만들 수도 있지만
-           같은 톤을 쓰기 위해 클래스만 살짝 추가 -->
-      <p class="alert alert-info mb-0">요청한 재능이 없습니다.</p>
+      <div class="alert">
+        <i class="fas fa-inbox"></i>
+        <span>📭 아직 구매 요청한 재능이 없습니다.</span>
+      </div>
     </c:otherwise>
   </c:choose>
 </div>

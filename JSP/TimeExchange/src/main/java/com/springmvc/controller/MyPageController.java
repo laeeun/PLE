@@ -178,7 +178,7 @@ public class MyPageController  {
 	            } catch (IOException ignore) {}
 	        }
 	        // 기본 이미지로 설정
-	        member.setProfileImage("default_profile.png");
+	        member.setProfileImage("default-profile.png");
 
 	    } else if (file != null && !file.isEmpty()) {
 	        // ✅ 새 이미지 업로드 처리
@@ -208,8 +208,8 @@ public class MyPageController  {
 	    }
 
 	    // 전문가 여부 확인
-	    boolean wasExpert = login.getExpert();
-	    boolean nowExpert = member.getExpert();
+	    boolean wasExpert = login.isExpert();
+	    boolean nowExpert = member.isExpert();
 
 	    // 업데이트
 	    memberService.update(member);

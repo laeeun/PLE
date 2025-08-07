@@ -1,7 +1,11 @@
 package com.springmvc.service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,4 +87,32 @@ public class TalentServiceImpl implements TalentService {
 	public List<TalentDTO> getTopTalentsByRequestCount(String category, int limit) {
 	    return talentRepository.findTopTalentsByRequestCount(category, limit);
 	}
+
+	@Override
+	public void formatCreatedAt(TalentDTO dto) {
+		LocalDateTime created = dto.getCreated_at();
+
+	    // 상대 시간 출력 (예: "5분 전", "2일 전")
+	    Duration duration = Duration.between(created, LocalDateTime.now());
+
+	    String formatted;
+	    if (duration.toMinutes() < 1) {
+	        formatted = "방금 전";
+	    } else if (duration.toMinutes() < 60) {
+	        formatted = duration.toMinutes() + "분 전";
+	    } else if (duration.toHours() < 24) {
+	        formatted = duration.toHours() + "시간 전";
+	    } else if (duration.toDays() < 7) {
+	        formatted = duration.toDays() + "일 전";
+	    } else {
+	        // 절대 시간 포맷
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 a h:mm")
+	                                                       .withLocale(Locale.KOREAN);
+	        formatted = created.format(formatter);
+	    }
+
+	    dto.setCreatedAtDisplay(formatted);		
+	}
+	
+	
 }

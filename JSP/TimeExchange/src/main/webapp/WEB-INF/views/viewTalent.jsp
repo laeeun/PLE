@@ -16,79 +16,149 @@
 <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-:root {
-   --primary: #1F2C40;
-   --accent: #FF6B35;
-   --accent-light: #FFEDE3;
-   --surface: #F9F9F9;
-   --surface-alt: #FFFFFF;
-   --text-main: #1F2C40;
-   --text-sub: #6A737D;
-   --border: #E8E8E8;
+	:root {
+	   --primary: #1F2C40;
+	   --accent: #FF6B35;
+	   --accent-light: #FFEDE3;
+	   --surface: #F9F9F9;
+	   --surface-alt: #FFFFFF;
+	   --text-main: #1F2C40;
+	   --text-sub: #6A737D;
+	   --border: #E8E8E8;
+	}
+	
+	body {
+	   font-family: 'Pretendard', sans-serif;
+	   background: var(--surface);
+	   color: var(--text-main);
+	}
+	
+	h3, h4 {
+	   color: var(--primary);
+	   font-weight: 700;
+	}
+	
+	.card {
+	   background-color: var(--surface-alt);
+	   border: 1px solid var(--border);
+	   border-radius: 16px;
+	   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+	}
+	
+	.card-header {
+	   background-color: var(--accent);
+	   color: white;
+	   border-top-left-radius: 16px;
+	   border-top-right-radius: 16px;
+	}
+	
+	.talent-header {
+	   background: linear-gradient(135deg, #ffb066, #ff6b35);
+	   padding: 20px 24px;
+	   border-top-left-radius: 16px;
+	   border-top-right-radius: 16px;
+	   box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+	}
+	
+	.talent-header h3 {
+	   font-size: 1.6rem;
+	   font-weight: 700;
+	   color: #fff;
+	}
+	
+	.profile-img-box img {
+	   object-fit: cover;
+	   border: 2px solid var(--border);
+	   width: 80px;
+	   height: 80px;
+	   border-radius: 50%;
+	}
+	
+	.profile-info a {
+	   font-size: 1.1rem;
+	   font-weight: 600;
+	   color: var(--text-main);
+	   text-decoration: none;
+	}
+	
+	.profile-info a:hover {
+	   color: var(--accent);
+	}
+	
+	.text-muted.small {
+	   font-size: 0.85rem;
+	}
+	.profile-container {
+	  display: grid;
+	  grid-template-columns: auto 1fr;
+	  gap: 1rem;
+	  align-items: center;
+	}
+	.profile-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  background: linear-gradient(135deg, var(--surface-alt), #fff);
+  padding: 1.5rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
+  width: 80%;
+  margin: 0 auto 2rem auto;
+  transition: box-shadow 0.3s ease;
 }
-
-body {
-   font-family: 'Pretendard', sans-serif;
-   background: var(--surface);
-   color: var(--text-main);
-}
-
-h3, h4 {
-   color: var(--primary);
-   font-weight: 700;
-}
-
-.card {
-   background-color: var(--surface-alt);
-   border: 1px solid var(--border);
-   border-radius: 16px;
-   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
-}
-
-.card-header {
-   background-color: var(--accent);
-   color: white;
-   border-top-left-radius: 16px;
-   border-top-right-radius: 16px;
-}
-
-.talent-header {
-   background: linear-gradient(135deg, #ffb066, #ff6b35);
-   padding: 20px 24px;
-   border-top-left-radius: 16px;
-   border-top-right-radius: 16px;
-   box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.talent-header h3 {
-   font-size: 1.6rem;
-   font-weight: 700;
-   color: #fff;
-}
-
-.profile-img-box img {
-   object-fit: cover;
-   border: 2px solid var(--border);
-   width: 80px;
-   height: 80px;
-   border-radius: 50%;
-}
-
-.profile-info a {
-   font-size: 1.1rem;
-   font-weight: 600;
-   color: var(--text-main);
-   text-decoration: none;
-}
-
-.profile-info a:hover {
-   color: var(--accent);
-}
-
-.text-muted.small {
-   font-size: 0.85rem;
-}
-</style>
+	
+	.profile-card .profile-img-box img {
+	  width: 80px;
+	  height: 80px;
+	  align-items: center;
+	  object-fit: cover;
+	  border-radius: 50%;
+	  border: 2px solid var(--border);
+	}
+	
+	.profile-card .profile-meta {
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  gap: 0.4rem;
+	}
+	
+	.profile-card .profile-meta .writer a {
+	  font-size: 1.05rem;
+	  font-weight: 600;
+	  color: var(--text-main);
+	  text-decoration: none;
+	}
+	.profile-card .profile-meta .writer a:hover {
+	  color: var(--accent);
+	}
+	
+	.profile-card .profile-meta span {
+	  font-size: 0.95rem;
+	  color: var(--text-sub);
+	}
+	hr {
+	  border: none;
+	  height: 3px;
+	  background-color: var(--primary); /* 밝은 오렌지 */
+	  border-radius: 4px;
+	  margin: 2rem 0;
+	}
+	.comment-submit-btn {
+	  background-color: var(--accent);
+	  color: #fff;
+	  border: none;
+	  padding: 8px 16px;
+	  border-radius: 8px;
+	  transition: background-color 0.2s ease;
+	  font-weight: 500;
+	}
+	.comment-submit-btn:hover {
+	  background-color: #e85c28;
+	}
+	</style>
 </head>
 <body>
    <jsp:include page="/WEB-INF/views/nav.jsp" />
@@ -105,59 +175,45 @@ h3, h4 {
          <div class="card-body">
             <!-- 🆕 메타 + 프로필 한 줄 -->
             <div class="row mb-3 g-3">
-               <div
-                  class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-4">
-
-                  <!-- ◀︎ 프로필 영역 -->
-                  <div class="d-flex align-items-center gap-3">
-                     <div class="profile-img-box">
-                        <c:choose>
-                            <c:when test="${not empty author.profileImage && author.profileImage ne 'default-profile.png'}">
-                              <img
-                                 src="<c:url value='/upload/profile/${author.profileImage}' />"
-                                 alt="프로필 이미지" class="rounded-circle" />
-                           </c:when>
-                           <c:otherwise>
-                              <img
-                                 src="<c:url value='/resources/images/default-profile.png' />"
-                                 alt="기본 프로필" class="rounded-circle" />
-                           </c:otherwise>
-                        </c:choose>
-                     </div>
-
-                     <div class="profile-info">
-                        <div class="text-muted small">
-                           🧑‍💻 작성자
-                           <c:choose>
-                              <c:when
-                                 test="${talent.member_id == sessionScope.loggedInUser.member_id}">
-                                 <a href="<c:url value='/mypage' />">${talent.username}</a>
-                              </c:when>
-                              <c:otherwise>
-                                 <a href="<c:url value='/profile/${talent.member_id}' />">${talent.username}</a>
-                              </c:otherwise>
-                           </c:choose>
-                        </div>
-                     </div>
-                  </div>
-
-                  <!-- ▶︎ 카테고리 · 판매시간 · 등록일 묶음 -->
-                  <div class="d-flex flex-column gap-1">
-                     <span> <strong><i
-                           class="fa-solid fa-folder me-1 text-muted"></i> 카테고리:</strong>
-                        ${talent.category}
-                     </span> <span> <strong><i
-                           class="fa-regular fa-clock me-1 text-muted"></i> 판매시간:</strong>
-                        ${talent.timeSlotDisplay}
-                     </span> <span> <strong><i
-                           class="fa-regular fa-calendar-days me-1 text-muted"></i> 등록일:</strong> <fmt:formatDate
-                           value="${createdDate}" pattern="yyyy-MM-dd HH:mm" />
-                     </span>
-                  </div>
-
-
-               </div>
-            </div>
+			   <div class="col-12">
+			      <div class="d-flex justify-content-center">
+			         <div class="profile-card">
+			            <!-- 프로필 이미지 -->
+			            <div class="profile-img-box">
+			               <c:choose>
+			                  <c:when test="${not empty author.profileImage && author.profileImage ne 'default-profile.png'}">
+			                     <img src="<c:url value='/upload/profile/${author.profileImage}' />" alt="프로필 이미지" />
+			                  </c:when>
+			                  <c:otherwise>
+			                     <img src="<c:url value='/resources/images/default-profile.png' />" alt="기본 프로필" />
+			                  </c:otherwise>
+			               </c:choose>
+			            </div>
+			
+			            <!-- 프로필 정보 + 메타 -->
+			            <div class="profile-meta">
+			               <div class="writer">
+			                   작성자:
+			                  <c:choose>
+			                     <c:when test="${talent.member_id == sessionScope.loggedInUser.member_id}">
+			                        <a href="<c:url value='/mypage' />">${talent.username}</a>
+			                     </c:when>
+			                     <c:otherwise>
+			                        <a href="<c:url value='/profile/${talent.member_id}' />">${talent.username}</a>
+			                     </c:otherwise>
+			                  </c:choose>
+			               </div>
+			
+			               <span><i class="fa-solid fa-folder me-1 text-muted"></i> 카테고리: ${talent.category}</span>
+			               <span><i class="fa-regular fa-clock me-1 text-muted"></i> 판매시간: ${talent.timeSlotDisplay}</span>
+			               <span><i class="fa-regular fa-calendar-days me-1 text-muted"></i> 등록일: 
+			                  <fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd HH:mm" />
+			               </span>
+			            </div>
+			         </div>
+			      </div>
+			   </div>
+			</div>
 
             <!-- ✅ 첨부파일 영역 카드 스타일 -->
             <c:if test="${not empty talent.filename}">
@@ -210,14 +266,14 @@ h3, h4 {
                   class="btn btn-outline-secondary mt-2"><i
                   class="fa-solid fa-comments"></i> 리뷰 전체 보기</a>
             </div>
-
+			<hr>
             <div class="card mt-5">
                <div class="card-header d-flex align-items-center bg-light">
-                  <h5 class="mb-0 text-primary">
-                     <i class="fa-regular fa-comments me-2"></i> 댓글
-                  </h5>
+                  <h5 class="mb-0" style="color: var(--primary); font-weight: 700;">
+				   <i class="fa-regular fa-comments me-2" style="color: var(--accent);"></i> 댓글
+				</h5>
                </div>
-
+			
                <div class="card-body">
                   <!-- 댓글 리스트 -->
                   <div id="commentList" class="mb-3"></div>
@@ -228,7 +284,7 @@ h3, h4 {
                         <input type="text" id="commentInput" class="form-control"
                            placeholder="댓글을 입력하세요"
                            style="max-width: 100%; margin-right: 12px;" />
-                        <button id="addCommentBtn" class="btn btn-primary">등록</button>
+                        <button id="addCommentBtn" class="btn comment-submit-btn">등록</button>
                      </div>
                   </c:if>
 

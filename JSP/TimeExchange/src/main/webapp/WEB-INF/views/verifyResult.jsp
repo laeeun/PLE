@@ -1,20 +1,30 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>이메일 인증 결과</title>
+    <!-- Pretendard + FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
-    <link href="<c:url value='/resources/css/bootstrap.min.css' />" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <link href="<c:url value='/resources/css/bootstrap.min.css' />" rel="stylesheet" />
 
     <style>
+        :root {
+            --primary: #1F2C40;
+            --accent: #FF6B35;
+            --accent-100: #FFEEEA;
+            --surface: #F9F9F9;
+            --surface-alt: #FFFFFF;
+            --border: #E8E8E8;
+            --text-main: #1F2C40;
+            --text-sub: #6A737D;
+        }
+
         body {
             font-family: 'Pretendard', sans-serif;
-            background: linear-gradient(-45deg, #fce7f3, #f3e8ff, #e0e7ff, #fbcfe8);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: var(--surface);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,58 +32,69 @@
             padding: 40px;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         .result-box {
             width: 100%;
-            max-width: 500px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
+            max-width: 480px;
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
             border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
             padding: 40px 35px;
             text-align: center;
         }
 
-        .result-box h2 {
-            color: #7e22ce;
-            font-weight: bold;
+        .result-box .icon {
+            font-size: 48px;
             margin-bottom: 20px;
         }
 
+        .result-box.success .icon {
+            color: #10b981; /* Green */
+        }
+
+        .result-box.error .icon {
+            color: #ef4444; /* Red */
+        }
+
+        .result-box h2 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
         .result-box p {
-            color: #4c1d95;
+            color: var(--text-sub);
             font-size: 16px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .btn-home {
             padding: 12px 24px;
-            background: linear-gradient(to right, #a855f7, #ec4899);
+            background: var(--accent);
             color: white;
-            font-weight: bold;
+            font-weight: 600;
             border: none;
             border-radius: 12px;
-            box-shadow: 0 0 14px rgba(168, 85, 247, 0.4);
-            transition: all 0.3s ease;
+            box-shadow: 0 0 12px rgba(255, 107, 53, 0.3);
+            transition: all 0.25s ease;
             text-decoration: none;
             display: inline-block;
         }
 
         .btn-home:hover {
+            background-color: #ff5a1f;
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(168, 85, 247, 0.5);
         }
     </style>
 </head>
 <body>
 
-<div class="result-box">
-    <h2>📨 인증 결과</h2>    
+<div class="result-box ${message.contains('성공') ? 'success' : 'error'}">
+    <div class="icon">
+        <i class="fas ${message.contains('성공') ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
+    </div>
+    <h2>인증 결과</h2>
     <p>${message}</p>
     <a href="<c:url value='/' />" class="btn-home">홈으로 돌아가기</a>
 </div>

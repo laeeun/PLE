@@ -34,7 +34,7 @@ public class Member {
     private String addr;
     private String addrDetail; // 상세주소
 
-    private Boolean expert; // 기본값: 일반 사용자
+    private boolean expert; // 기본값: 일반 사용자
 
     private int account = 0;
 
@@ -204,11 +204,11 @@ public class Member {
 		this.addrDetail = addrDetail;
 	}
 
-	public Boolean getExpert() {
+	public boolean isExpert() {
 		return expert;
 	}
 
-	public void setExpert(Boolean expert) {
+	public void setExpert(boolean expert) {
 		this.expert = expert;
 	}
 
@@ -328,6 +328,11 @@ public class Member {
 				+ lastFailTime + ", profileImageFile=" + profileImageFile + ", profileImage=" + profileImage
 				+ ", tempPassword=" + tempPassword + ", tempPwCreatedAt=" + tempPwCreatedAt + ", status=" + status
 				+ "]";
+	}
+
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

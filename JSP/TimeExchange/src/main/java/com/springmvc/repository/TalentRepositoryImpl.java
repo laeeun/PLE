@@ -1,6 +1,5 @@
 package com.springmvc.repository;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,7 +157,7 @@ public class TalentRepositoryImpl implements TalentRepository {
     		    SELECT t.*, m.username, m.expert
     		    FROM talent t
     		    JOIN member m ON t.member_id = m.member_id
-    		    WHERE t.addr LIKE ? AND t.member_id <> ?
+    		    WHERE m.addr LIKE ? AND t.member_id <> ?
     		    ORDER BY t.created_at DESC
     		""";
         return template.query(sql, new Object[]{"%" + baseAddr + "%", excludeUserId}, new TalentRowMapper());

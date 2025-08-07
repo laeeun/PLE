@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="
+              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+              http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- ① 사용자 인증 처리 클래스 -->
+  	<context:component-scan base-package="com.springmvc" />
+  
+	<authentication-manager>
+	    <authentication-provider ref="customAuthenticationProvider" />
+	</authentication-manager>
+	
+	<beans:bean id="customAuthenticationProvider" class="com.springmvc.security.CustomAuthenticationProvider" />
+    
+    <!-- ② URL 접근 제어 설정 -->
+    <http auto-config="true" use-expressions="true">
+    	<intercept-url pattern="/signUp/**" access="permitAll" />
+        <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
+        <intercept-url pattern="/**" access="permitAll" />
+		<intercept-url pattern="/ajax/**" access="permitAll" />
+        <form-login 
+            login-page="/login"
+            login-processing-url="/loginProcess"
+            default-target-url="/"
+            authentication-failure-url="/login?error=true"
+            username-parameter="username"
+            password-parameter="password" 
+             authentication-success-handler-ref="customLoginSuccessHandler"
+            />
+
+        <logout logout-url="/logout" logout-success-url="/login?logout=true" />
+        <csrf disabled="true" />
+    </http>
+	<beans:bean id="customLoginSuccessHandler" class="com.springmvc.security.CustomLoginSuccessHandler" />
+    <!-- ③ 비밀번호 인코더 -->
+    <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+</beans:beans>

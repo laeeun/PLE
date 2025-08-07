@@ -22,13 +22,14 @@ public class NotificationRowMapper implements RowMapper<NotificationDTO> {
         dto.setTargetId(rs.getLong("target_id"));
         dto.setTarget_type(rs.getString("target_type"));
         dto.setRead(rs.getBoolean("is_read"));
-
         // created_at은 nullable 가능성 고려
-        java.sql.Timestamp ts = rs.getTimestamp("created_at");
-        if (ts != null) {
-            dto.setCreated_at(ts.toLocalDateTime());
+        LocalDateTime createdAt = null;
+        try {
+            createdAt = rs.getObject("created_at", LocalDateTime.class);
+        } catch (Exception ignore) {
+            // 일부 드라이버/모드에서 getObject(LocalDateTime.class) 미지원
         }
-
+        dto.setCreated_at(createdAt);
         return dto;
     }
 }

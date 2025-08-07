@@ -156,16 +156,16 @@
 </head>
 <body>
 
-<%-- ✅ action 경로 분기 처리 유지 --%>
+<%-- ✅ mode 속성에 따라 action 경로 설정 --%>
 <c:choose>
   <c:when test="${mode eq 'edit'}">
     <c:set var="formAction" value='/mypage/expert/update' />
   </c:when>
-  <c:when test="${fn:contains(pageContext.request.requestURI, '/signUp')}">
-    <c:set var="formAction" value='/expertSubmit' />
+  <c:when test="${mode eq 'create'}">
+    <c:set var="formAction" value='/mypage/expert/submit' />
   </c:when>
   <c:otherwise>
-    <c:set var="formAction" value='/mypage/expert/submit' />
+    <c:set var="formAction" value='/expertSubmit' />
   </c:otherwise>
 </c:choose>
 

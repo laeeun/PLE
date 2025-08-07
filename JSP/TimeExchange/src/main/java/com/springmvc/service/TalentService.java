@@ -15,4 +15,5 @@ public interface TalentService {
     List<TalentDTO> readTalents(int page, int size, String expert, String category, String keyword);
     int getTalentCount(String expert, String category, String keyword);
     List<TalentDTO> getTopTalentsByRequestCount(String category, int limit);
+    public void formatCreatedAt(TalentDTO dto);
 }

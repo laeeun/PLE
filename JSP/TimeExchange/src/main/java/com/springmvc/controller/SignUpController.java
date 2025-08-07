@@ -138,7 +138,7 @@ public class SignUpController {
 		System.out.println("✔ 회원 저장 완료.");
 
 		// ✅ 전문가 여부에 따라 다음 단계 분기
-		if (member.getExpert()) {
+		if (member.isExpert()) {
 
 			session.setAttribute("expertMemberId", member.getMember_id());
 			return "redirect:/expertForm";
@@ -170,7 +170,7 @@ public class SignUpController {
 
 	@PostMapping("/register")
 	public String register(@ModelAttribute Member member) {
-		System.out.println("전문가 인가 ? : " + member.getExpert());
+		System.out.println("전문가 인가 ? : " + member.isExpert());
 		memberService.save(member);
 		return "redirect:/login";
 	}
@@ -201,17 +201,18 @@ public class SignUpController {
 	}
 
 	@GetMapping("/expertForm")
-	public String expertForm(HttpSession session, Model model) {
-		String memberId = (String) session.getAttribute("expertMemberId");
+    public String expertForm(HttpSession session, Model model) {
+            String memberId = (String) session.getAttribute("expertMemberId");
 
-		if (memberId == null) {
-			// 비정상 접근: 세션에 memberId 없을 경우 홈으로 돌려보내기
-			return "redirect:/";
-		}
+            if (memberId == null) {
+                    // 비정상 접근: 세션에 memberId 없을 경우 홈으로 돌려보내기
+                    return "redirect:/";
+            }
 
-		model.addAttribute("memberId", memberId);
-		return "expertForm"; // => /WEB-INF/views/expertForm.jsp
-	}
+            model.addAttribute("memberId", memberId);
+            model.addAttribute("mode", "signup");
+            return "expertForm";
+    }
 
 	@PostMapping("/expertSubmit")
 	public String expertSubmit(@RequestParam("memberId") String memberId, @RequestParam("career") String career,
@@ -257,7 +258,7 @@ public class SignUpController {
 		expertProfileService.save(dto);
 
 		Member member = memberService.findById(memberId);
-        mailService.sendVerificationMail(member);
+		mailService.sendVerificationMail(member);
         return "successSignUp";
 	}
 

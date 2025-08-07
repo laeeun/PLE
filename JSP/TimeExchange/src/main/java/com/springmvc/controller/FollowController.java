@@ -60,8 +60,9 @@ public class FollowController {
     public String showFollowingList(Model model, HttpSession session) {
         Member login = (Member) session.getAttribute("loggedInUser");
         if (login == null) return "redirect:/login";
-
+        
         List<FollowDTO> list = followService.findFollowingList(login.getMember_id());
+        
         model.addAttribute("followingList", list);
         return "followingList"; 
 	}
@@ -71,8 +72,9 @@ public class FollowController {
     public String showFollowerList(Model model, HttpSession session) {
         Member login = (Member) session.getAttribute("loggedInUser");
         if (login == null) return "redirect:/login";
-
+        
         List<FollowDTO> list = followService.findFollowerList(login.getMember_id());
+        
         model.addAttribute("followerList", list);
         return "followerList";
     }

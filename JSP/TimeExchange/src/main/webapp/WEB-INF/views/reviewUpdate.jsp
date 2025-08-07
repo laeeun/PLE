@@ -12,70 +12,86 @@
 
     <!-- 💜 감성 스타일 -->
     <style>
-        body {
+    	:root {
+		  --primary:      #1F2C40;  /* 미드나잇 블루 */
+		  --accent:       #FF6B35;  /* 밝은 오렌지 */
+		  --accent-100:   #FFEEEA;
+		  --surface:      #F9F9F9;
+		  --surface-alt:  #FFFFFF;
+		  --border:       #E8E8E8;
+		  --text-main:    #1F2C40;
+		  --text-sub:     #6A737D;
+		}
+         body {
             font-family: 'Pretendard', sans-serif;
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            background: linear-gradient(135deg, #fce7f3, #e0e7ff, #f3e8ff);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            color: var(--text-main);
         }
 
         .review-form {
-            background: rgba(255, 255, 255, 0.75);
+            background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             width: 600px;
-            margin: 0 auto;
-            margin-top: 80px;
-            margin-bottom: 40px;
+            margin: 80px auto 40px;
         }
 
         h2 {
             text-align: center;
-            color: #7e22ce;
+            color: var(--primary);
+            font-weight: 700;
             margin-bottom: 30px;
         }
 
-        .form-group label {
+        label {
             font-weight: 600;
-            color: #6b21a8;
+            color: var(--text-sub);
         }
 
         .form-control, .form-select {
-            background-color: rgba(255,255,255,0.6);
-            border: 1px solid #ddd;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 10px;
+            color: var(--text-main);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 5px var(--accent-100);
         }
 
         .btn-submit {
-            background-color: #9333ea;
+            background-color: var(--accent);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 24px;
             border-radius: 10px;
-            margin-top: 20px;
-            transition: 0.3s ease;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
         }
 
         .btn-submit:hover {
-            background-color: #7e22ce;
+            background-color: #e65a2f;
         }
 
         /* ⭐ 별점 스타일 */
         .rating-stars {
             display: flex;
             gap: 8px;
-            font-size: 32px;
+            font-size: 30px;
             justify-content: center;
             margin-top: 10px;
         }
 
         .rating-stars .star {
             cursor: pointer;
-            color: #ddd;
-            transition: color 0.2s;
+            color: #ccc;
+            transition: color 0.2s ease;
         }
 
         .rating-stars .star.selected {

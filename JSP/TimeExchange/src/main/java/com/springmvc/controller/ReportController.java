@@ -28,39 +28,47 @@ import com.springmvc.service.ReportService;
 public class ReportController {
 	@Autowired
 	private ReportService reportService;
-	@Autowired
-	private NotificationService notificationService;
+	
 	@GetMapping
 	public String showReportList(@RequestParam(value = "page", defaultValue = "1") int page,
-	        					 @RequestParam(value = "size", defaultValue = "6") int size,
-	        					 ReportDTO report,
-	        					 Model model) {
-		String targetType = report.getTarget_type();
-		String status = report.getStatus();
-		Map<String, Integer> reportCountMap = new HashMap<>();
+	                             @RequestParam(value = "size", defaultValue = "6") int size,
+	                             @RequestParam(value = "targetType", required = false) String targetType,
+	                             @RequestParam(value = "status", required = false) String status,
+	                             HttpSession session,
+	                             Model model) {
+		Member user = (Member) session.getAttribute("loggedInUser");
+		if (user == null || !"ADMIN".equals(user.getRole())) {
+	        return "redirect:/";  // 또는 403 페이지
+	    }
 		
-		if (targetType != null && targetType.trim().isEmpty()) targetType = null;
-	    if (status != null && status.trim().isEmpty()) status = null;
-	    
-		List<ReportDTO> reportlist = reportService.pagedReportList(targetType, status, page, size);
-		for (ReportDTO r : reportlist) {
-	        String targetId = r.getTarget_id();
-	        int count = reportService.getReportCountForUser(targetId);
-	        reportCountMap.put(targetId, count);
-		}
-		int totalCount = reportService.countReports(targetType, status);
-        int totalPages = (int) Math.ceil((double) totalCount / size);
-        
-        System.out.println("📌 targetType: " + targetType + ", status: " + status);
-        System.out.println("📌 reportlist size: " + reportlist.size());
-        
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("reportlist", reportlist);
-        model.addAttribute("targetType", targetType);
-        model.addAttribute("status", status);
-        model.addAttribute("reportCountMap", reportCountMap);
-		return "ReportList";
+	    // 공백/전체 토큰 → null
+	    if (targetType != null) {
+	        targetType = targetType.trim();
+	        if (targetType.isEmpty() || "all".equalsIgnoreCase(targetType) || "전체".equals(targetType)) {
+	            targetType = null;
+	        }
+	    }
+	    if (status != null) {
+	        status = status.trim();
+	        if (status.isEmpty() || "all".equalsIgnoreCase(status) || "전체".equals(status)) {
+	            status = null;
+	        }
+	    }
+
+	    page = Math.max(page, 1);
+	    size = Math.max(size, 1);
+
+	    List<ReportDTO> reportlist = reportService.pagedReportList(targetType, status, page, size);
+	    int totalCount = reportService.countReports(targetType, status);
+	    int totalPages = (int) Math.ceil((double) totalCount / size);
+
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("size", size);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("reportlist", reportlist);
+	    model.addAttribute("targetType", targetType);
+	    model.addAttribute("status", status);
+	    return "ReportList";
 	}
 	
 	@GetMapping("/view")
@@ -168,6 +176,6 @@ public class ReportController {
 	    model.addAttribute("target_id", targetId);
 	    model.addAttribute("target_type", targetType);
 	    model.addAttribute("target_ref_id", targetRefId);
-	    return "reportPopup";  // /WEB-INF/views/reportPopup.jsp로 forward
+	    return "reportPopup";  
 	}
 }
