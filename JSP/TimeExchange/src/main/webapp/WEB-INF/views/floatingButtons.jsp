@@ -36,7 +36,7 @@
         </c:if>
     </div>
 
-    <!-- ✅ 왼쪽 하단 리스트 버튼들 -->
+    
     <div class="floating-list">
         <c:if test="${not fn:contains(pageContext.request.requestURI, '/todo')}">
             <div class="list-btn" onclick="location.href='${pageContext.request.contextPath}/todo'">
@@ -141,31 +141,45 @@
     padding: 2px 6px;
 }
 .floating-list {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 999;
-    animation: fadeInUp 0.8s ease-out;
+  position: fixed;
+  top: 150px; /* 상단 여백 */
+  left: 100px; 
+  width: 220px; /* 원하는 너비 */
+  background: var(--surface-alt, #fff);
+  border-right: 1px solid var(--border, #e8e8e8);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 999;
+  height: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.05);
+  animation: slideInLeft 0.5s ease;
 }
 .list-btn {
-     background: rgba(255, 255, 255, 0.85);
-    padding: 10px 16px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* 조금 더 부드러운 그림자 */
-    font-size: 14px;
-    color: #3e3a5d; /* 기존 보라보다 채도 낮춘 색상 */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    backdrop-filter: blur(4px);
+  background: none;
+  border: none;
+  font-size: 15px;
+  color: var(--text-main, #1F2C40);
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
+
 .list-btn:hover {
-    background: #ffe5d0;
-    transform: translateX(4px);
+  background: linear-gradient(135deg, #ffb066, #ff6b35); /* 밝은 오렌지 → 진한 오렌지 */
+  transform: translateX(4px);
+  color: white;
 }
+
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -175,5 +189,15 @@
     50% { transform: scale(1.1); opacity: 1; }
     70% { transform: scale(0.95); }
     100% { transform: scale(1); }
+}
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 </style>

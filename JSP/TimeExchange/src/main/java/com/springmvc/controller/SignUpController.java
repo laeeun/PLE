@@ -272,7 +272,7 @@ public class SignUpController {
         expertProfileService.save(dto);
 
         redirectAttributes.addFlashAttribute("success", "전문가 정보가 저장되었습니다!");
-        return "successSignUp";
+        return "redirect:/successSignUp";
     }
 
 

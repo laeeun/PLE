@@ -137,15 +137,18 @@ h2 {
 				<div class="user-card">
 					<div class="user-info">
 						<c:choose>
-							<c:when test="${not empty user.profileImage}">
-								<img
-									src="<c:url value='/upload/profile/${user.profileImage}' />"
-									alt="프로필" />
+							<c:when
+								test="${not empty user.profileImage and user.profileImage ne 'default-profile.png'}">
+								<img src="<c:url value='/upload/${user.profileImage}'/>"
+									alt="프로필" class="rounded-circle me-2"
+									style="width: 48px; height: 48px;">
 							</c:when>
+
 							<c:otherwise>
 								<img
-									src="<c:url value='/resources/images/default-profile.png' />"
-									alt="기본 프로필" />
+									src="<c:url value='/resources/images/default-profile.png'/>"
+									alt="기본 프로필" class="rounded-circle me-2"
+									style="width: 48px; height: 48px;">
 							</c:otherwise>
 						</c:choose>
 						<a class="user-name"

@@ -56,6 +56,9 @@
 	            color: var(--primary);
 	            letter-spacing: -1px;
 	        }
+	        .brand .highlight {
+			    color: var(--accent); /* Fair에 포인트 색상 */
+			}
 	        .nav-menu {
 	            display: flex;
 	            align-items: center;
@@ -86,7 +89,7 @@
 	        .dropdown { position: relative; }
 	        .dropdown-box {
 	            position: absolute;
-	            top: 110%;
+	            top: 120%;
 	            left: 0;
 	            display: none;
 	            background: var(--surface);
@@ -140,11 +143,11 @@
 	<nav>
 		  <div class="nav-inner">
 		    <!-- 브랜드 -->
-		    <span class="brand">TimeFair</span>
-		
+		    <a href="<c:url value='/' />">
+			    <span class="brand">Time<span class="highlight">Fair</span></span>
+			</a>
 		    <!-- 왼쪽 메뉴 그룹 -->
-		    <div class="nav-menu">
-		      <a class="nav-link" href="<c:url value='/' />">홈</a>
+		    <div class="nav-menu">   
 		      <a class="nav-link" href="<c:url value='/talent' />">시간 거래소</a>
 		      <c:if test="${not empty sessionScope.loggedInUser}">
 		        <a class="nav-link" href="<c:url value='/charge' />">시간 충전소</a>
@@ -171,24 +174,29 @@
 		      <c:choose>
 		        <c:when test="${not empty sessionScope.loggedInUser}">
 		          <span class="user-name">${sessionScope.loggedInUser.userName}님</span>
-		          <button onclick="window.open('<c:url value="/notification/popup" />','알림 목록','width=500,height=600')"
+		          <button onclick="window.open('<c:url value="/notification/popup" />','알림 목록','width=600,height=600')"
 		                  class="btn" style="background:#EEE; color:var(--primary);">
 		            전체 알림
 		            <c:if test="${unreadCount > 0}">
 		              <span style="margin-left:6px; color:#FF6B35; font-weight:bold;">(${unreadCount})</span>
 		            </c:if>
 		          </button>
-		          <a href="<c:url value='/logout' />" class="btn btn-logout">로그아웃</a>
+		          <form id="logoutForm" action="<c:url value='/logout' />" method="post" style="display: none;">
+					  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				  </form>
+					
+				  <a href="#" onclick="document.getElementById('logoutForm').submit();" class="btn btn-logout">로그아웃</a>
 		        </c:when>
 		        <c:otherwise>
 		          <a href="<c:url value='/login' />" class="btn" style="background:#EEE; color:var(--primary);">로그인</a>
-		          <a href="<c:url value='/signUp' />" class="btn" style="background:#EEE; color:var(--primary);">회원가입</a>
+		          <a href="<c:url value='/signUp/signUp' />" class="btn" style="background:#EEE; color:var(--primary);">회원가입</a>
 		        </c:otherwise>
 		      </c:choose>
-		      <a href="<c:url value='/report' />" class="btn" style="background:#EEE; color:var(--primary);">신고목록</a>
+		      <c:if test="${sessionScope.loggedInUser.role == 'ROLE_ADMIN'}">
+				  <a href="<c:url value='/report' />" class="btn" style="background:#EEE; color:var(--primary);">신고목록</a>
+			  </c:if>
 		    </div>
 		  </div>
-		</nav>
-	
+		</nav>	
 	</body>
 	</html>
