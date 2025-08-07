@@ -96,35 +96,35 @@ h2 {
 }
 
 .back-button {
-      display: block;
-      width: fit-content;
-      margin: 40px auto 0;
-      padding: 10px 20px;
-      background-color: transparent;
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
+	display: block;
+	width: fit-content;
+	margin: 40px auto 0;
+	padding: 10px 20px;
+	background-color: transparent;
+	border: 2px solid var(--accent);
+	color: var(--accent);
+	border-radius: 30px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: all 0.3s ease;
+}
 
-    .back-button:hover {
-      background-color: var(--accent-light);
-      text-decoration: none;
-    }
+.back-button:hover {
+	background-color: var(--accent-light);
+	text-decoration: none;
+}
 
-    /* ✅ 주황색 버튼 공통 */
-    .btn-outline-accent {
-      border: 1.5px solid var(--accent);
-      color: var(--accent);
-      background-color: transparent;
-    }
+/* ✅ 주황색 버튼 공통 */
+.btn-outline-accent {
+	border: 1.5px solid var(--accent);
+	color: var(--accent);
+	background-color: transparent;
+}
 
-    .btn-outline-accent:hover {
-      background-color: var(--accent-light);
-    }
+.btn-outline-accent:hover {
+	background-color: var(--accent-light);
+}
 </style>
 </head>
 <body>
@@ -139,7 +139,7 @@ h2 {
 						<c:choose>
 							<c:when test="${not empty user.profileImage}">
 								<img
-									src="${pageContext.request.contextPath}/upload/profile/${user.profileImage}"
+									src="<c:url value='/upload/profile/${user.profileImage}' />"
 									alt="프로필" />
 							</c:when>
 							<c:otherwise>
@@ -165,7 +165,8 @@ h2 {
 		</c:otherwise>
 	</c:choose>
 
-	<a href="<c:url value='/mypage' />" class="back-button">← 마이페이지로 돌아가기</a>
+	<a href="<c:url value='/mypage' />" class="back-button">← 마이페이지로
+		돌아가기</a>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>

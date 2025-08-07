@@ -1,332 +1,348 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <title>회원정보 수정</title>
-    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet" />
-    <link href="<c:url value='/resources/css/bootstrap.min.css' />" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-    <style>
-	    :root {
-	      --primary: #1F2C40;
-	      --accent: #FF6B35;
-	      --accent-hover: #e45d25;
-	      --accent-100: #FFEEEA;
-	      --surface: #F9F9F9;
-	      --surface-alt: #FFFFFF;
-	      --border: #E8E8E8;
-	      --text-main: #1F2C40;
-	      --text-sub: #6A737D;
-	      --danger: #ef4444;
-	      --success: #10b981;
-	    }
-	
-	    body {
-	      font-family: 'Pretendard', sans-serif;
-	      background: var(--surface);
-	      color: var(--text-main);
-	      display: flex;
-	      justify-content: center;
-	      align-items: center;
-	      padding: 60px 20px;
-	    }
-	
-	    .edit-box {
-	      background: var(--surface-alt);
-	      border: 1px solid var(--border);
-	      border-radius: 16px;
-	      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-	      padding: 40px 35px;
-	      width: 100%;
-	      max-width: 600px;
-	    }
-	
-	    .edit-box h2 {
-	      text-align: center;
-	      font-family: 'Montserrat', sans-serif;
-	      font-size: 32px;
-	      font-weight: 900;
-	      margin-bottom: 30px;
-	      color: var(--primary);
-	    }
-	
-	    .form-group {
-	      margin-bottom: 18px;
-	    }
-	
-	    label {
-	      font-weight: 600;
-	      margin-bottom: 6px;
-	      display: block;
-	    }
-	
-	    input, select, textarea {
-	      width: 100%;
-	      padding: 12px;
-	      border: 1px solid var(--border);
-	      border-radius: 10px;
-	      background: var(--surface);
-	      font-size: 14px;
-	      color: var(--text-main);
-	      transition: border 0.2s, box-shadow 0.2s;
-	    }
-	
-	    input::placeholder,
-	    textarea::placeholder {
-	      color: var(--text-sub);
-	    }
-	
-	    input:focus,
-	    select:focus,
-	    textarea:focus {
-	      outline: none;
-	      border-color: var(--accent);
-	      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
-	    }
-	
-	    .btn-purple {
-	      width: 100%;
-	      padding: 14px;
-	      background: var(--accent);
-	      border: none;
-	      color: white;
-	      font-weight: bold;
-	      font-size: 16px;
-	      border-radius: 12px;
-	      box-shadow: 0 0 14px rgba(255, 107, 53, 0.2);
-	      transition: all 0.3s ease;
-	      cursor: pointer;
-	    }
-	
-	    .btn-purple:hover {
-	      transform: translateY(-2px);
-	      background: var(--accent-hover);
-	      box-shadow: 0 6px 18px rgba(255, 107, 53, 0.3);
-	    }
-	
-	    .row-flex {
-	      display: flex;
-	      gap: 10px;
-	    }
-	
-	    .profile-img-preview {
-	      width: 120px;
-	      height: 120px;
-	      border-radius: 50%;
-	      object-fit: cover;
-	      margin-bottom: 15px;
-	      border: 2px solid var(--accent);
-	    }
-	
-	    #usernameCheckMsg {
-	      min-height: 20px;
-	      display: block;
-	      margin-top: 5px;
-	      font-size: 13px;
-	    }
-	
-	    .msg-error {
-	      color: var(--danger);
-	      font-size: 13px;
-	      margin-top: 5px;
-	    }
-	
-	    .msg-success {
-	      color: var(--success);
-	      font-size: 13px;
-	      margin-top: 5px;
-	    }
-	
-	    .checkbox-wrapper {
-	      display: flex;
-	      align-items: center;
-	      gap: 10px;
-	      cursor: pointer;
-	    }
-	
-	    .checkbox-wrapper input[type="checkbox"] {
-	      appearance: none;
-	      width: 20px;
-	      height: 20px;
-	      border: 2px solid var(--accent);
-	      border-radius: 6px;
-	      background: white;
-	      position: relative;
-	      cursor: pointer;
-	      transition: background 0.3s ease, border 0.3s ease, transform 0.3s;
-	    }
-	
-	    .checkbox-wrapper input[type="checkbox"]:checked {
-	      background: var(--accent);
-	      border-color: var(--accent);
-	      transform: scale(1.1);
-	    }
-	
-	    .checkbox-wrapper input[type="checkbox"]:checked::after {
-	      content: "";
-	      position: absolute;
-	      left: 6px;
-	      top: 2px;
-	      width: 6px;
-	      height: 12px;
-	      border: solid white;
-	      border-width: 0 2px 2px 0;
-	      transform: rotate(45deg);
-	      animation: checkmarkFade 0.2s ease-in-out;
-	    }
-	
-	    @keyframes checkmarkFade {
-	      from { opacity: 0; transform: rotate(20deg) scale(0.5); }
-	      to { opacity: 1; transform: rotate(45deg) scale(1); }
-	    }
-	
-	    .checkbox-wrapper label {
-	      margin: 0;
-	      font-size: 14px;
-	      font-weight: 500;
-	    }
-	
-	    input[type="file"]::-webkit-file-upload-button,
-	    input[type="file"]::file-selector-button {
-	      background: var(--accent);
-	      color: white;
-	      border: none;
-	      border-radius: 8px;
-	      padding: 8px 16px;
-	      font-weight: bold;
-	      cursor: pointer;
-	      transition: background 0.3s ease;
-	    }
-	
-	    input[type="file"]:hover::file-selector-button,
-	    input[type="file"]:hover::-webkit-file-upload-button {
-	      background: var(--accent-hover);
-	    }
-  </style>
+<meta charset="UTF-8" />
+<title>회원정보 수정</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css"
+	rel="stylesheet" />
+<link href="<c:url value='/resources/css/bootstrap.min.css' />"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<style>
+:root {
+	--primary: #1F2C40;
+	--accent: #FF6B35;
+	--accent-hover: #e45d25;
+	--accent-100: #FFEEEA;
+	--surface: #F9F9F9;
+	--surface-alt: #FFFFFF;
+	--border: #E8E8E8;
+	--text-main: #1F2C40;
+	--text-sub: #6A737D;
+	--danger: #ef4444;
+	--success: #10b981;
+}
+
+body {
+	font-family: 'Pretendard', sans-serif;
+	background: var(--surface);
+	color: var(--text-main);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 60px 20px;
+}
+
+.edit-box {
+	background: var(--surface-alt);
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+	padding: 40px 35px;
+	width: 100%;
+	max-width: 600px;
+}
+
+.edit-box h2 {
+	text-align: center;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 32px;
+	font-weight: 900;
+	margin-bottom: 30px;
+	color: var(--primary);
+}
+
+.form-group {
+	margin-bottom: 18px;
+}
+
+label {
+	font-weight: 600;
+	margin-bottom: 6px;
+	display: block;
+}
+
+input, select, textarea {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	background: var(--surface);
+	font-size: 14px;
+	color: var(--text-main);
+	transition: border 0.2s, box-shadow 0.2s;
+}
+
+input::placeholder, textarea::placeholder {
+	color: var(--text-sub);
+}
+
+input:focus, select:focus, textarea:focus {
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+}
+
+.btn-purple {
+	width: 100%;
+	padding: 14px;
+	background: var(--accent);
+	border: none;
+	color: white;
+	font-weight: bold;
+	font-size: 16px;
+	border-radius: 12px;
+	box-shadow: 0 0 14px rgba(255, 107, 53, 0.2);
+	transition: all 0.3s ease;
+	cursor: pointer;
+}
+
+.btn-purple:hover {
+	transform: translateY(-2px);
+	background: var(--accent-hover);
+	box-shadow: 0 6px 18px rgba(255, 107, 53, 0.3);
+}
+
+.row-flex {
+	display: flex;
+	gap: 10px;
+}
+
+.profile-img-preview {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-bottom: 15px;
+	border: 2px solid var(--accent);
+}
+
+#usernameCheckMsg {
+	min-height: 20px;
+	display: block;
+	margin-top: 5px;
+	font-size: 13px;
+}
+
+.msg-error {
+	color: var(--danger);
+	font-size: 13px;
+	margin-top: 5px;
+}
+
+.msg-success {
+	color: var(--success);
+	font-size: 13px;
+	margin-top: 5px;
+}
+
+.checkbox-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 2px solid var(--accent);
+	border-radius: 6px;
+	background: white;
+	position: relative;
+	cursor: pointer;
+	transition: background 0.3s ease, border 0.3s ease, transform 0.3s;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked {
+	background: var(--accent);
+	border-color: var(--accent);
+	transform: scale(1.1);
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked::after {
+	content: "";
+	position: absolute;
+	left: 6px;
+	top: 2px;
+	width: 6px;
+	height: 12px;
+	border: solid white;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+	animation: checkmarkFade 0.2s ease-in-out;
+}
+
+@
+keyframes checkmarkFade {from { opacity:0;
+	transform: rotate(20deg) scale(0.5);
+}
+
+to {
+	opacity: 1;
+	transform: rotate(45deg) scale(1);
+}
+
+}
+.checkbox-wrapper label {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+input[type="file"]::-webkit-file-upload-button, input[type="file"]::file-selector-button
+	{
+	background: var(--accent);
+	color: white;
+	border: none;
+	border-radius: 8px;
+	padding: 8px 16px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+input[type="file"]:hover::file-selector-button, input[type="file"]:hover::-webkit-file-upload-button
+	{
+	background: var(--accent-hover);
+}
+</style>
 </head>
 <body>
 
-<c:choose>
-    <c:when test="${empty member.profileImage || member.profileImage eq 'default_profile.png'}">
-        <c:set var="profileImageUrl" value="${pageContext.request.contextPath}/resources/images/default-profile.png" />
-    </c:when>
-    <c:otherwise>
-        <c:set var="profileImageUrl" value="${pageContext.request.contextPath}/upload/profile/${member.profileImage}" />
-    </c:otherwise>
-</c:choose>
+	<c:choose>
+		<c:when
+			test="${empty member.profileImage || member.profileImage eq 'default_profile.png'}">
+			<c:set var="profileImageUrl"
+				value="${pageContext.request.contextPath}/resources/images/default-profile.png" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="profileImageUrl"
+				value="${pageContext.request.contextPath}/upload/profile/${member.profileImage}" />
+		</c:otherwise>
+	</c:choose>
 
-<div class="edit-box">
-    <h2>회원정보 수정</h2>
-    <form:form method="post" modelAttribute="member" enctype="multipart/form-data"
-               action="${pageContext.request.contextPath}/mypage/edit">
-        <form:hidden path="member_id" />
-        <input type="hidden" name="resetProfile" id="resetProfile" value="false" />
+	<div class="edit-box">
+		<h2>회원정보 수정</h2>
+		<form:form method="post" modelAttribute="member"
+			enctype="multipart/form-data"
+			action="${pageContext.request.contextPath}/mypage/edit">
+			<form:hidden path="member_id" />
+			<input type="hidden" name="resetProfile" id="resetProfile"
+				value="false" />
 
-        <div class="form-group">
-            <label>현재 프로필 이미지</label><br />
-            <img id="currentProfileImg" src="${profileImageUrl}" alt="프로필 이미지" class="profile-img-preview" />
-        </div>
+			<div class="form-group">
+				<label>현재 프로필 이미지</label><br /> <img id="currentProfileImg"
+					src="${profileImageUrl}" alt="프로필 이미지" class="profile-img-preview" />
+			</div>
 
-        <c:if test="${not empty member.profileImage}">
-            <div class="form-group">
-                <button type="button" class="btn-purple" onclick="resetProfileImage()">기본 이미지로 변경</button>
-            </div>
-        </c:if>
+			<c:if test="${not empty member.profileImage}">
+				<div class="form-group">
+					<button type="button" class="btn-purple"
+						onclick="resetProfileImage()">기본 이미지로 변경</button>
+				</div>
+			</c:if>
 
-        <div class="form-group">
-            <label for="profileImageFile">프로필 이미지 변경</label>
-            <form:input path="profileImageFile" type="file" accept="image/*" />
-        </div>
+			<div class="form-group">
+				<label for="profileImageFile">프로필 이미지 변경</label>
+				<form:input path="profileImageFile" type="file" accept="image/*" />
+			</div>
 
-        <div class="form-group">
-            <label for="userName">닉네임</label>
-            <form:input path="userName" id="userName" placeholder="닉네임" oninput="checkUsername()" />
-            <small id="usernameCheckMsg"></small>
-        </div>
+			<div class="form-group">
+				<label for="userName">닉네임</label>
+				<form:input path="userName" id="userName" placeholder="닉네임"
+					oninput="checkUsername()" />
+				<small id="usernameCheckMsg"></small>
+			</div>
 
-        <div class="form-group">
-            <label for="name">이름</label>
-            <form:input path="name" placeholder="이름" />
-        </div>
+			<div class="form-group">
+				<label for="name">이름</label>
+				<form:input path="name" placeholder="이름" />
+			</div>
 
-        <div class="form-group">
-            <label for="birthDate">생년월일</label>
-            <form:input path="birthDate" id="birthDate" readonly="true" />
-        </div>
+			<div class="form-group">
+				<label for="birthDate">생년월일</label>
+				<form:input path="birthDate" id="birthDate" readonly="true" />
+			</div>
 
-        <div class="form-group">
-            <label for="gender">성별</label>
-            <form:select path="gender">
-                <form:option value="">선택</form:option>
-                <form:option value="M">남성</form:option>
-                <form:option value="F">여성</form:option>
-            </form:select>
-        </div>
+			<div class="form-group">
+				<label for="gender">성별</label>
+				<form:select path="gender">
+					<form:option value="">선택</form:option>
+					<form:option value="M">남성</form:option>
+					<form:option value="F">여성</form:option>
+				</form:select>
+			</div>
 
-        <div class="form-group">
-            <label>전화번호</label>
-            <div class="row-flex">
-                <select name="phone1" style="flex:1">
-                    <option value="">선택</option>
-                    <option value="010" ${member.phone1 == '010' ? 'selected' : ''}>010</option>
-                    <option value="011" ${member.phone1 == '011' ? 'selected' : ''}>011</option>
-                    <option value="016" ${member.phone1 == '016' ? 'selected' : ''}>016</option>
-                    <option value="017" ${member.phone1 == '017' ? 'selected' : ''}>017</option>
-                    <option value="018" ${member.phone1 == '018' ? 'selected' : ''}>018</option>
-                    <option value="019" ${member.phone1 == '019' ? 'selected' : ''}>019</option>
-                </select>
-                <input type="text" name="phone2" value="${member.phone2}" style="flex:1;" required />
-                <input type="text" name="phone3" value="${member.phone3}" style="flex:1;" required />
-            </div>
-        </div>
+			<div class="form-group">
+				<label>전화번호</label>
+				<div class="row-flex">
+					<select name="phone1" style="flex: 1">
+						<option value="">선택</option>
+						<option value="010" ${member.phone1 == '010' ? 'selected' : ''}>010</option>
+						<option value="011" ${member.phone1 == '011' ? 'selected' : ''}>011</option>
+						<option value="016" ${member.phone1 == '016' ? 'selected' : ''}>016</option>
+						<option value="017" ${member.phone1 == '017' ? 'selected' : ''}>017</option>
+						<option value="018" ${member.phone1 == '018' ? 'selected' : ''}>018</option>
+						<option value="019" ${member.phone1 == '019' ? 'selected' : ''}>019</option>
+					</select> <input type="text" name="phone2" value="${member.phone2}"
+						style="flex: 1;" required /> <input type="text" name="phone3"
+						value="${member.phone3}" style="flex: 1;" required />
+				</div>
+			</div>
 
-        <div class="form-group">
-            <label>주소</label>
-            <div class="row-flex">
-                <form:input path="addr" id="addr" readonly="true" placeholder="주소 검색" style="flex:1" />
-                <button type="button" class="btn-purple" onclick="execDaumPostcode()" style="flex: 0.6">주소 검색</button>
-            </div>
-        </div>
+			<div class="form-group">
+				<label>주소</label>
+				<div class="row-flex">
+					<form:input path="addr" id="addr" readonly="true"
+						placeholder="주소 검색" style="flex:1" />
+					<button type="button" class="btn-purple"
+						onclick="execDaumPostcode()" style="flex: 0.6">주소 검색</button>
+				</div>
+			</div>
 
-        <div class="form-group">
-            <form:input path="addrDetail" id="addrDetail" placeholder="상세주소 입력" />
-        </div>
+			<div class="form-group">
+				<form:input path="addrDetail" id="addrDetail" placeholder="상세주소 입력" />
+			</div>
 
-        <div class="form-group">
-            <label>이메일</label>
-            <div class="row-flex" style="gap: 8px;">
-                <form:input path="emailId" placeholder="아이디 입력" style="flex: 1;" />
-                <span>@</span>
-                <form:select path="emailDomain" style="flex: 1;">
-                    <form:option value="">선택</form:option>
-                    <form:option value="naver.com">naver.com</form:option>
-                    <form:option value="gmail.com">gmail.com</form:option>
-                    <form:option value="daum.net">daum.net</form:option>
-                    <form:option value="hanmail.net">hanmail.net</form:option>
-                    <form:option value="nate.com">nate.com</form:option>
-                </form:select>
-            </div>
-        </div>
+			<div class="form-group">
+				<label>이메일</label>
+				<div class="row-flex" style="gap: 8px;">
+					<form:input path="emailId" placeholder="아이디 입력" style="flex: 1;" />
+					<span>@</span>
+					<form:select path="emailDomain" style="flex: 1;">
+						<form:option value="">선택</form:option>
+						<form:option value="naver.com">naver.com</form:option>
+						<form:option value="gmail.com">gmail.com</form:option>
+						<form:option value="daum.net">daum.net</form:option>
+						<form:option value="hanmail.net">hanmail.net</form:option>
+						<form:option value="nate.com">nate.com</form:option>
+					</form:select>
+				</div>
+			</div>
 
-        <div class="form-group">
-	      <label>전문가 여부</label>
-	      <div class="checkbox-wrapper">
-	        <input type="checkbox" id="expert" name="expert" />
-	        <label for="expert">전문가로 활동할래요</label>
-	      </div>
-	    </div>
+			<div class="form-group">
+				<label>전문가 여부</label>
+				<div class="checkbox-wrapper">
+					<form:checkbox path="expert" id="expert" />
+					<label for="expert">전문가로 활동할래요</label>
+				</div>
+			</div>
 
-        <button type="submit" class="btn-purple">저장하기</button>
-    </form:form>
-</div>
+			<button type="submit" class="btn-purple">저장하기</button>
+		</form:form>
+	</div>
 
-<!-- ✅ 이미지 관련 스크립트 -->
-<script>
+	<!-- ✅ 이미지 관련 스크립트 -->
+	<script>
 function resetProfileImage() {
     const defaultUrl = '${pageContext.request.contextPath}/resources/images/default-profile.png';
     document.getElementById('currentProfileImg').src = defaultUrl;
@@ -354,10 +370,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<!-- 기타 기능 -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
-<script>
+	<!-- 기타 기능 -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+	<script>
 flatpickr("#birthDate", {
     locale: "ko",
     dateFormat: "Y-m-d",
@@ -366,7 +382,7 @@ flatpickr("#birthDate", {
     altFormat: "Y년 m월 d일"
 });
 </script>
-<script>
+	<script>
 let isUsernameDuplicated = false;
 let usernameTimer;
 function checkUsername() {
@@ -398,7 +414,7 @@ function checkUsername() {
     }, 500);
 }
 </script>
-<script>
+	<script>
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("form").addEventListener("submit", function (e) {
         if (isUsernameDuplicated) {
@@ -408,8 +424,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
+	<script
+		src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {

@@ -127,7 +127,7 @@ public class SignUpController {
                 return "signUp";
             }
         } else {
-            member.setProfileImage("default_profile.png");
+            member.setProfileImage("default-profile.png");
         }
 
         // ✅ 비밀번호 암호화
@@ -254,7 +254,7 @@ public class SignUpController {
                     } catch (Exception e) {
                         e.printStackTrace();
                         redirectAttributes.addFlashAttribute("error", "파일 업로드 중 오류가 발생했습니다.");
-                        return "redirect:/signUp/expertForm";
+                        return "redirect:/expertForm";
                     }
                 }
             }

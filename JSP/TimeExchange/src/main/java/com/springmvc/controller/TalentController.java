@@ -129,6 +129,10 @@ public class TalentController {
         int reviewCount = reviewService.countByTalentId((long) id);
         double averageRating = reviewService.getAverageRatingByTalentId((long) id);
         
+        Member author = memberService.findById(talent.getMember_id());
+        model.addAttribute("author", author);
+        System.out.println(author.getProfileImage());
+        
         model.addAttribute("isFavorite", isFavorite);
         model.addAttribute("talent", talent);
         model.addAttribute("createdDate", createdDate);

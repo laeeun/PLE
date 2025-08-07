@@ -2,6 +2,8 @@ package com.springmvc.domain;
 
 import java.time.LocalDateTime;
 
+import com.springmvc.util.DateTimeUtils;
+
 public class ReviewDTO{
 	
     private Long reviewId;          // 리뷰 고유 ID
@@ -30,6 +32,9 @@ public class ReviewDTO{
     
     private String myReaction; // 현재 로그인한 사용자의 반응 ("LIKE", "DISLIKE", 또는 null)
     
+    public String getFormattedCreatedAt() {
+        return DateTimeUtils.format(this.createdAt);
+    }
     
     // Getter & Setter 모음
 

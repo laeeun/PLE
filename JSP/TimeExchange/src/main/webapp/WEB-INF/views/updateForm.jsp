@@ -129,7 +129,7 @@
 				</div>
                 <div class="mb-3">
                     <label class="form-label">판매 시간 (분)</label>
-                    <input type="number" name="timeSlot" class="form-control" id="timeSlot" min="1" required />
+                    <form:input path="timeSlot" type="number" class="form-control" id="timeSlot" min="1" required="required" />
                 </div>
 
                 <div class="text-end">

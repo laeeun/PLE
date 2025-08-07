@@ -44,21 +44,36 @@ h2 {
 
 form {
 	background: white;
-	padding: 30px;
+	padding: 30px; border-radius : 12px; box-shadow : 0 8px 20px rgba( 0, 0
+	, 0, 0.06); width : 100%; max-width : 400px; display : flex;
+	flex-direction : column;
+	gap: 16px;
 	border-radius: 12px;
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 	width: 100%;
 	max-width: 400px;
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
 }
 
-input[type="text"] {
+input[type="text"], select {
 	padding: 12px;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	font-size: 16px;
+}
+
+.phone-input {
+	display: flex;
+	gap: 8px;
+}
+
+.phone-input select {
+	width: 80px;
+}
+
+.phone-input input {
+	flex: 1;
 }
 
 button {
@@ -92,8 +107,20 @@ button:hover {
 		<h2>아이디 찾기</h2>
 
 		<form method="post" action="${pageContext.request.contextPath}/findId">
-			<input type="text" name="name" placeholder="이름" required /> <input
-				type="text" name="phone" placeholder="전화번호" required />
+			<input type="text" name="name" placeholder="이름" required />
+			<div class="phone-input">
+				<select name="phone1" required>
+					<option value="010">010</option>
+					<option value="011">011</option>
+					<option value="016">016</option>
+					<option value="017">017</option>
+					<option value="018">018</option>
+					<option value="019">019</option>
+				</select> <input type="text" name="phone2" placeholder="중간번호"
+					pattern="\\d{3,4}" minlength="3" maxlength="4" required /> <input
+					type="text" name="phone3" placeholder="마지막번호" pattern="\\d{4}"
+					minlength="4" maxlength="4" required />
+			</div>
 			<button type="submit">아이디 찾기</button>
 		</form>
 

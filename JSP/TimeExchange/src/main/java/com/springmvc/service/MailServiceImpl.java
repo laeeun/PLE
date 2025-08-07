@@ -31,7 +31,7 @@ public class MailServiceImpl implements MailService {
 
         memberService.update(member);
 
-        String link = "http://localhost:8080/TimeExchange/signUp/verify?token=" + token;
+        String link = "http://localhost:8080/TimeExchange/verify?token=" + token;
 
         MimeMessage message = mailSender.createMimeMessage();
 

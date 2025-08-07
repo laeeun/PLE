@@ -128,7 +128,7 @@
         <div class="card-body">
         
         	<c:choose>
-			  <c:when test="${member.profileImage ne null and member.profileImage ne 'default_profile.png' and fn:length(member.profileImage) > 0}">
+			  <c:when test="${member.profileImage ne null and member.profileImage ne 'default-profile.png' and fn:length(member.profileImage) > 0}">
 			      <img src="${pageContext.request.contextPath}/upload/profile/${member.profileImage}" alt="프로필 이미지" class="profile-image" />
 			  </c:when>
 			  <c:otherwise>
