@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.springmvc.domain.ExpertProfileDTO;
 import com.springmvc.domain.Member;
-import com.springmvc.domain.MemberStatus;
+import com.springmvc.enums.MemberStatus;
 import com.springmvc.service.ExpertProfileService;
 import com.springmvc.service.MailService;
 import com.springmvc.service.MemberService;

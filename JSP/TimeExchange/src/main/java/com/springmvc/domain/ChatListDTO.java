@@ -2,6 +2,8 @@ package com.springmvc.domain;
 
 import java.time.LocalDateTime;
 
+import com.springmvc.enums.MessageType;
+
 public class ChatListDTO {
     private String roomId;
     private String partnerId;

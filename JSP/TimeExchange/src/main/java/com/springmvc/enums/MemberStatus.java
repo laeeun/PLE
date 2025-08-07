@@ -1,4 +1,4 @@
-package com.springmvc.domain;
+package com.springmvc.enums;
 
 public enum MemberStatus {
 	ACTIVE, //정상회원

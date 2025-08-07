@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.springmvc.domain.Member;
-import com.springmvc.domain.MemberStatus;
+import com.springmvc.enums.MemberStatus;
 
 public class MemberRowMapper implements RowMapper<Member> {
 

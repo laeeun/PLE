@@ -1,4 +1,4 @@
-package com.springmvc.domain;
+package com.springmvc.enums;
 
 public enum MessageType {
     CHAT,       // 일반 메시지

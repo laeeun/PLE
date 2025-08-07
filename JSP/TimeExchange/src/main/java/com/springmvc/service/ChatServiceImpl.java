@@ -9,7 +9,7 @@ import com.springmvc.domain.ChatEntity;
 import com.springmvc.domain.ChatListDTO;
 import com.springmvc.domain.ChatMessage;
 import com.springmvc.domain.Member;
-import com.springmvc.domain.MessageType;
+import com.springmvc.enums.MessageType;
 import com.springmvc.repository.ChatRepository;
 import com.springmvc.repository.MemberRepository;
 
