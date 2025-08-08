@@ -134,7 +134,7 @@
 		</div>
         <!-- ✅ 구매 요청 or 로그인 -->
         <div class="mt-4 text-center">
-            <a href="<c:url value='/talent' />" class="btn btn-secondary me-2">
+            <a href="<c:url value='/talent' />" class="btn btn-secondary me-2" id="cancelBtn">
 			    <i class="fas fa-times-circle"></i> 구매 취소
 			</a>
 
@@ -143,7 +143,7 @@
                     <form action="<c:url value='/purchase/request' />" method="post" class="d-inline">
                         <input type="hidden" name="talent_id" value="${talent.talent_id}" />
                         <input type="hidden" name="seller_id" value="${talent.member_id}" />
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-success" id="requestBtn">
 						    <i class="fas fa-check-circle"></i> 구매 요청
 						</button>
                     </form>
@@ -162,7 +162,24 @@
         </div>
     </div>
 
- <jsp:include page="/WEB-INF/views/footer.jsp" />
+<jsp:include page="/WEB-INF/views/footer.jsp" />
 <jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+<script>
+	//✅ 구매 취소 버튼 클릭 시 confirm
+	document.getElementById("cancelBtn")?.addEventListener("click", function (e) {
+	    e.preventDefault(); // 기본 이동 막기
+	    if (confirm("정말로 구매를 취소하시겠습니까?")) {
+	        window.location.href = this.getAttribute("href");
+	    }
+	});
+	
+	// ✅ 구매 요청 버튼 클릭 시 confirm
+	document.getElementById("requestBtn")?.addEventListener("click", function (e) {
+	    e.preventDefault(); // 기본 submit 막기
+	    if (confirm("정말로 이 재능을 구매 요청하시겠습니까?")) {
+	        this.closest("form").submit(); // 폼 전송
+	    }
+	});
+</script>
 </body>
 </html>

@@ -19,7 +19,10 @@
             --text-main: #1F2C40;
             --text-sub: #6A737D;
         }
-
+		a:hover {
+			text-decoration:none;
+			color: var(--accent);
+		}
         body {
             font-family: 'Pretendard', sans-serif;
             background: var(--surface);
@@ -135,7 +138,7 @@
         <table class="table table-bordered mt-4">
             <thead>
                 <tr>           
-                    <th>구매자 ID</th>
+                    <th>구매자</th>
                     <th>요청 시간</th>
                     <th>상태</th>
                     <th>처리</th>
@@ -144,9 +147,24 @@
             <tbody>
                 <c:forEach var="req" items="${receivedRequests}">
                     <tr id="row-${req.request_id}">           
-                        <td>${req.buyer_id}</td>
-                        <td>${req.requested_at}</td>
-                        <td class="status-text">${req.status}</td>
+                        <td><a href="<c:url value='/profile/${req.buyer_id}' />">${req.buyer_id}</a></td>
+                        <td>${req.formattedRequestedAt}</td>
+                        <td class="status-text">
+                         <c:choose>
+						    <c:when test="${req.status == 'APPROVED'}">
+						      <i class="fa-solid fa-circle-check status-icon status-approved"></i> 승인됨
+						    </c:when>
+						    <c:when test="${req.status == 'PENDING'}">
+						      <i class="fa-solid fa-clock status-icon status-pending"></i> 대기중
+						    </c:when>
+						    <c:when test="${req.status == 'REJECTED'}">
+						      <i class="fa-solid fa-circle-xmark status-icon status-rejected"></i> 거절됨
+						    </c:when>
+						    <c:otherwise>
+						      <i class="fa-regular fa-circle-question"></i> 알 수 없음
+						    </c:otherwise>
+						  </c:choose>
+				  		</td>
                         <td>
                             <c:if test="${req.status == 'PENDING'}">
                                 <button class="btn btn-success btn-sm approve-btn" data-id="${req.request_id}">수락</button>

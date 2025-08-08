@@ -26,7 +26,7 @@ body {
 	font-family: 'Pretendard', sans-serif;
 	background: var(--surface-alt);
 	margin: 0;
-	padding: 40px 20px;
+	padding: 0px 20px;
 }
 
 h2 {
@@ -118,11 +118,18 @@ h2 {
 .btn-outline-accent:hover {
 	background-color: var(--accent-light);
 }
+  .section-title {
+    margin-top: 48px;
+    margin-bottom: 24px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
 </style>
 </head>
 <body>
-
-	<h2>📌 나를 팔로우한 사람들</h2>
+<jsp:include page="/WEB-INF/views/nav.jsp" />
+	<h2 class="section-title">📌 나를 팔로우한 사람들</h2>
 
 	<c:choose>
 		<c:when test="${not empty followerList}">
@@ -195,7 +202,7 @@ h2 {
 							});
 				});
 	</script>
-
-	<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
+<jsp:include page="/WEB-INF/views/footer.jsp" />
+<jsp:include page="/WEB-INF/views/floatingButtons.jsp" />
 </body>
 </html>

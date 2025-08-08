@@ -146,8 +146,8 @@ button:hover {
 <jsp:include page="/WEB-INF/views/nav.jsp" />
 
 <main class="centered-content">
-  <h1>탈퇴가 처리되었습니다.</h1>
-  <p>계정을 다시 사용하려면 아래 버튼을 눌러 탈퇴를 취소하세요.</p>
+  <h1>탈퇴한 회원입니다.</h1>
+  <p>탈퇴를 취소하시겠습니까?</p>
   
   <c:if test="${not empty message}">
     <script>

@@ -69,7 +69,7 @@ public class CommentController {
             // 댓글 등록
             CommentDTO savedComment = commentService.createComment(comment);
             
-            if (user.getMember_id() != receiverMemberId) {
+            if (!receiverMemberId.equals(user.getMember_id())) {
 	            notificationService.createSimpleNotification(
 	                user.getUserName(),              // 보내는 유저
 	                receiverUsername,                // 받는 유저

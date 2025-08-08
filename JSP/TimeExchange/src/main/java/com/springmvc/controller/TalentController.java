@@ -226,7 +226,7 @@ public class TalentController {
         talentService.update(dto);
         return "redirect:/talent/view?id=" + dto.getTalent_id();
     }
-    
+       
     // ✅ 로그인 유저 기준 찜 여부 세팅
     private void attachFavoriteInfo(List<TalentDTO> list, Member user) {
         if (user == null) return;

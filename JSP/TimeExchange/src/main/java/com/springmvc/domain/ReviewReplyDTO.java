@@ -8,6 +8,10 @@ public class ReviewReplyDTO {
     private String sellerId;       // 답글 작성자 (판매자) ID
     private String replyContent;        // 답글 내용
     private LocalDateTime replyCreatedAt; // 답글 작성 시간
+    
+    public String getFormattedReplyCreatedAt() {
+        return com.springmvc.util.DateTimeUtils.format(this.replyCreatedAt);
+    }
 	public Long getReplyId() {
 		return replyId;
 	}

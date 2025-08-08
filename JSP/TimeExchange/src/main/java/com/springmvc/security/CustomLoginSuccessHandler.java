@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import com.springmvc.domain.Member;
+import com.springmvc.enums.MemberStatus;
 
 @Component
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -22,6 +23,11 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         Member member = (Member) authentication.getPrincipal();  // CustomAuthenticationProvider에서 설정한 Member
         HttpSession session = request.getSession();
         session.setAttribute("loggedInUser", member);  // ✅ 세션에 저장
+        
+        if (member.getStatus() == MemberStatus.INACTIVE) {
+            response.sendRedirect(request.getContextPath() + "/mypage/deactivated");
+            return;
+        }
 
         response.sendRedirect(request.getContextPath() + "/");
     }

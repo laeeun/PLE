@@ -129,7 +129,7 @@ public class GoalController {
         );
     }
     
-    @PostMapping("/toggle")
+    @PostMapping(value = "/toggle", produces = "text/plain; charset=UTF-8")
     @ResponseBody
     public ResponseEntity<String> toggleGoalCompletion(@RequestParam("goalId") Long goalId, HttpSession session) {
         Member user = (Member) session.getAttribute("loggedInUser");

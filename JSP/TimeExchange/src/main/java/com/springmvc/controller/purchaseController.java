@@ -108,37 +108,6 @@ public class purchaseController {
         return "purchaseSentList";
     }
 
-    @PostMapping("/approve")
-    public String approveRequest(@RequestParam("request_id") Long requestId,
-                                 RedirectAttributes redirectAttributes) {
-        try {
-            PurchaseRequestDTO request = purchaseService.findById(requestId);
-            String buyerId = request.getBuyer_id();
-            String sellerId = request.getSeller_id();
-            long talentId = request.getTalent_id();
-
-            TalentDTO talent = talentService.readone((int) talentId);
-            int price = talent.getTimeSlot();
-
-            Member buyer = memberService.findById(buyerId);
-            if (buyer.getAccount() < price) {
-                redirectAttributes.addFlashAttribute("errorMessage", "구매자의 잔액이 부족합니다.");
-                return "redirect:/purchase/received";
-            }
-
-            purchaseService.updateAccountBalance(buyerId, -price);
-            purchaseService.updateAccountBalance(sellerId, price);
-            purchaseService.updateStatus(requestId, "APPROVED");
-
-            redirectAttributes.addFlashAttribute("successMessage", "구매가 성공적으로 완료되었습니다!");
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/purchase/received";
-        }
-
-        return "redirect:/purchase/received";
-    }
-
     @PostMapping("/approve/ajax")
     @ResponseBody
     public Map<String, Object> approveRequestAjax(@RequestParam("request_id") Long requestId, HttpSession session) {

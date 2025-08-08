@@ -305,32 +305,40 @@
             border-top-right-radius: 12px;
             border-bottom-right-radius: 12px;
         }
-      /* ✅ 수정/삭제 버튼 */
-  		.edit-btn, .delete-btn {
-		    padding: 6px 12px;
-		    font-size: 13px;
-		    font-weight: 500;
-		    border: 1px solid var(--border);
-		    border-radius: 8px;
-		    background: #fff;
-		    cursor: pointer;
-		    transition: all 0.2s ease;
-		    margin-right: 4px;
-		  }
-		  .edit-btn:hover {
-		    background: var(--accent-100);
-		    border-color: var(--accent);
-		    color: var(--primary);
-		  }
-		  .delete-btn {
-		    border-color: #ef4444;
-		    color: #ef4444;
-		  }
-		  .delete-btn:hover {
-		    background: #fee2e2;
-		    color: #991b1b;
-		    border-color: #991b1b;
-		  }
+      .edit-btn, .delete-btn {
+			    padding: 6px 12px;
+			    font-size: 13px;
+			    font-weight: 500;
+			    border-radius: 8px;
+			    border: 1px solid var(--border);
+			    background-color: #fff;
+			    cursor: pointer;
+			    transition: all 0.2s ease;
+			    margin-right: 4px;
+			}
+			
+			/* 수정 버튼 */
+			.edit-btn {
+			    color: var(--primary);
+			    border-color: var(--border);
+			}
+			.edit-btn:hover {
+			    background-color: var(--accent-100);
+			    color: var(--primary);
+			    border-color: var(--accent);
+			}
+			
+			/* 삭제 버튼 (같은 스타일 but 빨간색 테마) */
+			.delete-btn {
+			    color: #dc2626;
+			    border-color: #dc2626;
+			}
+			.delete-btn:hover {
+			    background-color: #fee2e2;
+			    color: #991b1b;
+			    border-color: #991b1b;
+			}
+		 
 		  .filter-container {
 			  display: flex;
 			  flex-direction: column;
@@ -718,7 +726,7 @@
                                 data-content="\${escapedContent}">
                                 수정
                             </button>
-                            <button onclick="deleteTodo(\${todo.todoId})">삭제</button>
+                            <button class="delete-btn" onclick="deleteTodo(\${todo.todoId})">삭제</button>
                         </td>
                     </tr>`;
 

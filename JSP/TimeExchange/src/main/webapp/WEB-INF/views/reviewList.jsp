@@ -188,12 +188,12 @@
                 </span>
             </div>
             <p>${fn:substring(review.comment, 0, 30)}...</p>
-            <small class="text-muted">작성일: ${review.createdAt}</small>
+            <small class="text-muted">작성일: ${review.formattedCreatedAt}</small>
 
             <c:if test="${not empty review.reply}">
                 <div class="alert alert-info mt-3">
                     <strong><i class="fas fa-reply"></i> 판매자 답글:</strong> ${review.reply.replyContent}<br>
-                    <small class="text-muted">작성일: ${review.reply.replyCreatedAt}</small>
+                    <small class="text-muted">작성일: ${review.reply.formattedReplyCreatedAt}</small>
                 </div>
             </c:if>
 

@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>${member.userName}님의 마이페이지</title>
+    <title>${member.userName}님의 프로필</title>
 
     <!-- Pretendard + Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
@@ -104,7 +104,6 @@
         </div>
 
         <div class="card-body">
-            <p><strong>ID:</strong> ${member.member_id}</p>
             <p><strong>닉네임:</strong> ${member.userName}</p>
             <p><strong>이름:</strong> ${member.name}</p>
             <p><strong>이메일:</strong> ${member.email}</p>

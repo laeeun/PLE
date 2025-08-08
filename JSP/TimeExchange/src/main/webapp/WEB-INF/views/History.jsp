@@ -16,92 +16,122 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;900&display=swap"
 	rel="stylesheet" />
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 <style>
-:root {
-	--primary: #1F2C40;
-	--accent: #FF6B35;
-	--accent-light: #FFEDE4;
-	--surface: #ffffff;
-	--surface-alt: #f9f9f9;
-	--border: #e5e7eb;
-	--text-main: #1F2C40;
-	--text-sub: #6B7280;
-}
+	:root {
+	  --primary:      #1F2C40;
+	  --accent:       #FF6B35;
+	  --accent-100:   #FFEEEA;
+	  --surface:      #F9F9F9;
+	  --surface-alt:  #FFFFFF;
+	  --border:       #E8E8E8;
+	  --text-main:    #1F2C40;
+	  --text-sub:     #6A737D;
+	}
+	
+	* {
+	  margin: 0;
+	  padding: 0;
+	  box-sizing: border-box;
+	}
+	
+	body {
+	  font-family: 'Pretendard', sans-serif;
+	  color: var(--text-main);
+	  background: var(--surface);
+	}
+	
+	.container {
+	  max-width: 1000px;
+	  margin: 0 auto;
+	  padding: 0 24px 80px;
+	}
+	
+	h2 {
+	  margin-top: 60px;
+	  font-family: 'Montserrat', sans-serif;
+	  font-size: 32px;
+	  font-weight: 800;
+	  margin-bottom: 40px;
+	  color: var(--primary);
+	  text-align: center;
+	}
+	
+	.card {
+	  background: var(--surface-alt);
+	  border: 1px solid var(--border);
+	  border-radius: 16px;
+	  padding: 24px;
+	  margin-bottom: 24px;
+	  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+	  transition: transform 0.25s, box-shadow 0.25s;
+	}
+	
+	.card:hover {
+	  transform: translateY(-4px);
+	  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+	}
+	
+	.history-title {
+	  font-size: 20px;
+	  font-weight: 700;
+	  color: var(--accent);
+	  margin-bottom: 12px;
+	}
+	
+	.history-info {
+	  font-size: 15px;
+	  color: var(--text-sub);
+	  margin-bottom: 4px;
+	}
+	
+	.text-muted {
+	  font-size: 13px;
+	  color: #aaa;
+	}
+	
+	.btn-sm {
+	  padding: 6px 12px;
+	  font-size: 13px;
+	  border-radius: 8px;
+	}
+	
+	.btn-outline-warning {
+	  border: 1px solid var(--accent);
+	  color: var(--accent);
+	  background-color: transparent;
+	}
+	
+	.btn-outline-warning:hover {
+	  background-color: var(--accent);
+	  color: #fff;
+	}
+	
+	.btn-outline-success {
+	  border: 1px solid var(--primary);
+	  color: var(--primary);
+	  background-color: transparent;
+	}
+	
+	.btn-outline-success:hover {
+	  background-color: var(--primary);
+	  color: #fff;
+	}
+	
+	.empty-box {
+	  text-align: center;
+	  padding: 80px 0;
+	  color: var(--text-sub);
+	  font-size: 18px;
+	  background: var(--accent-100);
+	  border-radius: 16px;
+	  margin-top: 40px;
+	}
+	
+	.mt-3 a.btn {
+	  transition: all 0.2s ease-in-out;
+	}
 
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-body {
-	font-family: 'Pretendard', sans-serif;
-	color: var(--text-main);
-	background: var(--surface);
-}
-
-.container {
-	max-width: 1000px;
-	margin: 0 auto;
-	padding: 0 24px 80px;
-}
-
-h2 {
-	margin-top: 60px;
-	text-align : center;
-	font-family: 'Montserrat', sans-serif;
-	font-size: 32px;
-	font-weight: 800;
-	margin-bottom: 40px;
-	color: var(--primary);
-	text-align: center;
-}
-
-.card {
-	background: var(--surface-alt);
-	border: 1px solid var(--border);
-	border-radius: 16px;
-	padding: 24px;
-	margin-bottom: 24px;
-	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-	transition: transform 0.25s, box-shadow 0.25s;
-}
-
-.card:hover {
-	transform: translateY(-4px);
-	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-}
-
-.history-title {
-	font-size: 20px;
-	font-weight: 700;
-	color: var(--primary);
-	margin-bottom: 12px;
-}
-
-.history-info {
-	font-size: 15px;
-	color: var(--text-sub);
-	margin-bottom: 4px;
-}
-
-.text-muted {
-	font-size: 13px;
-	color: #999;
-}
-
-.btn-sm {
-	padding: 6px 12px;
-	font-size: 13px;
-}
-
-.empty-box {
-	text-align: center;
-	padding: 80px 0;
-	color: var(--text-sub);
-	font-size: 18px;
-}
 </style>
 </head>
 <body>
@@ -110,7 +140,7 @@ h2 {
 	<jsp:include page="/WEB-INF/views/nav.jsp" />
 
 	<div class="container">
-		<h2>📜 거래 내역</h2>
+		<h2><i class="fa-solid fa-arrows-rotate me-1 text-accent"></i> 거래 내역</h2>
 
 		<c:choose>
 			<c:when test="${not empty historyList}">
@@ -129,14 +159,14 @@ h2 {
 								<c:when test="${dto.review_written}">
 									<a
 										href="<c:url value='/review/myreviews'/>?id=${dto.review_id}"
-										class="btn btn-outline-success btn-sm"> ✅ 리뷰 보기 </a>
+										class="btn btn-outline-success btn-sm"><i class="fa-solid fa-comment-dots me-1"></i> 리뷰 보기 </a>
 								</c:when>
 								<c:otherwise>
 									<c:if
 										test="${dto.buyer_id eq loggedInUser.member_id and dto.review_id == null}">
 										<a
 											href="<c:url value='/review/form' />?historyId=${dto.history_id}&buyerId=${dto.buyer_id}&sellerId=${dto.seller_id}&talentId=${dto.talent_id}&category=${dto.category}"
-											class="btn btn-outline-warning btn-sm"> ✍ 리뷰 작성 </a>
+											class="btn btn-outline-warning btn-sm"><i class="fa-solid fa-pen-to-square me-1"></i> 리뷰 작성 </a>
 									</c:if>
 								</c:otherwise>
 							</c:choose>
@@ -145,7 +175,7 @@ h2 {
 				</c:forEach>
 			</c:when>
 			<c:otherwise>
-				<div class="empty-box">표시할 거래 내역이 없습니다 😥</div>
+				<div class="empty-box">표시할 거래 내역이 없습니다 <i class="fa-solid fa-face-frown-open fa-lg me-2"></i></div>
 			</c:otherwise>
 		</c:choose>
 	</div>

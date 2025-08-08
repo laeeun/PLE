@@ -29,7 +29,11 @@
       margin: 0;
       padding: 0;
     }
-
+    
+	a:hover {
+			text-decoration:none;
+			color: var(--accent);
+	}
     .container {
       max-width: 900px;
       margin: 60px auto;
@@ -141,8 +145,7 @@
     <c:when test="${not empty sentRequests}">
       <table>
         <thead>
-          <tr>
-            
+          <tr>          
             <th>판매자</th>
             <th>요청 상태</th>
             <th>요청 시간</th>
@@ -151,9 +154,8 @@
         </thead>
         <tbody>
           <c:forEach var="req" items="${sentRequests}">
-            <tr>
-              
-              <td>${req.seller_id}</td>
+            <tr>        
+              <td><a href="<c:url value='/profile/${req.seller_id}' />">${req.seller_id}</a></td>
               <td>
 				  <c:choose>
 				    <c:when test="${req.status == 'APPROVED'}">
@@ -186,7 +188,7 @@
     <c:otherwise>
       <div class="alert">
         <i class="fas fa-inbox"></i>
-        <span>📭 아직 구매 요청한 재능이 없습니다.</span>
+        <span> 아직 구매 요청한 재능이 없습니다.</span>
       </div>
     </c:otherwise>
   </c:choose>

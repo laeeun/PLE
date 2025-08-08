@@ -6,6 +6,7 @@
     <title>시간 충전소</title>
     <link href="<c:url value='/resources/css/bootstrap.min.css' />" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
     <style>
@@ -90,7 +91,7 @@
 <jsp:include page="/WEB-INF/views/nav.jsp" />
 
 <div class="container mt-5">
-    <h2>⏱ 시간 충전소</h2>
+    <h2><i class="fa-solid fa-clock-rotate-left"></i> 시간 충전소</h2>
 
     <!-- ✅ 현재 잔액 -->
     <div class="alert alert-info mt-3 glass-card" id="account-info">

@@ -17,7 +17,7 @@
       border-top: 1px solid #e5e7eb;
     }
     .footer-links {
-      margin-bottom: 8px;
+      margin-bottom: 40px;
     }
     .footer-links a {
       margin: 0 10px;
@@ -33,6 +33,11 @@
       vertical-align: middle;
       margin-right: 6px;
     }
+    .footer-grid {
+	  display: grid;
+	  grid-template-rows: auto auto;
+	  text-align: center;
+	}
   </style>
 </head>
 <body>
@@ -42,9 +47,9 @@
       <a href="#">이용약관</a> |
       <a href="#">개인정보처리방침</a>
     </div>
-    <div>
-      <span class="footer-icon">⏳</span> 
-      &copy; 2025 시간 거래소 프로젝트. All rights reserved.
+    <div class="footer-grid">
+      <span class="brand">Time<span class="highlight">Fair</span></span> 
+       &copy; 2025 시간 거래소 프로젝트. All rights reserved.
     </div>
   </footer>
 </body>

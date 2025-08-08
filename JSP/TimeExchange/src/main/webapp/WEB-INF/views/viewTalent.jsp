@@ -158,6 +158,14 @@
 	.comment-submit-btn:hover {
 	  background-color: #e85c28;
 	}
+	.preview-image {
+	    max-width: 100%;
+	    height: auto;
+	    margin-top: 10px;
+	    border-radius: 10px;
+	    border: 1px solid var(--border);
+	    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+	}
 	</style>
 </head>
 <body>
@@ -216,21 +224,36 @@
 			</div>
 
             <!-- ✅ 첨부파일 영역 카드 스타일 -->
-            <c:if test="${not empty talent.filename}">
-               <div class="alert alert-light border mb-3">
-                  📎 <strong>첨부파일:</strong> <a
-                     href="<c:url value='/resources/uploads/${talent.filename}' />"
-                     download class="ms-2 text-decoration-underline">${talent.filename}</a>
-               </div>
-            </c:if>
+           <c:if test="${not empty talent.filename}">
+			    <c:set var="fileExtension" value="${fn:toLowerCase(fn:substringAfter(talent.filename, '.'))}" />
+			    <div class="alert alert-light border mb-3">
+			        📎 <strong>첨부파일:</strong>
+			        <a href="<c:url value='/resources/uploads/${talent.filename}' />"
+			           download class="ms-2 text-decoration-underline">
+			            ${talent.filename}
+			        </a>
+			
+			        <!-- ✅ 이미지 미리보기 추가 -->
+			        <c:if test="${fileExtension == 'jpg' || fileExtension == 'jpeg' || fileExtension == 'png' || fileExtension == 'gif' || fileExtension == 'webp'}">
+			            <div class="mt-3">
+			                <img src="<c:url value='/resources/uploads/${talent.filename}' />"
+			                     alt="첨부 이미지 미리보기"
+			                     style="max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);" />
+			            </div>
+			        </c:if>
+			    </div>
+			</c:if>
 
             <!-- ✅ 설명 박스 -->
-            <div class="p-3 rounded mb-3"
-               style="background-color: var(--accent-light); border-left: 5px solid var(--accent);">
-               <strong><i class="fa-solid fa-thumbtack me-1 text-muted"></i>
-                  설명</strong>
-               <p class="mb-0 mt-1">${talent.description}</p>
-            </div>
+            <div class="card mb-4 shadow-sm border-0" style="background-color: var(--surface-alt); border-radius: 16px;">
+			   <div class="card-body">
+			      <div class="d-flex align-items-center mb-3">
+				   <i class="fa-solid fa-circle-info fa-lg" style="color: var(--accent); margin-right: 1rem;"></i>
+				   <h5 class="mb-0" style="color: var(--primary); font-weight: 700;">서비스 설명</h5>
+				  </div>
+			      <p class="text-muted" style="line-height: 1.7; white-space: pre-line;">${talent.description}</p>
+			   </div>
+			</div>
 
             <!-- ⭐ 리뷰 정보 추가 -->
             <hr>
@@ -257,9 +280,10 @@
                         end="${5 - intPart - (floatPart >= 5 ? 1 : 0)}">
                         <i class="fa-regular fa-star text-warning"></i>
                      </c:forEach>
-                  </span> (
-                  <fmt:formatNumber value="${averageRating}" pattern="#.0" />
-                  점)
+                  </span> 
+	                  (
+	                  <fmt:formatNumber value="${averageRating}" pattern="#.0" />
+	                  점)
                </p>
 
                <a href="<c:url value='/review/talent?id=${talent.talent_id}' />"

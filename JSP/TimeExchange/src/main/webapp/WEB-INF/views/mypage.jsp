@@ -150,6 +150,71 @@
 	        margin-top: 50px;
 	        box-shadow: inset 0 0 6px rgba(0,0,0,0.05);
 	    }
+	    .talent-carousel {
+	        display: flex;
+	        overflow-x: auto;
+	        gap: 16px;
+	        scroll-snap-type: x mandatory;
+	        padding: 20px 0;
+	    }
+
+	    .talent-card {
+	        flex: 0 0 auto;
+	        scroll-snap-align: start;
+	        background: rgba(255, 255, 255, 0.9);
+	        border: 1px solid var(--border);
+	        border-radius: 16px;
+	        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+	        padding: 20px;
+	        width: 320px;
+	        min-height: 220px;
+	        position: relative;
+	        transition: transform 0.2s ease;
+	    }
+	
+	    .talent-card:hover {
+	        transform: translateY(-4px);
+	    }
+	
+	    .talent-card h5 {
+	        font-size: 18px;
+	        font-weight: 600;
+	        margin-bottom: 10px;
+	        color: var(--primary);
+	    }
+	
+	    .talent-card p {
+	        margin: 6px 0;
+	        font-size: 14px;
+	        color: var(--text-main);
+	    }
+	
+	    .talent-card .rating {
+	        color: #facc15;
+	        font-weight: bold;
+	    }
+	
+	    /* 가로 스크롤바 스타일 */
+	    .talent-carousel::-webkit-scrollbar {
+	        height: 8px;
+	    }
+	
+	    .talent-carousel::-webkit-scrollbar-thumb {
+	        background-color: var(--accent);
+	        border-radius: 4px;
+	    }
+	
+	    .talent-carousel::-webkit-scrollbar-track {
+	        background-color: #f1f1f1;
+	    }
+	    .talent-card-link {
+		    text-decoration: none;
+		    color: inherit;
+		}
+		
+		.talent-card-link:hover {
+		    text-decoration: none;
+		}
     </style>
 </head>
 <body>
@@ -199,7 +264,23 @@
             </div>
         </div>
     </div>
-
+	<c:if test="${not empty myTalentList}">
+	    <h5 class="mt-5 mb-3"><i class="fas fa-lightbulb me-2"></i> 내가 등록한 재능</h5>
+	    <div class="talent-carousel">
+	        <c:forEach var="Talent" items="${myTalentList}">
+	            <a href="<c:url value='/talent/view?id=${Talent.talent_id}' />" class="talent-card-link">
+	                <div class="talent-card">
+	                    <h5>${Talent.title}</h5>
+	                    <p><strong>카테고리:</strong> ${Talent.category}</p>
+	                    <p><strong>작성자:</strong> ${Talent.username}</p>
+	                    <p><strong>판매 시간:</strong> ${Talent.timeSlotDisplay}</p>
+	                    <p><strong>등록일:</strong> ${Talent.createdAtDisplay}</p>
+	                    <p class="rating">⭐ 평균 별점: ${Talent.averageRating}점 (${Talent.reviewCount}개)</p>
+	                </div>
+	            </a>
+	        </c:forEach>
+	    </div>
+	</c:if>
     <!-- ✅ 전문가 정보 박스 (시각적으로 구분된 별도 wrapper로 감싸기) -->
     <c:if test="${not empty expertProfile}">
         <div class="expert-wrapper">

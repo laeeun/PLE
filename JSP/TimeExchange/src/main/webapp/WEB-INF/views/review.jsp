@@ -104,7 +104,7 @@
         <span class="label"><i class="fas fa-tags"></i> 카테고리:</span> ${review.category}
     </div>
     <div class="field">
-        <span class="label"><i class="fas fa-clock"></i> 작성일:</span> ${review.createdAt}
+        <span class="label"><i class="fas fa-clock"></i> 작성일:</span> ${review.formattedCreatedAt}
     </div>
     <div class="field">
         <span class="label"><i class="fas fa-star"></i> 평점:</span>
@@ -138,7 +138,7 @@
                 <div class="field" style="background-color: #f9fafb; padding: 15px; border-radius: 8px;">
                     <span class="label text-primary"><i class="fas fa-reply"></i> 판매자 답글:</span>
                     <p class="mt-2">${review.reply.replyContent}</p>
-                    <small class="text-muted">답변일: ${review.reply.replyCreatedAt}</small>
+                    <small class="text-muted">답변일: ${review.reply.formattedReplyCreatedAt}</small>
 
                     <c:if test="${loggedInUser != null && loggedInUser.member_id eq review.targetName}">
                         <div class="mt-2 text-end">
