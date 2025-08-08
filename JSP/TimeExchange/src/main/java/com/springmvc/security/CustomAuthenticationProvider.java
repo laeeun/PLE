@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.springmvc.domain.Member;
+import com.springmvc.enums.MemberStatus;
 import com.springmvc.service.MemberService;
 
 @Component
@@ -37,8 +39,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         System.out.println("[DEBUG] 조회된 member: " + member);
         
         if (member == null) {
-        	System.out.println("[DEBUG] 로그인 실패 - 존재하지 않는 회원");
+        	 System.out.println("[DEBUG] 로그인 실패 - 존재하지 않는 회원");
             throw new BadCredentialsException("존재하지 않는 회원입니다.");
+        }
+        
+     // 계정 상태 확인 (탈퇴 또는 정지된 경우 로그인 차단)
+        if (member.getStatus() == MemberStatus.INACTIVE || member.getStatus() == MemberStatus.SUSPENDED) {
+            throw new DisabledException("비활성화된 계정입니다.");
         }
         System.out.println("[DEBUG] DB에서 가져온 role: " + member.getRole());
         // 🔐 로그인 잠금 처리 (6회 이상 10분 차단)

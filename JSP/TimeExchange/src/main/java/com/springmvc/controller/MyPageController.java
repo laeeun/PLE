@@ -246,9 +246,9 @@ public class MyPageController  {
             Member loggedInUser = (Member) session.getAttribute("loggedInUser");
             String member_id = loggedInUser.getMember_id();
             memberService.delete(member_id);
+            session.invalidate();
             return "redirect:/mypage/deactivated";
     }
-
 
 	 @PostMapping("/deactivated/restore")
     public String restore(HttpSession session) {

@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springmvc.domain.Member;
-import com.springmvc.enums.MemberStatus;
 import com.springmvc.repository.MemberRepository;
 import com.springmvc.repository.purchaseRepository;
 
@@ -59,14 +58,9 @@ public class MemberServiceImpl implements MemberService {
     // ✅ 로그인 처리: member_id로 회원 조회 후 비밀번호는 Security 또는 Controller에서 확인
     @Override
     public Member login(String member_id) {
-    	 Member member = memberRepository.login(member_id);
-         if (member == null) {
-             Member existing = memberRepository.findById(member_id);
-             if (existing != null && existing.getStatus() != MemberStatus.ACTIVE) {
-                 throw new IllegalStateException("탈퇴한 회원입니다");
-             }
-         }
-         return member;
+    	// 계정 상태를 호출자가 직접 확인할 수 있도록 회원 정보 전체를 반환한다
+        // (비밀번호 검증은 Security 또는 Controller에서 수행)
+        return memberRepository.findById(member_id);
     }
 
 
