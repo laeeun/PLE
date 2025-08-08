@@ -179,9 +179,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	// ✅ 회원 복구 (탈퇴 취소)
-    @Override
-    public void restore(String member_id) {
-        memberRepository.restore(member_id);
-    }
+	// Service
+	public boolean restore(String memberId) {
+	    int updated = memberRepository.restore(memberId);
+	    System.out.println(">>> [RESTORE] rows updated = " + updated + " (memberId=" + memberId + ")");
+	    return updated == 1;
+	}
 
 }

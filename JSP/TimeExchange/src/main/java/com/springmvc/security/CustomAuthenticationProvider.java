@@ -43,7 +43,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("존재하지 않는 회원입니다.");
         }
         
-     // 계정 상태 확인 (탈퇴 또는 정지된 경우 로그인 차단)
+        // 계정 상태 확인 (탈퇴 또는 정지된 경우 로그인 차단)
         if (member.getStatus() == MemberStatus.INACTIVE || member.getStatus() == MemberStatus.SUSPENDED) {
             throw new DisabledException("비활성화된 계정입니다.");
         }

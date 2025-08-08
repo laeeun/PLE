@@ -83,5 +83,5 @@ public interface MemberRepository {
     
     boolean existsByUsernameExceptMe(String username, String myId);
     
-    void restore(String member_id);
+    int restore(String member_id);
 }

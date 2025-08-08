@@ -243,7 +243,7 @@ public class MyPageController  {
 
 	
 	@PostMapping("/delete")
-    public String delete(HttpSession session) {
+    public String delete(HttpSession session, RedirectAttributes redirectAttributes) {
             Member loggedInUser = (Member) session.getAttribute("loggedInUser");
             if (loggedInUser == null) {
                 return "redirect:/login";
@@ -252,28 +252,45 @@ public class MyPageController  {
             memberService.delete(member_id);
             loggedInUser.setStatus(MemberStatus.INACTIVE);
             session.setAttribute("loggedInUser", loggedInUser);
+            redirectAttributes.addFlashAttribute("message", "회원탈퇴가 정상적으로 처리되었습니다.");
+            
+            session.invalidate();
             return "redirect:/mypage/deactivated";
     }
-
-	@PostMapping("/deactivated/restore")
-    public String restore(HttpSession session, RedirectAttributes redirectAttributes) {
-            Member loggedInUser = (Member) session.getAttribute("loggedInUser");
-            if (loggedInUser == null) {
-                return "redirect:/login";
-            }
-            String member_id = loggedInUser.getMember_id();
-            memberService.restore(member_id);
-            Member updated = memberService.findById(member_id);
-            session.setAttribute("loggedInUser", updated);
-            redirectAttributes.addFlashAttribute("message", "탈퇴 취소가 완료되었습니다.");
-            return "redirect:/mypage";
-    }
 	
-	
-    @GetMapping("/deactivated")
+	@GetMapping("/deactivated")
     public String deactivated() {
             return "deactivated";
     }
+
+	@PostMapping("/deactivated/restore")
+	public String restore(@RequestParam(value = "memberId", required = false) String memberId,
+	                      HttpSession session,
+	                      RedirectAttributes ra) {
+	    System.out.println(">>> [RESTORE] 들어옴");
+	    Member loggedInUser = (Member) session.getAttribute("loggedInUser");
+
+	    if (loggedInUser != null) {
+	        memberId = loggedInUser.getMember_id();
+	        System.out.println("session.member_id = " + memberId);
+	    } else {
+	        System.out.println("session.loggedInUser is null");
+	        if (memberId == null || memberId.isEmpty()) {
+	            ra.addFlashAttribute("message", "계정 복구를 위해 로그인 후 시도해주세요.");
+	            return "redirect:/login";
+	        }
+	    }
+
+	    boolean ok = memberService.restore(memberId);
+	    System.out.println(">>> [RESTORE] 복구 성공 여부: " + ok);
+
+	    if (session != null) session.invalidate();
+	    ra.addFlashAttribute("message", ok ? "탈퇴 취소가 완료되었습니다. 다시 로그인해 주세요." : "탈퇴 취소에 실패했습니다.");
+	    return "redirect:/login";
+	}
+	
+	
+    
 	
 	@GetMapping("/changePw")
 	public String changePw() {

@@ -80,5 +80,5 @@ public interface MemberService {
 	boolean existsByUsernameExceptMe(String username, String myId);
 
 	// 회원 복구 (탈퇴 취소)
-	void restore(String member_id);
+	boolean restore(String member_id);
 }
