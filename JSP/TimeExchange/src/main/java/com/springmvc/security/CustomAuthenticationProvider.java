@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.springmvc.domain.Member;
 import com.springmvc.enums.MemberStatus;
 import com.springmvc.service.MemberService;
+import com.springmvc.security.InactiveMemberException;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
@@ -44,7 +45,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
         
         // 계정 상태 확인 (탈퇴 또는 정지된 경우 로그인 차단)
-        if (member.getStatus() == MemberStatus.INACTIVE || member.getStatus() == MemberStatus.SUSPENDED) {
+        if (member.getStatus() == MemberStatus.INACTIVE) {
+            throw new InactiveMemberException(member.getMember_id());
+        } else if (member.getStatus() == MemberStatus.SUSPENDED) {
             throw new DisabledException("비활성화된 계정입니다.");
         }
         
