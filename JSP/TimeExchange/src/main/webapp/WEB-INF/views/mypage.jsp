@@ -153,6 +153,9 @@
     </style>
 </head>
 <body>
+<c:if test="${not empty message}">
+    <script>alert('${fn:escapeXml(message)}');</script>
+</c:if>
 <jsp:include page="/WEB-INF/views/nav.jsp" />
 
 <div class="container mt-5 mb-5">

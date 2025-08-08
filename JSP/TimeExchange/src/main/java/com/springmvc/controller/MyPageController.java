@@ -30,6 +30,7 @@ import com.springmvc.domain.ExpertProfileDTO;
 import com.springmvc.domain.HistoryDTO;
 import com.springmvc.domain.Member;
 import com.springmvc.domain.PasswordHistoryDTO;
+import com.springmvc.enums.MemberStatus;
 import com.springmvc.service.ExpertProfileService;
 import com.springmvc.service.HistoryService;
 import com.springmvc.service.MemberService;
@@ -244,20 +245,27 @@ public class MyPageController  {
 	@PostMapping("/delete")
     public String delete(HttpSession session) {
             Member loggedInUser = (Member) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/login";
+            }
             String member_id = loggedInUser.getMember_id();
             memberService.delete(member_id);
-            session.invalidate();
+            loggedInUser.setStatus(MemberStatus.INACTIVE);
+            session.setAttribute("loggedInUser", loggedInUser);
             return "redirect:/mypage/deactivated";
     }
 
-	 @PostMapping("/deactivated/restore")
-    public String restore(HttpSession session) {
+	@PostMapping("/deactivated/restore")
+    public String restore(HttpSession session, RedirectAttributes redirectAttributes) {
             Member loggedInUser = (Member) session.getAttribute("loggedInUser");
             if (loggedInUser == null) {
                 return "redirect:/login";
             }
             String member_id = loggedInUser.getMember_id();
             memberService.restore(member_id);
+            Member updated = memberService.findById(member_id);
+            session.setAttribute("loggedInUser", updated);
+            redirectAttributes.addFlashAttribute("message", "탈퇴 취소가 완료되었습니다.");
             return "redirect:/mypage";
     }
 	
