@@ -30,12 +30,14 @@
             username-parameter="username"
             password-parameter="password" 
              authentication-success-handler-ref="customLoginSuccessHandler"
-            />
+              authentication-failure-handler-ref="customLoginFailureHandler" />
+         
 
         <logout logout-url="/logout" logout-success-url="/login?logout=true" />
         <csrf disabled="true" />
     </http>
 	<beans:bean id="customLoginSuccessHandler" class="com.springmvc.security.CustomLoginSuccessHandler" />
+	<beans:bean id="customLoginFailureHandler" class="com.springmvc.security.CustomLoginFailureHandler" />
     <!-- ③ 비밀번호 인코더 -->
     <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
