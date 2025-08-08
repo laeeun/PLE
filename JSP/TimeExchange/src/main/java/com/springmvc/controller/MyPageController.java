@@ -246,20 +246,26 @@ public class MyPageController  {
             Member loggedInUser = (Member) session.getAttribute("loggedInUser");
             String member_id = loggedInUser.getMember_id();
             memberService.delete(member_id);
-            session.invalidate();
-            return "redirect:/";
+            return "redirect:/mypage/deactivated";
     }
 
-    @PostMapping("/restore")
+
+	 @PostMapping("/deactivated/restore")
     public String restore(HttpSession session) {
             Member loggedInUser = (Member) session.getAttribute("loggedInUser");
+            if (loggedInUser == null) {
+                return "redirect:/login";
+            }
             String member_id = loggedInUser.getMember_id();
             memberService.restore(member_id);
             return "redirect:/mypage";
     }
 	
 	
-
+    @GetMapping("/deactivated")
+    public String deactivated() {
+            return "deactivated";
+    }
 	
 	@GetMapping("/changePw")
 	public String changePw() {

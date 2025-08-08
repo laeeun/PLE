@@ -73,8 +73,8 @@
                     <i class="fas fa-key"></i> 비밀번호 변경
                 </div>
             </c:if>
-            <c:if test="${not fn:contains(pageContext.request.requestURI, '/mypage/withdraw')}">
-                <div class="list-btn" onclick="location.href='${pageContext.request.contextPath}/mypage/withdraw'">
+            <c:if test="${not fn:contains(pageContext.request.requestURI, '/mypage/deactivated')}">
+                <div class="list-btn" onclick="location.href='${pageContext.request.contextPath}/mypage/deactivated'">
                     <i class="fas fa-user-slash"></i> 회원 탈퇴
                 </div>
             </c:if>

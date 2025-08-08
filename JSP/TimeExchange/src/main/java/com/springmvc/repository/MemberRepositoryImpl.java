@@ -102,6 +102,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public void restore(String member_id) {
         String sql = "UPDATE member SET status = 'ACTIVE' WHERE member_id = ?";
+        template.update(sql, member_id);
     }
 
     // ✅ 로그인용: member_id로 회원 1명 조회
