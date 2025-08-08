@@ -9,7 +9,7 @@
 <body>
 <h1>탈퇴가 처리되었습니다.</h1>
     <p>계정을 다시 사용하려면 아래 버튼을 눌러 탈퇴를 취소하세요.</p>
-    <form action="<c:url value='/deactivated/restore'/>" method="post">
+    <form action="<c:url value='/mypage/deactivated/restore'/>" method="post">
         <button type="submit">탈퇴 취소하기</button>
     </form>
 </body>
