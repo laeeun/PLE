@@ -160,6 +160,12 @@ button:hover {
     <c:when test="${not empty sessionScope.loggedInUser}">
       <input type="hidden" name="memberId" value="${sessionScope.loggedInUser.member_id}">
     </c:when>
+    <c:when test="${not empty param.u}">
+      <input type="hidden" name="memberId" value="${fn:escapeXml(param.u)}" />
+    </c:when>
+    <c:when test="${not empty param.memberId}">
+      <input type="hidden" name="memberId" value="${param.memberId}" />
+    </c:when>
     <c:otherwise>
       <label for="memberId">회원 아이디를 입력하세요:</label>
       <input type="text" id="memberId" name="memberId" required autocomplete="username" />

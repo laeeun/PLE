@@ -44,14 +44,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
         
         // 계정 상태 확인 (탈퇴 또는 정지된 경우 로그인 차단)
-        if (member.getStatus() == MemberStatus.SUSPENDED) {
+        if (member.getStatus() == MemberStatus.INACTIVE || member.getStatus() == MemberStatus.SUSPENDED) {
             throw new DisabledException("비활성화된 계정입니다.");
         }
         
-        // 🔹 탈퇴 계정 처리 → 커스텀 예외로 아이디까지 같이 던짐
-        if (member.getStatus() == MemberStatus.INACTIVE) {
-            throw new InactiveMemberException(member.getMember_id());
-        }
+        
         System.out.println("[DEBUG] DB에서 가져온 role: " + member.getRole());
         // 🔐 로그인 잠금 처리 (6회 이상 10분 차단)
         if (member.getLoginFailCount() >= 6) {
