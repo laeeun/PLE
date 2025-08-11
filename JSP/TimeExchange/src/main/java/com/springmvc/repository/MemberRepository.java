@@ -40,9 +40,6 @@ public interface MemberRepository {
     // 로그인 처리 (ID로 회원을 불러오고, 비밀번호는 서비스나 Security에서 비교)
     Member login(String member_id);
 
-    // 관리자 회원들만 조회 (is_admin 필드 등 기준으로 분리)
-    List<Member> findAdmins();
-
     // 이름 + 전화번호로 아이디 조회 (아이디 찾기 기능)
     String findId(String name, String phone);
 

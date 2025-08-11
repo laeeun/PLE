@@ -98,11 +98,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 		return members.isEmpty() ? null : members.get(0);
 	}
 
-	// ✅ 관리자 전체 조회 (아직 구현 안됨 - TODO)
-	@Override
-	public List<Member> findAdmins() {
-		return null;
-	}
+
 
 	// ✅ 이름 + 전화번호로 아이디 찾기 (아이디 찾기 기능)
 	@Override

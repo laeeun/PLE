@@ -30,14 +30,12 @@ import com.springmvc.domain.ExpertProfileDTO;
 import com.springmvc.domain.HistoryDTO;
 import com.springmvc.domain.Member;
 import com.springmvc.domain.PasswordHistoryDTO;
-import com.springmvc.domain.TalentDTO;
 import com.springmvc.enums.MemberStatus;
 import com.springmvc.service.ExpertProfileService;
 import com.springmvc.service.HistoryService;
 import com.springmvc.service.MemberService;
 import com.springmvc.service.PasswordHistoryService;
 import com.springmvc.service.ReviewService;
-import com.springmvc.service.TalentService;
 
 @Controller
 @RequestMapping("/mypage")
@@ -59,9 +57,8 @@ public class MyPageController  {
     
     @Autowired
     private ExpertProfileService expertProfileService;
-    @Autowired
-    private TalentService talentService;
-    @GetMapping
+	
+	@GetMapping
     public String myPage(HttpSession session, Model model) {
 		Member sessionMember = (Member) session.getAttribute("loggedInUser");
 	    if (sessionMember == null) {
@@ -71,22 +68,14 @@ public class MyPageController  {
 	    String loginId = sessionMember.getMember_id();
 	    Member member = memberService.findById(loginId);
 	    model.addAttribute("member", member);
+	    System.out.println(member);
+	    // ✅ 전문가 프로필 추가
 	    ExpertProfileDTO expertProfile = expertProfileService.findByMemberId(loginId);
 	    if (expertProfile != null) {
 	        model.addAttribute("expertProfile", expertProfile);
 	    }
-	    
-	    List<TalentDTO> myTalentList = talentService.TalentByMemberId(loginId);
-	    
-	    for (TalentDTO dto : myTalentList) {
-            talentService.formatTimeSlot(dto);
-            talentService.formatCreatedAt(dto);
-        }
-	    
-	    model.addAttribute("myTalentList", myTalentList);
 	    return "mypage";
     }
-
 	
 	
 	@GetMapping("/edit")
@@ -263,7 +252,7 @@ public class MyPageController  {
             memberService.delete(member_id);
             loggedInUser.setStatus(MemberStatus.INACTIVE);
             session.setAttribute("loggedInUser", loggedInUser);
-            redirectAttributes.addFlashAttribute("message", "회원탈퇴가 정상적으로 처리되었습니다.");
+            redirectAttributes.addFlashAttribute("message", "회원탈퇴가 정상적으로 처리되었습니다. 회원 탈퇴 취소를 원하실 경우 로그인해서 탈퇴 취소를 진행해주세요.");
             
             session.invalidate();
             return "redirect:/mypage/deactivated";
