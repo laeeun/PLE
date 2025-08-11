@@ -116,73 +116,137 @@
         font-size: 28px;
       }
     }
-    
+
     .category-grid {
-	  display: grid;
-	  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-	  gap: 14px 20px;
-	}
-	
-	.category-grid .form-check {
-	  display: inline-flex;
-	  align-items: center;
-	  gap: 8px;
-	  margin: 0;
-	}
-	
-	.category-grid .form-check-input {
-	  appearance: none;
-	  -webkit-appearance: none;
-	  width: 16px;
-	  height: 16px;
-	  border: 2px solid var(--border);
-	  border-radius: 50%;
-	  background: #fff;
-	  position: relative;
-	  cursor: pointer;
-	  transition: border-color 0.2s ease;
-	  vertical-align: middle;
-	  margin: 0;
-	
-	  /* ✅ 포커스시 검정 테두리 제거 */
-	  outline: none;
-	  box-shadow: none;
-	}
-	
-	.category-grid .form-check-input:checked {
-	  border-color: var(--accent);
-	  background-color: #fff;
-	}
-	
-	.category-grid .form-check-input:checked::before {
-	  content: "";
-	  position: absolute;
-	  top: 50%;
-	  left: 50%;
-	  width: 8px;
-	  height: 8px;
-	  background: var(--accent);
-	  border-radius: 50%;
-	  transform: translate(-50%, -50%);
-	}
-	
-	.category-grid .form-check-input:hover {
-	  border-color: var(--accent);
-	}
-	
-	.category-grid .form-check-label {
-	  font-size: 15px;
-	  line-height: 1;
-	  color: var(--text-sub);
-	  cursor: pointer;
-	}
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px 20px;
+    }
 
+    .category-grid .form-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+    }
 
-	
-	label[for="uploadFile"] {
-	  margin-top: 20px;
-	  display: block;
-	}
+    .category-grid .form-check-input {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      background: #fff;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+      vertical-align: middle;
+      margin: 0;
+
+      /* ✅ 포커스시 검정 테두리 제거 */
+      outline: none;
+      box-shadow: none;
+    }
+
+    .category-grid .form-check-input:checked {
+      border-color: var(--accent);
+      background-color: #fff;
+    }
+
+    .category-grid .form-check-input:checked::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .category-grid .form-check-input:hover {
+      border-color: var(--accent);
+    }
+
+    .category-grid .form-check-label {
+      font-size: 15px;
+      line-height: 1;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+
+    label[for="uploadFile"] {
+      margin-top: 20px;
+      display: block;
+    }
+
+    /* =========================
+       🔧 최소 변경 오버라이드
+       (색상/HTML 그대로)
+       ========================= */
+
+    /* 타이틀 아래 여백 조금 더 */
+    h2 { margin-bottom: 40px; }
+
+    /* 입력창 인터랙션 개선 */
+    .form-control {
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+      background: rgba(255,255,255,0.7);
+    }
+    .form-control:hover { background: rgba(255,255,255,0.9); }
+    .form-control:focus,
+    .form-control:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255,107,53,.15);
+      background: #fff;
+    }
+    .form-control::placeholder { color: rgba(106,115,125,.85); }
+
+    label.form-label { margin-top: 6px; letter-spacing: .2px; }
+
+    /* 파일 인풋은 점선 테두리로 살짝 구분 */
+    #uploadFile { border-style: dashed; }
+
+    /* 카테고리 타일 느낌 + 선택 하이라이트 */
+    .category-grid { gap: 16px 20px; }
+    .category-grid .form-check {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .category-grid .form-check:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    }
+    .category-grid .form-check-input:focus,
+    .category-grid .form-check-input:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255,107,53,.15);
+    }
+    /* 선택된 타일 하이라이트(:has 지원 브라우저에서) */
+    .category-grid .form-check:has(.form-check-input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-100);
+    }
+
+    /* 버튼 포커스 접근성 */
+    .btn-submit:focus,
+    .btn-submit:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255,107,53,.25), 0 12px 30px rgba(255,107,53,.28);
+    }
+
+    /* 컨테이너 살짝 보송한 느낌 */
+    .container {
+      backdrop-filter: saturate(115%) blur(2px);
+      -webkit-backdrop-filter: saturate(115%) blur(2px);
+    }
   </style>
 </head>
 
@@ -205,20 +269,19 @@
 
     <!-- ✅ 카테고리 -->
     <div class="mb-4">
-  <label class="form-label">카테고리</label>
-  <div class="category-grid">
-    <div class="form-check"><form:radiobutton path="category" value="디자인" cssClass="form-check-input" id="cat1"/><label for="cat1" class="form-check-label">디자인</label></div>
-    <div class="form-check"><form:radiobutton path="category" value="프로그래밍" cssClass="form-check-input" id="cat2"/><label for="cat2" class="form-check-label">프로그래밍</label></div>
-    <div class="form-check"><form:radiobutton path="category" value="번역" cssClass="form-check-input" id="cat3"/><label for="cat3" class="form-check-label">번역</label></div>
-    <div class="form-check"><form:radiobutton path="category" value="음악" cssClass="form-check-input" id="cat4"/><label for="cat4" class="form-check-label">음악</label></div>
-    <div class="form-check"><form:radiobutton path="category" value="영상편집" cssClass="form-check-input" id="cat5"/><label for="cat5" class="form-check-label">영상편집</label></div>
-    <div class="form-check"><form:radiobutton path="category" value="글쓰기" cssClass="form-check-input" id="cat6"/><label for="cat6" class="form-check-label">글쓰기</label></div>
-    <div class="form-check"><form:radiobutton path="category" value="과외" cssClass="form-check-input" id="cat7"/><label for="cat7" class="form-check-label">과외</label></div>
-    <div class="form-check"><form:radiobutton path="category" value="생활서비스" cssClass="form-check-input" id="cat8"/><label for="cat8" class="form-check-label">생활서비스</label></div>
-    <div class="form-check"><form:radiobutton path="category" value="기획창작" cssClass="form-check-input" id="cat9"/><label for="cat9" class="form-check-label">기획/창작</label></div>
-  </div>
-</div>
-
+      <label class="form-label">카테고리</label>
+      <div class="category-grid">
+        <div class="form-check"><form:radiobutton path="category" value="디자인" cssClass="form-check-input" id="cat1"/><label for="cat1" class="form-check-label">디자인</label></div>
+        <div class="form-check"><form:radiobutton path="category" value="프로그래밍" cssClass="form-check-input" id="cat2"/><label for="cat2" class="form-check-label">프로그래밍</label></div>
+        <div class="form-check"><form:radiobutton path="category" value="번역" cssClass="form-check-input" id="cat3"/><label for="cat3" class="form-check-label">번역</label></div>
+        <div class="form-check"><form:radiobutton path="category" value="음악" cssClass="form-check-input" id="cat4"/><label for="cat4" class="form-check-label">음악</label></div>
+        <div class="form-check"><form:radiobutton path="category" value="영상편집" cssClass="form-check-input" id="cat5"/><label for="cat5" class="form-check-label">영상편집</label></div>
+        <div class="form-check"><form:radiobutton path="category" value="글쓰기" cssClass="form-check-input" id="cat6"/><label for="cat6" class="form-check-label">글쓰기</label></div>
+        <div class="form-check"><form:radiobutton path="category" value="과외" cssClass="form-check-input" id="cat7"/><label for="cat7" class="form-check-label">과외</label></div>
+        <div class="form-check"><form:radiobutton path="category" value="생활서비스" cssClass="form-check-input" id="cat8"/><label for="cat8" class="form-check-label">생활서비스</label></div>
+        <div class="form-check"><form:radiobutton path="category" value="기획창작" cssClass="form-check-input" id="cat9"/><label for="cat9" class="form-check-label">기획/창작</label></div>
+      </div>
+    </div>
 
     <!-- 파일 업로드 -->
     <label for="uploadFile" class="form-label">첨부 파일</label>

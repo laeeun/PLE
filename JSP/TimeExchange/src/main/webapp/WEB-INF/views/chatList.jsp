@@ -132,7 +132,7 @@
     <div class="chat-card">
         <a href="<c:url value='/chat/room?roomId=${chat.roomId}'/>" style="text-decoration: none; flex-grow: 1;">
             <div class="chat-info">
-                <c:set var="isDefaultProfile" value="${empty chat.partnerProfileImage or fn:contains(chat.partnerProfileImage, 'default_profile.png')}" />
+                <c:set var="isDefaultProfile" value="${empty chat.partnerProfileImage or fn:contains(chat.partnerProfileImage, 'default-profile.png')}" />
                 <c:choose>
                     <c:when test="${not isDefaultProfile}">
                         <img src="${pageContext.request.contextPath}${chat.partnerProfileImage}" class="chat-profile" alt="프로필" />

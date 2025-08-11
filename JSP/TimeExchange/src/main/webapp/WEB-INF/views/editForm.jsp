@@ -213,7 +213,7 @@ input[type="file"]:hover::-webkit-file-upload-button {
 <body>
 
   <c:choose>
-    <c:when test="${empty member.profileImage || member.profileImage eq 'default_profile.png'}">
+    <c:when test="${empty member.profileImage || member.profileImage eq 'default-profile.png'}">
       <c:set var="profileImageUrl"
              value="${pageContext.request.contextPath}/resources/images/default-profile.png" />
     </c:when>
