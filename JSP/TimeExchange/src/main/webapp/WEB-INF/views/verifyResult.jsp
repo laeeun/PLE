@@ -90,9 +90,9 @@
 </head>
 <body>
 
-<div class="result-box ${message.contains('성공') ? 'success' : 'error'}">
+<div class="result-box ${message.contains('완료') ? 'success' : 'error'}">
     <div class="icon">
-        <i class="fas ${message.contains('성공') ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
+        <i class="fas ${message.contains('완료') ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
     </div>
     <h2>인증 결과</h2>
     <p>${message}</p>
