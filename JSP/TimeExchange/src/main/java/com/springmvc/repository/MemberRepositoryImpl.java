@@ -54,7 +54,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 		String sql = "SELECT * FROM member WHERE member_id = ?";
 		List<Member> members = template.query(sql, new Object[] { member_id }, new MemberRowMapper());
 
-		return members.isEmpty() ? null : members.get(0); // 결과가 없으면 null
+		return members.isEmpty() ? null : members.get(0);
 	}
 
 	// ✅ 전체 회원 조회 (관리자 페이지 등에서 사용 가능)
