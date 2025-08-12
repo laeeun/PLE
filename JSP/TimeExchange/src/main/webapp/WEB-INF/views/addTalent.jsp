@@ -64,7 +64,7 @@ label.form-label {
   letter-spacing: .2px;
 }
 
-/* 텍스트/숫자/텍스트에어리어 공통 */
+
 .form-control {
   width: 100%;
   background: rgba(255,255,255,0.7);
